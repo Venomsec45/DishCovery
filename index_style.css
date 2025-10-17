@@ -1,19 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 header {
   display: flex;
   justify-content: space-between; 
   align-items: center;           
-  padding: 15px 40px;             
-  background-color: white;
+  padding: 1vw 4vw;             
+  background-color: rgb(255, 255, 255);
   position: sticky;
   border-bottom: 3px solid #efefef; 
   top: 0;
   z-index: 100;
+  box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
   background-color: rgb(249, 249, 249);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 nav ul {
@@ -25,7 +32,7 @@ nav ul {
 nav ul li a {
   text-decoration: none;
   color: #333;
-  font-size: 16px;
+  font-size: 16px; 
   font-weight: 500;
   padding-right: 34px;
   transition: color 0.3s;
@@ -51,14 +58,27 @@ nav ul li a:hover {
   border: 2px solid black;
 }
 
-.introduction_upper_text {
-  font-size: 80px;
+.introduction {
   text-align: center;
-  height: 100vh;
-  padding-top: 100px;
-  line-height: 70px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: clamp(40px, 8vw, 100px);
+  padding-bottom: clamp(40px, 8vw, 100px);
+}
+
+.introduction_upper_text {
+  font-size: clamp(36px, 6vw, 80px);
+  line-height: 1.1;
 }
 
 .introduction_lower_text {
+  font-size: clamp(36px, 6vw, 80px);
+  line-height: 1.1;
   color: #ff6a00;
+}
+
+.introduction_paragraph {
+  color: black;
+  font-size: clamp(10px, 2vw, 23px);
+  line-height: 1.5;
 }
