@@ -70,13 +70,30 @@ nav ul li a:hover {
   padding-bottom: clamp(40px, 8vw, 100px);
 }
 
+.introduction_upper_text {
+  font-size: clamp(36px, 6vw, 80px);
+  line-height: 1.1;
+}
+
+.introduction_lower_text {
+  font-size: clamp(36px, 6vw, 80px);
+  line-height: 1.1;
+  color: #ff6a00;
+}
+
+.introduction_paragraph {
+  color: #333;
+  font-size: clamp(10px, 2vw, 23px);
+  line-height: 1.3;
+}
   
-.feartures {
-  padding: 80px 20x;
+.features {
+  padding: 100px 20px;
   text-align: center;
   background-color: #ffffff;
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 0 auto;
+  margin-top: clamp(138px, 2vw, 300px);
 }
 
 .features h2 {
@@ -141,6 +158,7 @@ nav ul li a:hover {
     font-size: 2em;
   }
 }
+
 .how_it_works {
   padding: 80px 20px;
   text-align: center;
@@ -192,11 +210,6 @@ nav ul li a:hover {
   color: white;
 }
 
-.introduction_upper_text {
-  font-size: clamp(36px, 6vw, 80px);
-  line-height: 1.1;
-}
-
 .step:nth-child(1) .step-circle { background-color: #4285f4; }
 .step:nth-child(2) .step-circle { background-color: #34a853; }
 .step:nth-child(3) .step-circle { background-color: #a142f4; }
@@ -225,18 +238,6 @@ nav ul li a:hover {
     .step {
         min-width: 100%;
     }
-}
-
-.introduction_lower_text {
-  font-size: clamp(36px, 6vw, 80px);
-  line-height: 1.1;
-  color: #ff6a00;
-}
-
-.introduction_paragraph {
-  color: #333;
-  font-size: clamp(10px, 2vw, 23px);
-  line-height: 1.6;
 }
 
 section {
