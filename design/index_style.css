@@ -9,7 +9,7 @@ header {
   justify-content: space-between; 
   align-items: center;        
   padding: 1vw 4vw;             
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(248, 248, 248);
   position: sticky;
   border-bottom: 3px solid #efefef; 
   top: 0;
@@ -21,7 +21,7 @@ body {
   font-family: "Outfit", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-  background-color: rgb(249, 249, 249);
+  background-color: rgb(238, 238, 238);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -58,7 +58,7 @@ nav ul li a:hover {
 }
 
 .login a:hover {
-  background-color: rgb(238, 238, 238);      
+  background: rgb(238, 238, 238);      
   color: #333;                    
   border: 2px solid #333;
 }
@@ -126,19 +126,19 @@ section {
   min-height: 300px;
 }
 
-.feature article:hover {
+.features article:hover {
   transform: translateY(-10px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.feature article h3 {
+.features article h3 {
   font-size: 1.5em;
   color: #ff5722;
   margin-bottom: 20px;
   font-weight: 500;
 }
 
-.feature article p {
+.features article p {
   font-size: 1em;
   color: #555;
   line-height: 1.6;
@@ -165,9 +165,9 @@ section {
 }
 
 .how_it_works {
-  padding: 80px 20px;
+  padding: 80px 160px;
   text-align: center;
-  background-color: #f9f9f9;
+  background-color: rgb(238, 238, 238);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -219,7 +219,7 @@ section {
 .step:nth-child(1) .step-circle { background-color: #4285f4; }
 .step:nth-child(2) .step-circle { background-color: #34a853; }
 .step:nth-child(3) .step-circle { background-color: #a142f4; }
-.step:nth-child(4) .step-circle { background-color: #ff5722; }
+.step:nth-child(4) .step-circle { background-color: #ff6a00; }
 
 .step h3 {
   font-size: 1.3em;
@@ -262,12 +262,33 @@ button {
   text-align: center;
   background: linear-gradient(to right, #ff6a00, #ff3300);
   color: white;
-  border-radius: 20px;
-  text-align: center;
+  border-radius: 50px;
+  font-size: 20px;
   text-decoration: none;
   border: 2px solid transparent;
   transition: all 0.4s ease;
-  padding: 8px 18px;
+  justify-content: center;
+  padding: 20px 40px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgb(238, 238, 238);      
+  color: #333;                    
+  border: 2px solid #333;
+}
+
+.label-design {
+  text-align: center;
+  background: rgb(248, 248, 248);
+  color: white;
+  border-radius: 50px;
+  font-size: 13px;
+  color: #333;
+  border: 2px solid #333;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  padding: 23px 60px;
   cursor: pointer;
 }
 
@@ -331,5 +352,10 @@ footer {
   text-align: center;
   padding: top;
   border-top: 1px solid #444;
-  margin-top: 20px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.footer_below a {
+  color: rgb(238, 238, 238);
 }
