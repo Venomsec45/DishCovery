@@ -9,7 +9,7 @@ header {
   justify-content: space-between; 
   align-items: center;        
   padding: 1vw 4vw;             
-  background-color: rgb(248, 248, 248);
+  background: rgb(248, 248, 248);
   position: sticky;
   border-bottom: 3px solid #efefef; 
   top: 0;
@@ -54,7 +54,7 @@ nav ul li a:hover {
   border-radius: 20px;
   text-decoration: none;
   border: 2px solid transparent;
-  transition: all 0.4s ease;      
+  transition: all 0.5s ease;      
 }
 
 .login a:hover {
@@ -165,11 +165,12 @@ section {
 }
 
 .how_it_works {
-  padding: 80px 160px;
+  padding: 40px 180px;
   text-align: center;
   background-color: rgb(238, 238, 238);
   max-width: 1200px;
   margin: 0 auto;
+  margin-top: 40px;
 }
 
 .how_it_works h2 {
@@ -184,6 +185,11 @@ section {
   margin-bottom: 50px;
   max-width: 800px;
   margin: 0 auto 50px;
+}
+
+.divider_rows {
+  flex-wrap: wrap;
+  display: flex;
 }
 
 .steps_container {
@@ -233,7 +239,6 @@ section {
     font-size: 1.1em;
 }
 
-/* Responsive design */
 @media (max-width: 992px) {
     .step {
         min-width: calc(50% - 15px);
@@ -247,19 +252,40 @@ section {
 }
 
 .popular_recipes {
-  padding: 100px 20px;
+  padding: 130px 20px;
   background-color: white;
   max-width: 1800px;
   margin: 0 auto;
   margin-top: clamp(158px, 2vw, 300px);
   text-align: center;
-  flex-direction: center;
+  display: flex;     
+  flex-direction: column;    
   align-items: center;
+  line-height: 0.5;                 
+}
+
+.recipes_row {
+  display: flex;
+  gap: 20px;
   justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+  margin-top: 50px;
 }
 
 .explore_recipes {
   text-align: center;
+  margin-top: 100px;
+  flex-wrap: wrap;
+  margin-bottom: 100px;
+}
+
+.explore_recipes_row {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
 }
 
 .master_your_kitchen {
@@ -269,7 +295,16 @@ section {
   margin: 0 auto;
 }
 
-.master_your_kitchen h2 {
+.master_your_kitchen h2, p {
+  text-align: center;
+}
+
+.master_kitchen_row {
+  display: flex;
+  gap: 40px;
+}
+
+.master_kitchen_row h3 {
   text-align: center;
 }
 
@@ -281,7 +316,7 @@ button {
   font-size: 20px;
   text-decoration: none;
   border: 2px solid transparent;
-  transition: all 0.4s ease;
+  transition: all 0.6s ease;
   justify-content: center;
   padding: 20px 40px;
   cursor: pointer;
@@ -375,17 +410,17 @@ footer {
   padding: 0;
 }
 
-.footer_links ul li {
+.footer_links ul, li {
   margin-bottom: 10px;
 }
 
-.footer_links ul li a {
+.footer_links ul, li, a {
   text-decoration: none;
   color: rgb(238, 238, 238);
   transition: color 0.3s;
 }
 
-.footer_links ul li a:hover {
+.footer_links ul, li, a:hover {
   color: #ff6a00;
 }
 
