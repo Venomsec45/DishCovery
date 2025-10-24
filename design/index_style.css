@@ -131,16 +131,16 @@ section {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.features article h3 {
+.features article, h3 {
   font-size: 1.5em;
   color: #ff5722;
   margin-bottom: 20px;
   font-weight: 500;
 }
 
-.features article p {
+.features article, p {
   font-size: 1em;
-  color: #555;
+  color: #5d5d5d;
   line-height: 1.6;
 }
 
@@ -178,7 +178,7 @@ section {
   margin-bottom: 20px;
 }
 
-.how_it_works > p {
+.how_it_works p {
   font-size: 1.2em;
   color: #666;
   margin-bottom: 50px;
@@ -258,11 +258,19 @@ section {
   justify-content: center;
 }
 
+.explore_recipes {
+  text-align: center;
+}
+
 .master_your_kitchen {
   padding: 80px 238px;
   background-color: #ffc195;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.master_your_kitchen h2 {
+  text-align: center;
 }
 
 button {
