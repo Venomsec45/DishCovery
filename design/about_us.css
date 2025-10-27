@@ -1,8 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap');
 
-/* Base styles */
 html {
     height: 100%;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vw 4vw;
+    background: rgb(248, 248, 248);
+    position: sticky;
+    border-bottom: 3px solid #efefef;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
 }
 
 body {
@@ -17,26 +29,6 @@ body {
     line-height: 1.6;
 }
 
-/* Header styles */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1vw 4vw;
-    background: rgb(248, 248, 248);
-    position: sticky;
-    border-bottom: 3px solid #efefef;
-    top: 0;
-    z-index: 100;
-    box-sizing: border-box;
-}
-
-.logo h1 {
-    color: #333;
-    margin: 0;
-}
-
-/* Navigation styles */
 nav ul {
     list-style: none;
     display: flex;
@@ -108,6 +100,12 @@ section h3 {
     text-align: center;
 }
 
+.row_separate {
+    justify-content: center;
+    display: flex;
+    gap: 18%;
+}
+
 /* Team section */
 figure {
     display: inline-block;
@@ -123,6 +121,12 @@ figure img {
 figcaption {
     margin-top: 10px;
     color: #333;
+}
+
+.achievements {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
 }
 
 /* Achievements section */
