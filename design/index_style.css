@@ -289,23 +289,79 @@ section {
 }
 
 .master_your_kitchen {
-  padding: 80px 238px;
-  background-color: #ffc195;
-  max-width: 1200px;
-  margin: 0 auto;
+    padding: 80px 20px;
+    background-color: #ffded2;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-.master_your_kitchen h2, p {
-  text-align: center;
+.master_your_kitchen h2 {
+    font-size: 2.5em;
+    color: #333;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.master_your_kitchen > p {
+    font-size: 1.2em;
+    color: #666;
+    text-align: center;
+    margin-bottom: 50px;
+    max-width: 800px;
+    margin: 0 auto 50px;
 }
 
 .master_kitchen_row {
-  display: flex;
-  gap: 40px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.master_kitchen_row article {
+    flex: 1;
+    min-width: 300px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.master_kitchen_row article:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .master_kitchen_row h3 {
-  text-align: center;
+    color: #333;
+    font-size: 1.3em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.master_kitchen_row p {
+    color: #666;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+@media (max-width: 992px) {
+    .master_kitchen_row article {
+        min-width: calc(50% - 30px);
+    }
+}
+
+@media (max-width: 768px) {
+    .master_kitchen_row article {
+        min-width: 100%;
+    }
+    
+    .master_your_kitchen {
+        padding: 40px 15px;
+    }
 }
 
 button {
@@ -373,7 +429,7 @@ button:hover {
 }
 
 footer {
-    background-color: #0f1b2c;
+    background-color: #333;
     color: rgb(238, 238, 238);
     padding: 60px 20px 20px;
     width: 100%;
@@ -382,7 +438,7 @@ footer {
 .footer_container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     gap: 40px;
     margin: 0 auto;
     max-width: 1200px;
@@ -392,6 +448,10 @@ footer {
     flex: 0.5;
     min-width: 250px;
     margin-bottom: 20px;
+}
+
+.footer_column p {
+  color: rgb(248, 248, 248);
 }
 
 .footer_contact {
@@ -410,14 +470,28 @@ footer {
     color: rgb(238, 238, 238);
 }
 
+.footer_follow {
+  text-align: center;
+}
+
+.footer_follow ul, a {
+  color: rgb(238, 238, 238);
+  text-decoration: none;
+  transition: all 0.6 ease;
+}
+
+.footer_follow a:hover {
+  color: #ff6a00;
+}
+
 .footer_bottom {
-    text-align: center;
     padding-top: 30px;
     margin-top: 40px;
     border-top: 1px solid rgba(255,255,255,0.1);
 }
 
 .footer_bottom p {
+    text-align: center;
     margin-bottom: 15px;
     color: rgb(238, 238, 238);
 }
