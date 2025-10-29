@@ -266,7 +266,8 @@ section {
 
 .recipes_row {
   display: flex;
-  gap: 20px;
+  gap: 50px;
+  border-radius: 10px;
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
@@ -288,9 +289,18 @@ section {
   gap: 50px;
 }
 
+.explore_recipes_row article {
+  background: rgb(248, 248, 248);
+  border: 10px;
+  margin: 18px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
 .master_your_kitchen {
-    padding: 80px 20px;
-    background-color: #ffded2;
+    padding: 80px 140px;
+    background: linear-gradient(90deg, rgba(255,244,240,1) 0%, rgba(255,248,246,1) 50%, rgba(255,246,244,1) 100%);
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -302,7 +312,7 @@ section {
     margin-bottom: 15px;
 }
 
-.master_your_kitchen > p {
+.master_your_kitchen p {
     font-size: 1.2em;
     color: #666;
     text-align: center;
@@ -438,6 +448,7 @@ footer {
 .footer_container {
     display: flex;
     flex-wrap: wrap;
+    text-align: center;
     justify-content: center;
     gap: 40px;
     margin: 0 auto;
@@ -474,10 +485,14 @@ footer {
   text-align: center;
 }
 
+.footer_follow p {
+  color: rgb(248, 248, 248);
+}
+
 .footer_follow ul, a {
   color: rgb(238, 238, 238);
   text-decoration: none;
-  transition: all 0.6 ease;
+  transition: all 0.6s ease;
 }
 
 .footer_follow a:hover {
@@ -487,7 +502,8 @@ footer {
 .footer_bottom {
     padding-top: 30px;
     margin-top: 40px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer_bottom p {
