@@ -6,6 +6,7 @@
     <title>DishCovery Website</title>
     <link rel="stylesheet" href="design/contact.css">
 </head>
+
 <body>
 <header>
     <div class="logo">
@@ -25,82 +26,131 @@
     </nav>
 </header>
 
-<div>
-    <section>
-        <h2>Contact Us</h2>
-        <p>
-            Have a question, suggestion, or just want to share your cooking Success?
-            We'd love to hear from you! Get in touch with our team.
-        </p>
-    </section>
+<section class="contact-hero">
+    <h2>Contact Us</h2>
+    <p>Have a question, suggestion, or just want to share your cooking success? We'd love to hear from you! Get in touch with our team.</p>
+</section>
 
-    <section>
-        <h3>Send us a Message</h3>
+<!-- REPLACED: combined two-column contact area -->
+<section class="contact-wrapper">
+  <div class="contact-grid">
 
-        <form>
-            <label for="name">Full Name *</label><br>
-            <input type="text" id="name" name="name" placeholder="Enter your full name"><br><br>
+    <!-- left: form -->
+    <div class="contact-card">
+      <h3>Send us a Message</h3>
+      <form>
+        <div class="form-row">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" placeholder="Enter your full name">
+        </div>
 
-            <label for="email">Email Address *</label><br>
-            <input type="email" id="email" name="email" placeholder="Enter your email address"><br><br>
+        <div class="form-row">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email address">
+        </div>
 
-            <label for="subject">Subject *</label><br>
-            <select id="subject" name="subject">
-                <option>Select a subject</option>
-                <option>General Inquiry</option>
-                <option>Recipe Question</option>
-                <option>Technical Support</option>
-                <option>Partnership</option>
-                <option>Feedback</option>
-            </select><br><br>
+        <div class="form-row">
+          <label for="subject">Subject *</label>
+          <select id="subject" name="subject">
+            <option>Select a subject</option>
+            <option>General Inquiry</option>
+            <option>Recipe Question</option>
+            <option>Technical Support</option>
+            <option>Partnership</option>
+            <option>Feedback</option>
+          </select>
+        </div>
 
-            <label for="message">Message *</label><br>
-            <textarea id="message" name="message" rows="6" cols="40" placeholder="Tell us how we can help you..."></textarea><br>
-            <p>0/500 characters</p>
+        <div class="form-row">
+          <label for="message">Message *</label>
+          <textarea id="message" name="message" placeholder="Tell us how we can help you..."></textarea>
+          <div class="char-count">0/500 characters</div>
+        </div>
 
-            <button type="submit">Send Message</button>
-        </form>
-    </section>
-</div>
+        <button class="btn-primary" type="submit">Send Message</button>
+      </form>
+    </div>
 
-<!--Get in Touch, Contact Info not added-->
-<div>
-    <section>
-        <h3>Get in Touch</h3>
+    <!-- right: contact info -->
+    <aside class="contact-info">
+      <div class="info-heading">Get in Touch</div>
 
-        <h4>Email Us</h4>
-        <p>Temp<br>Temp</p>
-        
-        <h4>Call Us</h4>
-        <p>Temp<br>Temp</p>
+      <div class="info-item">
+        <div class="info-icon">✉</div>
+        <div class="info-text">
+          <div class="title">Email Us</div>
+          <div>hello@dishcovery.com<br>support@dishcovery.com</div>
+        </div>
+      </div>
 
-        <h4>Response Time</h4>
-        <p>Temp<br>Temp</p>
+      <div class="info-item">
+        <div class="info-icon">📞</div>
+        <div class="info-text">
+          <div class="title">Call Us</div>
+          <div>+1 (555) 123-4567<br>Mon–Fri, 9AM–6PM EST</div>
+        </div>
+      </div>
 
-        <h4>Follow Us</h4>
-        <p>Facebook | Twitter | Instagram</p>
-    </section>
+      <div class="info-item">
+        <div class="info-icon">📍</div>
+        <div class="info-text">
+          <div class="title">Visit Us</div>
+          <div>123 Culinary Street<br>Food District, NY 10001</div>
+        </div>
+      </div>
 
-    <!--FAQ-->
-    <section>
-        <h2>Frequently Asked Questions</h2>
-        <p>Quick answers to common questions</p>
+      <div class="info-item">
+        <div class="info-icon">⏱</div>
+        <div class="info-text">
+          <div class="title">Response Time</div>
+          <div>We typically respond within 24 hours. Emergency support available 24/7.</div>
+        </div>
+      </div>
 
-        <h3>How do I submit my own recipe?</h3>
-        <p>Create an account and use our recipe submission form. All recipes are reviewed before publication.</p>
+      <!-- Follow Us (moved here, simple markup using existing CSS) -->
+      <div style="margin-top:18px;">
+        <div class="info-heading" style="margin-bottom:8px;">Follow Us</div>
+        <div class="follow-list" aria-label="Social links">
+          <a class="follow-pill" href="#" aria-label="Facebook" title="Facebook">f</a>
+          <a class="follow-pill" href="#" aria-label="Twitter" title="Twitter">t</a>
+          <a class="follow-pill" href="#" aria-label="Instagram" title="Instagram">ig</a>
+          <a class="follow-pill" href="#" aria-label="YouTube" title="YouTube">yt</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
 
-        <h3>Can I save my favorite recipes?</h3>
-        <p>Yes! Sign up for a free account to save recipes, create meal plans, and access your favorites anywhere.</p>
+<!--FAQ-->
+<!--FAQ-->
+<section class="faq-section" aria-labelledby="faq-heading">
+  <h2 id="faq-heading">Frequently Asked Questions</h2>
+  <p class="lead">Quick answers to common questions</p>
 
-        <h3>Are the recipes tested?</h3>
-        <p>Every recipe is tested by our culinary team to ensure accuracy and delicious results.</p>
+  <div class="faq-grid">
+    <article class="faq-card">
+      <h4>How do I submit my own recipe?</h4>
+      <p>Create an account and use our recipe submission form. All recipes are reviewed before publication.</p>
+    </article>
 
-        <h3>Do you offer cooking classes?</h3>
-        <p>We partner with local chefs to offer virtual and in-person cooking classes. Check our events page!</p>
+    <article class="faq-card">
+      <h4>Can I save my favorite recipes?</h4>
+      <p>Yes! Sign up for a free account to save recipes, create meal plans, and access your favorites anywhere.</p>
+    </article>
 
-        <p><a href="#">View All FAQs →</a></p>
-    </section>
-</div>
+    <article class="faq-card">
+      <h4>Are the recipes tested?</h4>
+      <p>Every recipe is tested by our culinary team to ensure accuracy and delicious results.</p>
+    </article>
+
+    <article class="faq-card">
+      <h4>Do you offer cooking classes?</h4>
+      <p>We partner with local chefs to offer virtual and in-person cooking classes. Check our events page!</p>
+    </article>
+  </div>
+
+  <a class="faq-cta" href="Faq.html">View All FAQs →</a>
+</section>
 
 <!-- Footer added -->
 <footer>
@@ -109,38 +159,30 @@
             <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
         </div>
 
+        <div class="footer_contact">
+            <h3>Contact Info</h3>
+            <p>hello@dishcovery.com</p>
+            <p>+1 (555) 123-4567</p>
+            <p>123 Culinary Street, Food City</p>
+        </div>
+
         <div class="footer_follow">
             <ul>
-                <p>Follow Us on:</p>
+                <p>Follow Us on</p>
                 <a href="#">Facebook</a> |
                 <a href="#">Twitter</a> |
                 <a href="#">Instagram</a>
             </ul>
         </div>
+    </div>
 
-        <div class="footer_links">
-            <h3>Quick Links</h3>
-            <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Recipe Finder</a></li>
-                <li><a href="#">Gallery</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">FAQ</a></li>
-            </ul>
-        </div>
-
-        <div>
-            <h3>Contact Info</h3>
-            <p>hello@dishcovery.com</p>
-            <p>+93 (555) 123-4567</p>
-            <p>123 Culinary Street, Food City </p>
-        </div>
-
-        <div class="footer_below">
-            <p>© 2025 DishCovery. All rights reserved.</p>
+    <div class="footer_bottom">
+        <p>© 2025 DishCovery. All rights reserved.</p>
+        <div class="footer_bottom_links">
             <a href="#">Privacy Policy</a>
             <a href="#">Terms of Service</a>
         </div>
+    </div>
 </footer>
 
 </body>
