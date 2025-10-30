@@ -12,32 +12,64 @@
         <h1>DishCovery</h1>
     </div>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="About_Us.html">About Us</a></li>
-            <li><a href="recipe_finder.html">Recipe Finder</a></li>
-            <li><a href="Gallery.html">Gallery</a></li>
-            <li><a href="Contact.html">Contact</a></li>
-            <li><a href="Faq.html">FAQ</a></li>
-            <li class="login"><a href="#">Log In</a></li>
-        </ul>
-    </nav>
 </header>
+
 </body>
+
 <form action="#" method="post">
     <h2>Welcome back!</h2>
     <p>Log in to access your saved recipes and meal plans</p>
-    <label>Email address</label><br>
-    <input type="text" name="email_address" required><br>
-    <label>Password</label><br>
-    <input type="text" name="password" required><br>
+
+    <label for="email_addreess">Email address</label><br>
+    <input type="text" id="email_addreess" name="email_address" required><br>
+
+    <label for="password">Password</label><br>
+    <input type="text" id="password" name="password" required><br>
+
     <input type="checkbox">
     <label>Remember Me</label><br>
+
     <a href="#">Forget Password?</a><br>
+
     <button>Log In</button>
+
     <p>Don't have an account?</p><span>
-    <a href="#">Sign Up here</a>
+    <a href="Sign_Up.html">Sign Up here</a>
+
     <a href="#">Back</a>
 </form>
+
+<footer>
+    <div class="footer_container">
+        <div class="footer_column">
+            <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+        </div>
+
+        <div class="footer_contact">
+            <h3>Contact Info</h3>
+            <p>hello@dishcovery.com</p>
+            <p>+1 (555) 123-4567</p>
+            <p>123 Culinary Street, Food City</p>
+        </div>
+
+        <div class="footer_follow">
+            <ul>
+                <p>Follow Us on</p>
+                <a href="#">Facebook</a> |
+                <a href="#">Twitter</a> |
+                <a href="#">Instagram</a>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer_bottom">
+        <p>© 2025 DishCovery. All rights reserved.</p>
+        <div class="footer_bottom_links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </div>
+</footer>
+
+</body>
 </html>
