@@ -12,17 +12,6 @@
         <h1>DishCovery</h1>
     </div>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="About_Us.html">About Us</a></li>
-            <li><a href="recipe_finder.html">Recipe Finder</a></li>
-            <li><a href="Gallery.html">Gallery</a></li>
-            <li><a href="Contact.html">Contact</a></li>
-            <li><a href="Faq.html">FAQ</a></li>
-            <li class="login"><a href="#">Log In</a></li>
-        </ul>
-    </nav>
 </header>
 
 <form action="#" method="post">
@@ -31,6 +20,67 @@
     <button>Sign up with Google</button>
     <button>Sign up with Facebook</button>
     <p>or continue with email</p>
+
+    <label for="first_name">First name</label><br>
+    <input type="text" id="first_name" name="first_name" required><br>
+
+    <label for="last_name">Last name</label><br>
+    <input type="text" id="last_name" name="last_name" required><br>
+
+    <label for="email_address">Email address</label><br>
+    <input type="text" id="email_address" name="email_address" required><br>
+
+    <label for="password">Password</label><br>
+    <input type="text" id="password" minlength="10" name="password" required><br>
+
+    <label for="confirm_password">Confirm password</label><br>
+    <input type="text" id="confirm_password" name="confirm_password" required><br>
+
+    <label for="agreement">
+        <input type="checkbox" id="agreement" name="agreement" required>
+        I agree to the
+        <a href="#">Terms of service</a>
+        and
+        <a href="#">Privacy Policy</a><br>
+    </label>
+
+    <button>Create account</button>
+
+    <a href="Log_In.html">Back</a>
+
 </form>
+
+<footer>
+    <div class="footer_container">
+        <div class="footer_column">
+            <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+        </div>
+
+        <div class="footer_contact">
+            <h3>Contact Info</h3>
+            <p>hello@dishcovery.com</p>
+            <p>+1 (555) 123-4567</p>
+            <p>123 Culinary Street, Food City</p>
+        </div>
+
+        <div class="footer_follow">
+            <ul>
+                <p>Follow Us on</p>
+                <a href="#">Facebook</a> |
+                <a href="#">Twitter</a> |
+                <a href="#">Instagram</a>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer_bottom">
+        <p>© 2025 DishCovery. All rights reserved.</p>
+        <div class="footer_bottom_links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>
