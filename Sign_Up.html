@@ -4,82 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DishCovery Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="design/sign_up.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 </head>
 
-<body>
-<header>
-    <div class="logo">
-        <h1>DishCovery</h1>
-    </div>
+<body class="flex flex-col min-h-screen font-[Inter] bg-gray-50 text-gray-800">
+  <header class="flex items-center justify-between px-[6vw] py-10 bg-white border-b border-gray-200 sticky top-0 z-50">
+    <h1 class="text-2xl font-bold text-[#333] tracking-tight text-[35px]">DishCovery</h1>
+  </header>
 
-</header>
+  <main class="flex-grow flex items-center justify-center px-6 py-12">
+    <form
+      action="#"
+      method="post"
+      class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md space-y-5 transform transition duration-500 hover:scale-[1.02]"
+    >
+      <h2 class="text-2xl font-semibold text-center">One account, many dishes</h2>
+      <p class="text-gray-500 text-center">Create an account to start your culinary journey</p>
 
-<form action="#" method="post">
-    <h2>One account, many dishes</h2>
-    <p>Create an account to start your culinary journey</p>
-    <button>Sign up with Google</button>
-    <button>Sign up with Facebook</button>
-    <p>or continue with email</p>
+      <div class="flex flex-col space-y-3">
+        <button
+          type="button"
+          class="flex items-center justify-center border border-gray-300 rounded-lg py-2 hover:bg-gray-100 transition"
+        >
+          <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 mr-2" />
+          Sign up with Google
+        </button>
+        <button
+          type="button"
+          class="flex items-center justify-center border border-gray-300 rounded-lg py-2 hover:bg-gray-100 transition"
+        >
+          <img src="https://www.svgrepo.com/show/475647/facebook-color.svg" alt="Facebook" class="w-5 mr-2" />
+          Sign up with Facebook
+        </button>
+      </div>
 
-    <label for="first_name">First name</label><br>
-    <input type="text" id="first_name" name="first_name" required><br>
+      <div class="flex items-center my-3">
+        <hr class="flex-grow border-gray-300" />
+        <span class="mx-3 text-gray-500 text-sm">or continue with email</span>
+        <hr class="flex-grow border-gray-300" />
+      </div>
 
-    <label for="last_name">Last name</label><br>
-    <input type="text" id="last_name" name="last_name" required><br>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label for="first_name" class="block text-sm font-medium">First name</label>
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+          />
+        </div>
 
-    <label for="email_address">Email address</label><br>
-    <input type="text" id="email_address" name="email_address" required><br>
+        <div>
+          <label for="last_name" class="block text-sm font-medium">Last name</label>
+          <input
+            type="text"
+            id="last_name"
+            name="last_name"
+            required
+            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+          />
+        </div>
+      </div>
 
-    <label for="password">Password</label><br>
-    <input type="text" id="password" minlength="10" name="password" required><br>
+      <div>
+        <label for="email_address" class="block text-sm font-medium">Email address</label>
+        <input
+          type="email"
+          id="email_address"
+          name="email_address"
+          required
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
 
-    <label for="confirm_password">Confirm password</label><br>
-    <input type="text" id="confirm_password" name="confirm_password" required><br>
+      <div>
+        <label for="password" class="block text-sm font-medium">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          minlength="10"
+          required
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
 
-    <label for="agreement">
-        <input type="checkbox" id="agreement" name="agreement" required>
+      <div>
+        <label for="confirm_password" class="block text-sm font-medium">Confirm password</label>
+        <input
+          type="password"
+          id="confirm_password"
+          name="confirm_password"
+          required
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
+
+      <label class="flex items-center text-sm">
+        <input type="checkbox" id="agreement" name="agreement" required class="mr-2 text-orange-500 focus:ring-orange-400" />
         I agree to the
-        <a href="#">Terms of service</a>
+        <a href="#" class="text-orange-500 hover:underline mx-1">Terms of Service</a>
         and
-        <a href="#">Privacy Policy</a><br>
-    </label>
+        <a href="#" class="text-orange-500 hover:underline">Privacy Policy</a>
+      </label>
 
-    <button>Create account</button>
+      <button
+        type="submit"
+        class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-2 rounded-lg font-medium hover:opacity-90 transition"
+      >
+        Create Account
+      </button>
 
-    <a href="Log_In.html">Back</a>
+      <div class="text-center">
+        <a href="Log_In.html" class="text-sm text-gray-500 hover:underline">Back</a>
+      </div>
+    </form>
+  </main>
 
-</form>
-
-<footer>
-    <div class="footer_container">
-        <div class="footer_column">
-            <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
-        </div>
-
-        <div class="footer_contact">
-            <h3>Contact Info</h3>
-            <p>hello@dishcovery.com</p>
-            <p>+1 (555) 123-4567</p>
-            <p>123 Culinary Street, Food City</p>
-        </div>
-
-        <div class="footer_follow">
-            <ul>
-                <p>Follow Us on</p>
-                <a href="#">Facebook</a> |
-                <a href="#">Twitter</a> |
-                <a href="#">Instagram</a>
-            </ul>
-        </div>
+  <footer class="bg-gray-800 text-white py-8 mt-auto">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-8 text-sm">
+    
+    <!-- Left column -->
+    <div class="md:w-1/2">
+      <p>
+        Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
+      </p>
     </div>
 
-    <div class="footer_bottom">
-        <p>© 2025 DishCovery. All rights reserved.</p>
-        <div class="footer_bottom_links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+    <!-- Right column -->
+    <div class="md:w-1/2 flex flex-col md:flex-row justify-between">
+      <div>
+        <h3 class="font-semibold mb-2 text-orange-400">Contact Info</h3>
+        <p>hello@dishcovery.com</p>
+        <p>+1 (555) 123-4567</p>
+        <p>123 Culinary Street, Food City</p>
+      </div>
+
+      <div class="text-left">
+        <h3 class="font-semibold mb-2 text-orange-400">Follow Us</h3>
+        <div class="space-x-3">
+          <a href="#" class="hover:underline">Facebook</a>
+          <a href="#" class="hover:underline">Twitter</a>
+          <a href="#" class="hover:underline">Instagram</a>
         </div>
+      </div>
     </div>
+  </div>
+
+  <div class="border-t border-gray-700 mt-8 pt-4 text-sm flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto px-6">
+    <p class="mb-2 md:mb-0">© 2025 DishCovery. All rights reserved.</p>
+    <div class="space-x-4">
+      <a href="#" class="hover:underline">Privacy Policy</a>
+      <a href="#" class="hover:underline">Terms of Service</a>
+    </div>
+  </div>
 </footer>
 
 </body>
