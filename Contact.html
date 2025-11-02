@@ -1,189 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DishCovery Website</title>
-    <link rel="stylesheet" href="design/contact.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DishCovery — Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="design/contact.css">
 </head>
 
-<body>
-<header>
+<body class="font-sans antialiased text-gray-900" style="font-family: 'Outfit', 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background-color: rgb(238,238,238);">
+  <header class="flex justify-between items-center px-[4vw] py-[2vw] bg-[#f8f8f8] sticky top-0 z-[100] border-b-[3px] border-[#efefef] box-border">
     <div class="logo">
-        <h1>DishCovery</h1>
+      <h1 class="text-[2rem] font-semibold text-[#333]">DishCovery</h1>
     </div>
 
     <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="About_Us.html">About Us</a></li>
-            <li><a href="recipe_finder.html">Recipe Finder</a></li>
-            <li><a href="Gallery.html">Gallery</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="Faq.html">FAQ</a></li>
-            <li class="login"><a href="Log_In.html">Log In</a></li>
-        </ul>
+      <ul class="flex gap-[28px] list-none">
+        <li><a href="index.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">Home</a></li>
+        <li><a href="#" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">About Us</a></li>
+        <li><a href="recipe_finder.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">Recipe Finder</a></li>
+        <li><a href="Gallery.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">Gallery</a></li>
+        <li><a href="Contact.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">Contact</a></li>
+        <li><a href="Faq.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">FAQ</a></li>
+        <li class="login">
+          <a href="Log_In.html" class="bg-gradient-to-r from-[#ff6a00] to-[#ff3300] text-white px-[18px] py-[8px] rounded-full border-2 border-transparent transition-all duration-500 hover:bg-[#eeeeee] hover:text-[#333] hover:border-[#333] no-underline">Log In</a>
+        </li>
+      </ul>
     </nav>
-</header>
+  </header>
 
-<section class="contact-hero">
-    <h2>Contact Us</h2>
-    <p>Have a question, suggestion, or just want to share your cooking success? We'd love to hear from you! Get in touch with our team.</p>
-</section>
+  <!-- Hero -->
+  <section class="contact-hero flex flex-col items-center text-center"
+           style="padding: clamp(60px, 12vw, 160px) 20px; background: linear-gradient(90deg, rgba(255,244,240,1) 0%, rgba(255,248,246,1) 50%, rgba(255,246,244,1) 100%); border-bottom: 1px solid rgba(0,0,0,0.03);">
+    <h2 class="font-extrabold text-[clamp(40px,8vw,96px)] leading-[1] mb-4" style="font-family:'Lexend','Outfit',sans-serif; color:#0f1723;">Contact Us</h2>
+    <p class="max-w-[1100px] text-gray-600 text-[clamp(16px,2.2vw,20px)] leading-[1.9] px-4">
+      Have a question, suggestion, or just want to share your cooking success? We'd love to hear from you! Get in touch with our team.
+    </p>
+  </section>
 
-<!-- REPLACED: combined two-column contact area -->
-<section class="contact-wrapper">
-  <div class="contact-grid">
+  <section class="contact-wrapper">
+    <div class="contact-grid">
+      <div class="contact-card bg-white rounded-[12px] shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
+        <h3 class="text-2xl font-bold text-[#0f1723] mb-4">Send us a Message</h3>
 
-    <!-- left: form -->
-    <div class="contact-card">
-      <h3>Send us a Message</h3>
-      <form>
-        <div class="form-row">
-          <label for="name">Full Name *</label>
-          <input type="text" id="name" name="name" placeholder="Enter your full name">
+        <form class="space-y-4" onsubmit="event.preventDefault(); alert('Message sent (demo)');">
+          <div class="form-row">
+            <label for="name" class="block mb-2 text-sm font-semibold text-[#111827]">Full Name *</label>
+            <input id="name" name="name" type="text" placeholder="Enter your full name" class="w-full px-4 py-3 rounded-md border border-[#e6e9ee] bg-white text-sm text-[#111827] outline-none transition-shadow focus:border-[#ff6a00] focus:shadow-[0_6px_18px_rgba(255,106,0,0.06)]" />
+          </div>
+
+          <div class="form-row">
+            <label for="email" class="block mb-2 text-sm font-semibold text-[#111827]">Email Address *</label>
+            <input id="email" name="email" type="email" placeholder="Enter your email address" class="w-full px-4 py-3 rounded-md border border-[#e6e9ee] bg-white text-sm text-[#111827] outline-none transition-shadow focus:border-[#ff6a00] focus:shadow-[0_6px_18px_rgba(255,106,0,0.06)]" />
+          </div>
+
+          <div class="form-row">
+            <label for="subject" class="block mb-2 text-sm font-semibold text-[#111827]">Subject *</label>
+            <div class="relative">
+              <select id="subject" name="subject" class="w-full px-4 py-3 pr-10 rounded-md border border-[#e6e9ee] bg-white text-sm text-[#111827] outline-none transition-shadow focus:border-[#ff6a00] focus:shadow-[0_6px_18px_rgba(255,106,0,0.06)]">
+                <option>Select a subject</option>
+                <option>General Inquiry</option>
+                <option>Recipe Question</option>
+                <option>Technical Support</option>
+                <option>Partnership</option>
+                <option>Feedback</option>
+              </select>
+              <!-- decorative arrow (keeps look similar to original) -->
+              <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-700">▾</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="message" class="block mb-2 text-sm font-semibold text-[#111827]">Message *</label>
+            <textarea id="message" name="message" placeholder="Tell us how we can help you..." class="w-full px-4 py-3 rounded-md border border-[#e6e9ee] bg-white text-sm text-[#111827] min-h-[160px] resize-y outline-none transition-shadow focus:border-[#ff6a00] focus:shadow-[0_6px_18px_rgba(255,106,0,0.06)]"></textarea>
+            <div class="char-count text-[13px] text-[#6b7280] mt-2">0/500 characters</div>
+          </div>
+
+          <button type="submit" class="btn-primary w-full inline-block mt-2 bg-gradient-to-r from-[#ff6a00] to-[#ff3b2f] text-white py-3 rounded-[10px] font-bold text-[16px] shadow-[0_8px_24px_rgba(255,106,0,0.12)] hover:transform hover:-translate-y-0.5 transition-transform">
+            Send Message
+          </button>
+        </form>
+      </div>
+
+      <!-- Right / contact info -->
+      <aside class="contact-info pt-1">
+        <div class="info-heading text-xl font-bold text-[#0f1723] mb-4">Get in Touch</div>
+
+        <div class="info-item flex gap-4 items-start mb-5">
+          <div class="info-icon w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: linear-gradient(180deg,#ff7a2b,#ff3b2f); box-shadow: 0 6px 18px rgba(15,23,42,0.06);">✉</div>
+          <div class="info-text text-sm text-[#374151]">
+            <div class="title font-bold text-[#111827] mb-1">Email Us</div>
+            <div>hello@dishcovery.com<br/>support@dishcovery.com</div>
+          </div>
         </div>
 
-        <div class="form-row">
-          <label for="email">Email Address *</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email address">
+        <div class="info-item flex gap-4 items-start mb-5">
+          <div class="info-icon w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: linear-gradient(180deg,#ff7a2b,#ff3b2f); box-shadow: 0 6px 18px rgba(15,23,42,0.06);">📞</div>
+          <div class="info-text text-sm text-[#374151]">
+            <div class="title font-bold text-[#111827] mb-1">Call Us</div>
+            <div>+1 (555) 123-4567<br/>Mon–Fri, 9AM–6PM EST</div>
+          </div>
         </div>
 
-        <div class="form-row">
-          <label for="subject">Subject *</label>
-          <select id="subject" name="subject">
-            <option>Select a subject</option>
-            <option>General Inquiry</option>
-            <option>Recipe Question</option>
-            <option>Technical Support</option>
-            <option>Partnership</option>
-            <option>Feedback</option>
-          </select>
+        <div class="info-item flex gap-4 items-start mb-5">
+          <div class="info-icon w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: linear-gradient(180deg,#ff7a2b,#ff3b2f); box-shadow: 0 6px 18px rgba(15,23,42,0.06);">📍</div>
+          <div class="info-text text-sm text-[#374151]">
+            <div class="title font-bold text-[#111827] mb-1">Visit Us</div>
+            <div>123 Culinary Street<br/>Food District, NY 10001</div>
+          </div>
         </div>
 
-        <div class="form-row">
-          <label for="message">Message *</label>
-          <textarea id="message" name="message" placeholder="Tell us how we can help you..."></textarea>
-          <div class="char-count">0/500 characters</div>
+        <div class="info-item flex gap-4 items-start mb-5">
+          <div class="info-icon w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: linear-gradient(180deg,#ff7a2b,#ff3b2f); box-shadow: 0 6px 18px rgba(15,23,42,0.06);">⏱</div>
+          <div class="info-text text-sm text-[#374151]">
+            <div class="title font-bold text-[#111827] mb-1">Response Time</div>
+            <div>We typically respond within 24 hours. Emergency support available 24/7.</div>
+          </div>
         </div>
 
-        <button class="btn-primary" type="submit">Send Message</button>
-      </form>
+        <div class="mt-4">
+          <div class="info-heading mb-2 text-lg font-bold">Follow Us</div>
+          <div class="follow-list flex gap-3 mt-2" aria-label="Social links">
+            <a class="follow-pill w-9 h-9 rounded-full inline-flex items-center justify-center text-sm font-bold bg-[#f3f4f6] text-[#111827] shadow-[0_2px_6px_rgba(15,23,42,0.06)] hover:translate-y-[-3px] transition-transform" href="#" aria-label="Facebook" title="Facebook">f</a>
+            <a class="follow-pill w-9 h-9 rounded-full inline-flex items-center justify-center text-sm font-bold bg-[#f3f4f6] text-[#111827] shadow-[0_2px_6px_rgba(15,23,42,0.06)]" href="#" aria-label="Twitter" title="Twitter">t</a>
+            <a class="follow-pill w-9 h-9 rounded-full inline-flex items-center justify-center text-sm font-bold bg-[#f3f4f6] text-[#111827] shadow-[0_2px_6px_rgba(15,23,42,0.06)]" href="#" aria-label="Instagram" title="Instagram">ig</a>
+            <a class="follow-pill w-9 h-9 rounded-full inline-flex items-center justify-center text-sm font-bold bg-[#f3f4f6] text-[#111827] shadow-[0_2px_6px_rgba(15,23,42,0.06)]" href="#" aria-label="YouTube" title="YouTube">yt</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section max-w-[1100px] mx-auto mt-12 px-5 py-10 text-center">
+    <h2 id="faq-heading" class="font-extrabold text-[clamp(28px,4.5vw,44px)] text-[#0f1723] mb-2">Frequently Asked Questions</h2>
+    <p class="lead text-[#6b7280] mb-6 text-lg">Quick answers to common questions</p>
+
+    <div class="faq-grid grid grid-cols-2 gap-6 mt-4">
+      <article class="faq-card bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-transform hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
+        <h4 class="font-semibold mb-2">How do I submit my own recipe?</h4>
+        <p>Create an account and use our recipe submission form. All recipes are reviewed before publication.</p>
+      </article>
+
+      <article class="faq-card bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-transform hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
+        <h4 class="font-semibold mb-2">Can I save my favorite recipes?</h4>
+        <p>Yes! Sign up for a free account to save recipes, create meal plans, and access your favorites anywhere.</p>
+      </article>
+
+      <article class="faq-card bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-transform hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
+        <h4 class="font-semibold mb-2">Are the recipes tested?</h4>
+        <p>Every recipe is tested by our culinary team to ensure accuracy and delicious results.</p>
+      </article>
+
+      <article class="faq-card bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-transform hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
+        <h4 class="font-semibold mb-2">Do you offer cooking classes?</h4>
+        <p>We partner with local chefs to offer virtual and in-person cooking classes. Check our events page!</p>
+      </article>
     </div>
 
-    <!-- right: contact info -->
-    <aside class="contact-info">
-      <div class="info-heading">Get in Touch</div>
+    <div class="mt-6">
+      <a class="faq-cta inline-block text-gray-800 hover:text-[#ff7a2b] transition-colors" href="Faq.html">View All FAQs →</a>
+    </div>
+  </section>
 
-      <div class="info-item">
-        <div class="info-icon">✉</div>
-        <div class="info-text">
-          <div class="title">Email Us</div>
-          <div>hello@dishcovery.com<br>support@dishcovery.com</div>
-        </div>
+  <footer class="bg-gray-800 text-white py-8 mt-auto">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-8 text-sm">
+    <div class="md:w-1/2">
+      <p>
+        Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
+      </p>
+    </div>
+
+    <div class="md:w-1/2 flex flex-col md:flex-row justify-between">
+      <div>
+        <h3 class="font-semibold mb-2 text-orange-400">Contact Info</h3>
+        <p>hello@dishcovery.com</p>
+        <p>+1 (555) 123-4567</p>
+        <p>123 Culinary Street, Food City</p>
       </div>
 
-      <div class="info-item">
-        <div class="info-icon">📞</div>
-        <div class="info-text">
-          <div class="title">Call Us</div>
-          <div>+1 (555) 123-4567<br>Mon–Fri, 9AM–6PM EST</div>
+      <div class="text-left">
+        <h3 class="font-semibold mb-2 text-orange-400">Follow Us</h3>
+        <div class="space-x-3">
+          <a href="#" class="hover:underline">Facebook</a>
+          <a href="#" class="hover:underline">Twitter</a>
+          <a href="#" class="hover:underline">Instagram</a>
         </div>
       </div>
-
-      <div class="info-item">
-        <div class="info-icon">📍</div>
-        <div class="info-text">
-          <div class="title">Visit Us</div>
-          <div>123 Culinary Street<br>Food District, NY 10001</div>
-        </div>
-      </div>
-
-      <div class="info-item">
-        <div class="info-icon">⏱</div>
-        <div class="info-text">
-          <div class="title">Response Time</div>
-          <div>We typically respond within 24 hours. Emergency support available 24/7.</div>
-        </div>
-      </div>
-
-      <!-- Follow Us (moved here, simple markup using existing CSS) -->
-      <div style="margin-top:18px;">
-        <div class="info-heading" style="margin-bottom:8px;">Follow Us</div>
-        <div class="follow-list" aria-label="Social links">
-          <a class="follow-pill" href="#" aria-label="Facebook" title="Facebook">f</a>
-          <a class="follow-pill" href="#" aria-label="Twitter" title="Twitter">t</a>
-          <a class="follow-pill" href="#" aria-label="Instagram" title="Instagram">ig</a>
-          <a class="follow-pill" href="#" aria-label="YouTube" title="YouTube">yt</a>
-        </div>
-      </div>
-    </aside>
+    </div>
   </div>
-</section>
 
-<!--FAQ-->
-<!--FAQ-->
-<section class="faq-section" aria-labelledby="faq-heading">
-  <h2 id="faq-heading">Frequently Asked Questions</h2>
-  <p class="lead">Quick answers to common questions</p>
-
-  <div class="faq-grid">
-    <article class="faq-card">
-      <h4>How do I submit my own recipe?</h4>
-      <p>Create an account and use our recipe submission form. All recipes are reviewed before publication.</p>
-    </article>
-
-    <article class="faq-card">
-      <h4>Can I save my favorite recipes?</h4>
-      <p>Yes! Sign up for a free account to save recipes, create meal plans, and access your favorites anywhere.</p>
-    </article>
-
-    <article class="faq-card">
-      <h4>Are the recipes tested?</h4>
-      <p>Every recipe is tested by our culinary team to ensure accuracy and delicious results.</p>
-    </article>
-
-    <article class="faq-card">
-      <h4>Do you offer cooking classes?</h4>
-      <p>We partner with local chefs to offer virtual and in-person cooking classes. Check our events page!</p>
-    </article>
+  <div class="border-t border-gray-700 mt-8 pt-4 text-sm flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto px-6">
+    <p class="mb-2 md:mb-0">© 2025 DishCovery. All rights reserved.</p>
+    <div class="space-x-4">
+      <a href="#" class="hover:underline">Privacy Policy</a>
+      <a href="#" class="hover:underline">Terms of Service</a>
+    </div>
   </div>
-
-  <a class="faq-cta" href="Faq.html">View All FAQs →</a>
-</section>
-
-<!-- Footer added -->
-<footer>
-    <div class="footer_container">
-        <div class="footer_column">
-            <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
-        </div>
-
-        <div class="footer_contact">
-            <h3>Contact Info</h3>
-            <p>hello@dishcovery.com</p>
-            <p>+1 (555) 123-4567</p>
-            <p>123 Culinary Street, Food City</p>
-        </div>
-
-        <div class="footer_follow">
-            <ul>
-                <p>Follow Us on</p>
-                <a href="#">Facebook</a> |
-                <a href="#">Twitter</a> |
-                <a href="#">Instagram</a>
-            </ul>
-        </div>
-    </div>
-
-    <div class="footer_bottom">
-        <p>© 2025 DishCovery. All rights reserved.</p>
-        <div class="footer_bottom_links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-        </div>
-    </div>
 </footer>
+
+  <script>
+    const textarea = document.getElementById('message');
+    const cc = document.querySelector('.char-count');
+    if (textarea && cc) {
+      textarea.addEventListener('input', () => {
+        const len = textarea.value.length;
+        cc.textContent = Math.min(len, 500) + '/500 characters';
+      });
+    }
+  </script>
 
 </body>
 </html>
