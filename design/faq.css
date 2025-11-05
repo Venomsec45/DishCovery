@@ -1,0 +1,18 @@
+@media (max-width: 640px) {
+  main { padding-left: 1rem; padding-right: 1rem; }
+  header h1 { font-size: 1.25rem; }
+  summary { font-size: 1rem; }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  main { padding-left: 1.25rem; padding-right: 1.25rem; }
+  h1 { font-size: 2.25rem; }
+}
+
+@media (max-width: 768px) {
+  footer .grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 420px) {
+  details > .faq-body { max-height: 900px; }
+}
