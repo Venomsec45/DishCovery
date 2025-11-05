@@ -1,171 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DishCovery faq</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DishCovery FAQ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="design/faq.css">
+  <style>
+    body { font-family: 'Outfit', 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+
+    details > .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 280ms ease;
+    }
+    details[open] > .faq-body {
+      max-height: 1200px;
+    }
+
+    details[open] summary .chev {
+      transform: rotate(180deg);
+    }
+
+    summary::-webkit-details-marker { display: none; }
+  </style>
 </head>
 
-<body>
+<body class="bg-[#eeeeee] text-gray-900 antialiased">
+   <header class="bg-[#f8f8f8] border-b-[3px] border-[#efefef] sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-3 py-9 flex items-center justify-between">
+      <a href="index.html" class="text-[2rem] font-semibold text-[#333]">DishCovery</a>
 
-<header>
-    <div class="logo">
-        <h1>DishCovery</h1>
+      <nav class="hidden md:block">
+        <ul class="flex items-center gap-12 text-[16px] font-medium text-[#333]">
+          <li><a href="index.html" class="hover:text-[#ff6a00] transition-colors duration-300">Home</a></li>
+          <li><a href="About_Us.html" class="hover:text-[#ff6a00] transition-colors duration-300">About Us</a></li>
+          <li><a href="recipe_finder.html" class="hover:text-[#ff6a00] transition-colors duration-300">Recipe Finder</a></li>
+          <li><a href="Gallery.html" class="hover:text-[#ff6a00] transition-colors duration-300">Gallery</a></li>
+          <li><a href="Contact.html" class="hover:text-[#ff6a00] transition-colors duration-300">Contact</a></li>
+          <li><a href="#" class="text-[#ff6a00]">FAQ</a></li>
+          <li>
+            <a href="Log_In.html" class="inline-block bg-gradient-to-r from-[#ff6a00] to-[#ff3300] text-white px-4 py-2 rounded-full border-2 border-transparent transition hover:bg-[#eeeeee] hover:text-[#333] hover:border-[#333] duration-300">Log In</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="md:hidden">
+        <button id="mobileMenuBtn" class="p-2 rounded-md bg-white border border-gray-200">
+          <svg id="hamb" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#333]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="About_Us.html">About Us</a></li>
-            <li><a href="recipe_finder.html">Recipe Finder</a></li>
-            <li><a href="Gallery.html">Gallery</a></li>
-            <li><a href="Contact.html">Contact</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li class="login"><a href="Log_In.html">Log In</a></li>
-        </ul>
-    </nav>
-</header>
+    <!-- Mobile nav (hidden by default) -->
+    <div id="mobileNav" class="md:hidden hidden border-t border-[#efefef] bg-[#f8f8f8]">
+      <div class="px-4 pt-4 pb-6 space-y-3">
+        <a href="index.html" class="block text-[#333]">Home</a>
+        <a href="About_Us.html" class="block text-[#333]">About Us</a>
+        <a href="recipe_finder.html" class="block text-[#333]">Recipe Finder</a>
+        <a href="Gallery.html" class="block text-[#333]">Gallery</a>
+        <a href="Contact.html" class="block text-[#333]">Contact</a>
+        <a href="#" class="block text-[#ff6a00]">FAQ</a>
+        <a href="Log_In.html" class="inline-block bg-gradient-to-r from-[#ff6a00] to-[#ff3300] text-white px-4 py-2 rounded-full">Log In</a>
+      </div>
+    </div>
+  </header>
 
-<h2>Frequently Asked Questions</h2>
-<p>Find quick answers to common questions about DishCovery. Can't find what you're looking for? Contact our support team.</p>
+  <!-- Main container (centered) -->
+  <main class="max-w-4xl mx-auto px-6 py-12">
+    <!-- Hero / Title -->
+    <header class="text-center mb-10">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-3">Frequently Asked Questions</h1>
+      <p class="text-gray-600 max-w-2xl mx-auto">Find quick answers to common questions about DishCovery. Can't find what you're looking for? Contact our support team.</p>
+    </header>
 
-<form>
-  <label for="search">Search frequently asked questions:</label><br>
-  <input type="text" id="search" name="search" placeholder="Search frequently asked questions...">
-  <button type="submit">Search</button>
-</form>
+    <!-- Search -->
+    <form class="flex flex-col sm:flex-row items-stretch gap-3 mb-10" role="search" aria-label="Search FAQs">
+      <input type="text" id="search" name="search" placeholder="Search frequently asked questions..." class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#ff6a00]" />
+      <button type="submit" class="mt-2 sm:mt-0 sm:ml-2 bg-[#ff6a00] text-white px-6 py-3 rounded-lg hover:bg-[#ff5500] transition">Search</button>
+    </form>
 
-<!--FAQ, No questions yet-->
-<section>
-  <h3>Getting Started</h3>
-  <details>
-    <summary>How do I create an account on DishCovery?</summary>
-    <p>Creating an account is simple! Click the 'Log In' button in the top navigation, then select 'Sign Up'. You can register with your email address or use your Google/Facebook account for quick access. Once registered, you'll have access to save recipes, create meal plans, and join our community.</p>
-  </details>
+    <section class="space-y-12">
+      <div>
+        <h2 class="text-2xl font-semibold mb-4">Getting Started</h2>
 
-  <details>
-    <summary>Is DishCovery free to use?</summary>
-    <p>Yes! DishCovery offers a comprehensive free tier that includes access to thousands of recipes, basic search functionality, and the ability to save your favorite recipes. We also offer a premium subscription with additional features like advanced meal planning, exclusive recipes, and priority customer support.</p>
-  </details>
+        <div class="space-y-4">
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">How do I create an account on DishCovery?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Creating an account is simple! Click the 'Log In' button in the top navigation, then select 'Sign Up'. You can register with your email address or use your Google/Facebook account for quick access. Once registered, you'll have access to save recipes, create meal plans, and join our community.</p>
+            </div>
+          </details>
 
-  <details>
-    <summary>How do I search for recipes?</summary>
-    <p>Use our smart search feature to find recipes by ingredients, cuisine type, cooking time, or dietary restrictions. You can also browse by categories like breakfast, lunch, dinner, or desserts. Our advanced filters help you find exactly what you're looking for based on your preferences and available ingredients.</p>
-  </details>
-</section>
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">Is DishCovery free to use?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Yes! DishCovery offers a comprehensive free tier that includes access to thousands of recipes, basic search functionality, and the ability to save your favorite recipes. We also offer a premium subscription with additional features like advanced meal planning, exclusive recipes, and priority customer support.</p>
+            </div>
+          </details>
 
-<section>
-  <h3>Recipes & Cooking</h3>
-  <details>
-    <summary>Are all recipes tested before publication?</summary>
-    <p>Absolutely! Every recipe on DishCovery is thoroughly tested by our culinary team and community of expert home cooks. We ensure that all measurements are accurate, cooking times are precise, and the final results are delicious. Each recipe also includes user ratings and reviews for additional validation.</p>
-  </details>
-
-  <details>
-    <summary>Can I submit my own recipes?</summary>
-    <p>Yes! We love featuring recipes from our community. Once you have an account, you can submit your original recipes through our recipe submission form. Our editorial team reviews all submissions to ensure they meet our quality standards before publication. Accepted recipes are credited to the original creator.</p>
-  </details>
-
-  <details>
-    <summary>How can I modify recipes for dietary restrictions?</summary>
-    <p>Many of our recipes include substitution suggestions for common dietary needs like gluten-free, dairy-free, or vegan options. You can also use our dietary filter to find recipes that already meet your specific requirements. Our community often shares successful modifications in the comments section.</p>
-  </details>
-
-   <details>
-    <summary>What if I don't have all the ingredients for a recipe?</summary>
-    <p>Our recipe pages include suggested substitutions for many ingredients. You can also use our 'Recipe by Ingredients' search feature to find recipes based on what you already have at home. The community comments are also a great resource for ingredient alternatives and modifications.</p>
-  </details>
-
-<section>
-  <h3>Account & Features</h3>
-  <details>
-    <summary>How do I save my favorite recipes?</summary>
-    <p>Once you're logged in, simply click the heart icon on any recipe to save it to your favorites. You can access all your saved recipes from your profile page. You can also organize them into custom collections like 'Quick Weeknight Dinners' or 'Holiday Desserts'.</p>
-  </details>
-
-  <details>
-    <summary>Temp</summary>
-    <p>Temp</p>
-  </details>
-
-  <details>
-    <summary>Temp</summary>
-    <p>Temp</p>
-  </details>
-</section>
-
-<section>
-  <h3>Technical Support</h3>
-  <details>
-    <summary>Temp</summary>
-    <p>Temp</p>
-  </details>
-
-  <details>
-    <summary>Temp</summary>
-    <p>Temp</p>
-  </details>
-
-  <details>
-    <summary>Temp</summary>
-    <p>Temp</p>
-  </details>
-</section>
-
-<section>
-  <h3>Community & safety</h3>
-  <details>
-    <summary>Temp</summary>
-    <p>Temp</p>
-  </details>
-
-  <details>
-    <summary>Temp</summary>
-    <p>Temp</p>
-  </details>
-
-  <details>
-    <summary>Temp</summary>
-    <p>Temp</p>
-  </details>
-</section>
-
-<!--still have questions-->
-<section>
-  <h2>Still Have Questions?</h2>
-  <p>Our support team is here to help you with any questions or concerns.</p>
-  <button>Contact Support</button>
-  <button>Chat with Us</button>
-</section>
-
-<footer>
-    <div class="footer_container">
-        <div class="footer_column">
-            <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">How do I search for recipes?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Use our smart search feature to find recipes by ingredients, cuisine type, cooking time, or dietary restrictions. You can also browse by categories like breakfast, lunch, dinner, or desserts. Our advanced filters help you find exactly what you're looking for based on your preferences and available ingredients.</p>
+            </div>
+          </details>
         </div>
+      </div>
 
-        <div class="footer_follow">
-            <ul>
-                <p>Follow Us on:</p>
-                <a href="#">Facebook</a> |
-                <a href="#">Twitter</a> |
-                <a href="#">Instagram</a>
-            </ul>
-        </div>
+      <div>
+        <h2 class="text-2xl font-semibold mb-4">Recipes & Cooking</h2>
+        <div class="space-y-4">
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">Are all recipes tested before publication?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Absolutely! Every recipe on DishCovery is thoroughly tested by our culinary team and community of expert home cooks. We ensure that all measurements are accurate, cooking times are precise, and the final results are delicious. Each recipe also includes user ratings and reviews for additional validation.</p>
+            </div>
+          </details>
 
-        <div class="footer_contact">
-            <h3>Contact Info</h3>
-            <p>hello@dishcovery.com</p>
-            <p>+93 (555) 123-4567</p>
-            <p>123 Culinary Street, Food City </p>
-        </div>
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">Can I submit my own recipes?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Yes! We love featuring recipes from our community. Once you have an account, you can submit your original recipes through our recipe submission form. Our editorial team reviews all submissions to ensure they meet our quality standards before publication. Accepted recipes are credited to the original creator.</p>
+            </div>
+          </details>
 
-        <div class="footer_below">
-            <p>© 2025 DishCovery. All rights reserved.</p>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">How can I modify recipes for dietary restrictions?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Many of our recipes include substitution suggestions for common dietary needs like gluten-free, dairy-free, or vegan options. You can also use our dietary filter to find recipes that already meet your specific requirements. Our community often shares successful modifications in the comments section.</p>
+            </div>
+          </details>
+
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">What if I don't have all the ingredients for a recipe?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Our recipe pages include suggested substitutions for many ingredients. You can also use our 'Recipe by Ingredients' search feature to find recipes based on what you already have at home. The community comments are also a great resource for ingredient alternatives and modifications.</p>
+            </div>
+          </details>
         </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold mb-4">Account & Features</h2>
+        <div class="space-y-4">
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">How do I save my favorite recipes?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Once you're logged in, simply click the heart icon on any recipe to save it to your favorites. You can access all your saved recipes from your profile page. You can also organize them into custom collections like 'Quick Weeknight Dinners' or 'Holiday Desserts'.</p>
+            </div>
+          </details>
+
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">Can I create meal plans?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Yes! Our meal planning feature allows you to drag and drop recipes into a weekly calendar. You can plan breakfast, lunch, and dinner for each day, and the system will automatically generate a shopping list based on your planned meals. This feature is available to all registered users.</p>
+            </div>
+          </details>
+
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">How do I change my account settings?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Go to your profile page by clicking the account tab in the top navigation. From there, you can update your personal information, change your password, modify notification preferences, and manage your dietary restrictions and cooking preferences.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold mb-4">Technical Support</h2>
+        <div class="space-y-4">
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">The website is loading slowly, what should I do?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Slow loading can be caused by various factors. Try clearing your browser cache, disabling browser extensions temporarily, or switching to a different browser. If the problem persists, check your internet connection or try accessing the site from a different device. Contact our support team if issues continue.</p>
+            </div>
+          </details>
+
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">I'm having trouble uploading photos for my recipe</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Make sure your image files are in JPG, PNG, or GIF format and under 5MB in size. Images should be at least 800x600 pixels for best quality. If you're still having trouble, try resizing your image or using a different browser. Our support team can help with persistent upload issues.</p>
+            </div>
+          </details>
+
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">Can I access DishCovery on a mobile device?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Yes! DishCovery is fully responsive and works great on smartphones and tablets.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-semibold mb-4">Community & Safety</h2>
+        <div class="space-y-4">
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">How do I join cooking contests and challenges?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>We regularly host cooking challenges and contests! Check our homepage and community section for current events. To participate, simply follow the challenge guidelines and submit your entry through the designated form. Winners are announced on our social media channels and website.</p>
+            </div>
+          </details>
+
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">Can I block or mute other users?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>Yes, you can block users who are bothering you or whose content you don't want to see. Go to their profile page and click the 'Block User' option. Blocked users won't be able to comment on your recipes or send you messages, and you won't see their content in your feed.</p>
+            </div>
+          </details>
+
+          <details class="group bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+            <summary class="flex items-center justify-between cursor-pointer">
+              <span class="font-medium">How do I report inappropriate content or behavior?</span>
+              <span class="chev transform transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+            <div class="faq-body mt-3 text-gray-600">
+              <p>We take community safety seriously. You can report inappropriate content using the 'Report' button found on recipes, comments, and user profiles. You can also contact our moderation team directly through our contact form. All reports are reviewed promptly and appropriate action is taken.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="text-center mt-12 bg-white rounded-xl p-8 shadow-sm border border-gray-200">
+      <h3 class="text-2xl font-semibold mb-2">Still Have Questions?</h3>
+      <p class="text-gray-600 mb-6">Our support team is here to help you with any questions or concerns.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-3">
+        <a href="Contact.html" class="inline-block bg-[#ff6a00] text-white px-6 py-2 rounded-lg hover:bg-[#ff5500] transition">Contact Support</a>
+        <a href="#" class="inline-block border border-[#ff6a00] text-[#ff6a00] px-6 py-2 rounded-lg hover:bg-[#ff6a00] hover:text-white transition">Chat with Us</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white py-12 mt-auto">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-8 text-sm">
+    
+    <!-- Left column -->
+    <div class="md:w-1/2">
+      <p>
+        Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
+      </p>
+    </div>
+
+    <!-- Right column -->
+    <div class="md:w-1/2 flex flex-col md:flex-row justify-between">
+      <div>
+        <h3 class="font-semibold mb-2 text-orange-400">Contact Info</h3>
+        <p>hello@dishcovery.com</p>
+        <p>+1 (555) 123-4567</p>
+        <p>123 Culinary Street, Food City</p>
+      </div>
+
+      <div class="text-left">
+        <h3 class="font-semibold mb-2 text-orange-400">Follow Us</h3>
+        <div class="space-x-3">
+          <a href="#" class="hover:underline">Facebook</a>
+          <a href="#" class="hover:underline">Twitter</a>
+          <a href="#" class="hover:underline">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-700 mt-8 pt-4 text-sm flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto px-6">
+    <p class="mb-2 md:mb-0">© 2025 DishCovery. All rights reserved.</p>
+    <div class="space-x-4">
+      <a href="#" class="hover:underline">Privacy Policy</a>
+      <a href="#" class="hover:underline">Terms of Service</a>
+    </div>
+  </div>
 </footer>
 
+  <script>
+    (function() {
+      const btn = document.getElementById('mobileMenuBtn');
+      const nav = document.getElementById('mobileNav');
+      if (!btn || !nav) return;
+      btn.addEventListener('click', () => {
+        nav.classList.toggle('hidden');
+      });
+
+      document.querySelectorAll('summary').forEach(s => {
+        s.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const details = s.parentElement;
+            details.open = !details.open;
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
