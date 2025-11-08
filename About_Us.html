@@ -1,151 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DishCovery About Us</title>
-    <link rel="stylesheet" href="design/about_us.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DishCovery About Us</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN + small config for brand color & shadows -->
+  <script>
+    tailwind = window.tailwind || {};
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ff6a00',
+            'primary-2': '#ff3300',
+            'page-bg': '#eeeeee'
+          },
+          boxShadow: {
+            'md-soft': '0 6px 18px rgba(0,0,0,0.06)'
+          },
+          maxWidth: {
+            'container-lg': '1200px'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* only minimal rule to ensure Outfit is used as site font (Tailwind utilities used for layout) */
+    :root { --site-font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+    html,body { font-family: var(--site-font); }
+  </style>
 </head>
 
 <body>
-<header>
-    <div class="logo">
-        <h1>DishCovery</h1>
-    </div>
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+    <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="logo">
+        <h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1>
+      </div>
 
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="recipe_finder.html">Recipe Finder</a></li>
-            <li><a href="Gallery.html">Gallery</a></li>
-            <li><a href="Contact.html">Contact</a></li>
-            <li><a href="Faq.html">FAQ</a></li>
-            <li class="login"><a href="Log_In.html">Log In</a></li>
+      <nav aria-label="Main navigation">
+        <ul class="flex items-center gap-6 md:gap-8 flex-wrap">
+          <li><a href="index.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">Home</a></li>
+          <li><a href="#" class="font-medium text-gray-800 hover:text-primary px-2 py-1">About Us</a></li>
+          <li><a href="recipe_finder.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">Recipe Finder</a></li>
+          <li><a href="Gallery.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">Gallery</a></li>
+          <li><a href="Contact.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">Contact</a></li>
+          <li><a href="Faq.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">FAQ</a></li>
+          <li class="login">
+            <a href="Log_In.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transform transition hover:-translate-y-0.5">Log In</a>
+          </li>
         </ul>
-    </nav>
-</header>
+      </nav>
+    </div>
+  </header>
 
 <!-- About -->
-<section class="about">
-    <h2>About DishCovery</h2>
-    <p>We're passionate about making cooking accessible, enjoyable, and rewarding for everyone. Our mission is to connect food lovers with amazing recipes and culinary</p>
-</section>
-
-<!--Our Story, Images not added-->
-<section class="our-story">
-    <h2>Our Story</h2>
-    <p>
-        Dishcovery was born from a simple idea: cooking should be fun, not stressful.
-        Founded in 2025 by a team of food enthusiasts and tech innovators, we set out to create
-        the ultimate recipe discovery platform.
-    </p><br>
-
-    <p>
-        What started as a small collection of family recipes has grown into a comprehensive platform
-        featuring thousands of recipes from professional chefs and home cooks around the world.
-    </p><br>
-
-    <p>
-        Today, we're proud to serve milions of food lovers who use DishCovery to discover new flavors,
-        master cooking techniques, and create memorable meals for their families and friends.
-    </p><br>
-</section>
-
-<!--Our Values-->
-<section class="values">
-    <div class="values-subtitle">
-        <h2>Our Values</h2>
-        <p>The principles that guide everything we do</p>
-
-        <h3>Passion</h3>
-        <p>We're driven by our love for food and cooking, bringing that enthusiasm to everything we create</p>
-
-        <h3>Innovation</h3>
-        <p>We constantly evolve our platform with new features and technologies to enhance your cooking experience.</p>
-
-        <h3>Community</h3>
-        <p>We believe cooking brings people together and fosters a supportive community of food lovers.</p>
-
-        <h3>Quality</h3>
-        <p>Every recipe is carefully curated and tested to ensure the best possible cooking results.</p>
+<section class="py-12 md:py-20 flex flex-col justify-center items-center text-center px-6 bg-gradient-to-b from-white to-gray-50">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">About DishCovery</h2>
+      <p class="text-gray-700 text-lg md:text-xl leading-relaxed">We're passionate about making cooking accessible, enjoyable, and rewarding for everyone. Our mission is to connect food lovers with amazing recipes and culinary adventures.</p>
     </div>
 </section>
 
-<!-- Meet Our Team Images, names and positions not yet added -->
-<section>
-    <h2>Meet Our Team</h2>
-    <p>The passionate people behind DishCovery</p>
+<!-- Our Story -->
+<section class="bg-white py-12 md:py-20 px-6">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 mb-8 text-center">Our Story</h2>
+      <div class="text-left space-y-6">
+        <p class="text-gray-700 text-lg leading-relaxed">
+          Dishcovery was born from a simple idea: cooking should be fun, not stressful.
+          Founded in 2025 by a team of food enthusiasts and tech innovators, we set out to create
+          the ultimate recipe discovery platform.
+        </p>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          What started as a small collection of family recipes has grown into a comprehensive platform
+          featuring thousands of recipes from professional chefs and home cooks around the world.
+        </p>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          Today, we're proud to serve millions of food lovers who use DishCovery to discover new flavors,
+          master cooking techniques, and create memorable meals for their families and friends.
+        </p>
+      </div>
+    </div>
+</section>
 
-    <div class="row_separate">
-        <figure>
-            <img src="Temp" alt="Temporary" width="200">
-            <figcaption>
-                <strong>Temporary</strong><br>
-                "temporary position"
-            </figcaption>
+<!-- Our Values -->
+<section class="bg-page-bg py-12 md:py-20 px-6">
+    <div class="max-w-container-lg mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">Our Values</h2>
+      <p class="text-gray-600 mb-12">The principles that guide everything we do</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <article class="bg-white rounded-lg p-8 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+          <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl text-white">❤️</span>
+          </div>
+          <h3 class="text-xl font-semibold text-primary mb-3">Passion</h3>
+          <p class="text-gray-600 leading-relaxed">We're driven by our love for food and cooking, bringing that enthusiasm to everything we create.</p>
+        </article>
+
+        <article class="bg-white rounded-lg p-8 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+          <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl text-white">💡</span>
+          </div>
+          <h3 class="text-xl font-semibold text-primary mb-3">Innovation</h3>
+          <p class="text-gray-600 leading-relaxed">We constantly evolve our platform with new features and technologies to enhance your cooking experience.</p>
+        </article>
+
+        <article class="bg-white rounded-lg p-8 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+          <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl text-white">👥</span>
+          </div>
+          <h3 class="text-xl font-semibold text-primary mb-3">Community</h3>
+          <p class="text-gray-600 leading-relaxed">We believe cooking brings people together and fosters a supportive community of food lovers.</p>
+        </article>
+
+        <article class="bg-white rounded-lg p-8 shadow-md transition-transform transform hover:scale-105 hover:shadow-lg">
+          <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl text-white">⭐</span>
+          </div>
+          <h3 class="text-xl font-semibold text-primary mb-3">Quality</h3>
+          <p class="text-gray-600 leading-relaxed">Every recipe is carefully curated and tested to ensure the best possible cooking results.</p>
+        </article>
+      </div>
+    </div>
+</section>
+
+<!-- Meet Our Team -->
+<section class="bg-white py-12 md:py-20 px-6">
+    <div class="max-w-container-lg mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">Meet Our Team</h2>
+      <p class="text-gray-600 mb-12">The passionate people behind DishCovery</p>
+
+      <div class="flex flex-wrap justify-center gap-8">
+        <figure class="text-center">
+          <div class="w-48 h-48 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg">
+            <img src="Temp" alt="Temporary" class="w-full h-full object-cover">
+          </div>
+          <figcaption>
+            <strong class="text-lg font-semibold text-gray-900">Temporary</strong><br>
+            <span class="text-primary">temporary position</span>
+          </figcaption>
         </figure>
 
-        <figure>
-            <img src="Temp" alt="Temporary" width="200">
-            <figcaption>
-                <strong>Temporary</strong><br>
-                "temporary position"
-            </figcaption>
+        <figure class="text-center">
+          <div class="w-48 h-48 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg">
+            <img src="Temp" alt="Temporary" class="w-full h-full object-cover">
+          </div>
+          <figcaption>
+            <strong class="text-lg font-semibold text-gray-900">Temporary</strong><br>
+            <span class="text-primary">temporary position</span>
+          </figcaption>
         </figure>
 
-        <figure>
-            <img src="Temp" alt="Temporary" width="200">
-            <figcaption>
-                <strong>Temporary</strong><br>
-                "temporary position"
-            </figcaption>
+        <figure class="text-center">
+          <div class="w-48 h-48 bg-gray-200 rounded-full mx-auto mb-4 overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg">
+            <img src="Temp" alt="Temporary" class="w-full h-full object-cover">
+          </div>
+          <figcaption>
+            <strong class="text-lg font-semibold text-gray-900">Temporary</strong><br>
+            <span class="text-primary">temporary position</span>
+          </figcaption>
         </figure>
+      </div>
     </div>
 </section>
 
-<!--statistics Numbers not yet added-->
-<section class="achievements">
-    <div class="achievements_text">
-        <h2>Our Achievements</h2>
-        <p>(temp) Recipes</p>
-        <p>(temp) Happy Cooks</p>
-        <p>(temp) Countries</p>
-        <p>(temp)★ User Rating</p>
+<!-- Our Achievements -->
+<section class="py-12 md:py-20 flex flex-col justify-center items-center bg-gradient-to-r from-primary to-primary-2 text-white px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold mb-12">Our Achievements</h2>
+      <div class="flex flex-wrap justify-center gap-8 md:gap-12">
+        <div class="text-center">
+          <p class="text-4xl md:text-6xl font-extrabold mb-2">10,000+</p>
+          <p class="text-lg md:text-xl">Recipes</p>
+        </div>
+        <div class="text-center">
+          <p class="text-4xl md:text-6xl font-extrabold mb-2">500,000+</p>
+          <p class="text-lg md:text-xl">Happy Cooks</p>
+        </div>
+        <div class="text-center">
+          <p class="text-4xl md:text-6xl font-extrabold mb-2">50+</p>
+          <p class="text-lg md:text-xl">Countries</p>
+        </div>
+        <div class="text-center">
+          <p class="text-4xl md:text-6xl font-extrabold mb-2">4.9★</p>
+          <p class="text-lg md:text-xl">User Rating</p>
+        </div>
+      </div>
     </div>
 </section>
 
-<footer>
-    <div class="footer_container">
-        <div class="footer_column">
-            <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
-        </div>
+<!-- Footer -->
+<footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
+    <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="footer_column text-gray-300">
+        <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+      </div>
 
-        <div class="footer_contact">
-            <h3>Contact Info</h3>
-            <p>hello@dishcovery.com</p>
-            <p>+1 (555) 123-4567</p>
-            <p>123 Culinary Street, Food City</p>
-        </div>
+      <div class="footer_contact">
+        <h3 class="text-white text-lg mb-3">Contact Info</h3>
+        <p class="text-gray-300">hello@dishcovery.com</p>
+        <p class="text-gray-300">+1 (555) 123-4567</p>
+        <p class="text-gray-300">123 Culinary Street, Food City</p>
+      </div>
 
-        <div class="footer_follow">
-            <ul>
-                <p>Follow Us on</p>
-                <a href="#">Facebook</a> |
-                <a href="#">Twitter</a> |
-                <a href="#">Instagram</a>
-            </ul>
+      <div class="footer_follow">
+        <h3 class="text-white text-lg mb-3">Follow Us</h3>
+        <div class="flex gap-4">
+          <a href="#" class="text-gray-300 hover:text-primary">Facebook</a>
+          <a href="#" class="text-gray-300 hover:text-primary">Twitter</a>
+          <a href="#" class="text-gray-300 hover:text-primary">Instagram</a>
         </div>
+      </div>
     </div>
 
-    <div class="footer_bottom">
-        <p>© 2025 DishCovery. All rights reserved.</p>
-        <div class="footer_bottom_links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-        </div>
+    <div class="border-t border-white/10 mt-12 pt-6 text-center">
+      <p class="text-gray-300">&copy; 2025 DishCovery. All rights reserved.</p>
+      <div class="flex gap-6 justify-center mt-4">
+        <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
+        <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
+      </div>
     </div>
-</footer>
+  </footer>
 
 </body>
 </html>
