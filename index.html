@@ -1,236 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DishCovery Website</title>
-    <link rel="stylesheet" href="design/index_style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DishCovery Website</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN + small config for brand color & shadows -->
+  <script>
+    tailwind = window.tailwind || {};
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ff6a00',
+            'primary-2': '#ff3300',
+            'page-bg': '#eeeeee'
+          },
+          boxShadow: {
+            'md-soft': '0 6px 18px rgba(0,0,0,0.06)'
+          },
+          maxWidth: {
+            'container-lg': '1200px'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* only minimal rule to ensure Outfit is used as site font (Tailwind utilities used for layout) */
+    :root { --site-font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+    html,body { font-family: var(--site-font); }
+  </style>
 </head>
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+    <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="logo">
+        <h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1>
+      </div>
 
-<body>
-<header>
-    <div class="logo">
-        <h1>DishCovery</h1>
-    </div>
-
-    <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="About_Us.html">About Us</a></li>
-            <li><a href="recipe_finder.html">Recipe Finder</a></li>
-            <li><a href="Gallery.html">Gallery</a></li>
-            <li><a href="Contact.html">Contact</a></li>
-            <li><a href="Faq.html">FAQ</a></li>
-            <li class="login"><a href="Log_In.html">Log In</a></li>
+      <nav aria-label="Main navigation">
+        <ul class="flex items-center gap-6 md:gap-8 flex-wrap">
+          <li><a href="#" class="font-medium text-gray-800 hover:text-primary px-2 py-1">Home</a></li>
+          <li><a href="About_Us.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">About Us</a></li>
+          <li><a href="recipe_finder.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">Recipe Finder</a></li>
+          <li><a href="Gallery.html" class="font-medium text-gray-800 text-opacity-90 px-2 py-1" aria-current="page">Gallery</a></li>
+          <li><a href="Contact.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">Contact</a></li>
+          <li><a href="Faq.html" class="font-medium text-gray-800 hover:text-primary px-2 py-1">FAQ</a></li>
+          <li class="login">
+            <a href="#" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transform transition hover:-translate-y-0.5">Log In</a>
+          </li>
         </ul>
-    </nav>
-</header>
-
-<section class="introduction">
-    <p class="introduction_upper_text">Discover your next</p><span class="introduction_lower_text">Favorite Dish</span>
-    <p class="introduction_paragraph">Explore thousands of delicious recipes, cooking tips, and culinary adventures</p><span class="introduction_paragraph">From quick weeknight dinners to gourmet masterpieces.</span>
-</section>
-
-<!-- Why choose DishCovery -->
-<section class="features">
-    <h2>Why Choose DishCovery?</h2>
-    <p>We make cooking accessible, enjoyable, and rewarding for everyone.</p>
-
-    <article>
-        <h3>Smart Recipe Finder</h3>
-        <p>Find the perfect recipe based on your ingredients, dietary preferences, cooking time, and skill level. Our intelligent search makes cooking effortless.</p>
-    </article>
-    
-    <article>
-        <h3>Visual Gallery</h3>
-        <p>Browse Stunning food photography and step-by-step visual guides. Every recipe comes with beautiful images to inspire your culinary journey.</p>
-    </article>
-
-    <article>
-        <h3>Community Driven</h3>
-        <p>Join a passionate community of food lovers. Share your creations, get cooking tips, and discover recipes from chefs around the world.</p> 
-    </article>
-</section>
-
-<!-- Functionality of DishCovery -->
-<section class="how_it_works">
-    <h2>How Dishcovery Works</h2>
-    <p>From ingredients to amazing meals in just a few simple steps.</p>
-    <div class="divider_rows">
-        <article class="step">
-            <div class="step-circle">1</div>
-            <h3>1. Add Your Ingredients</h3>
-            <p>Tell us what ingredients you have in your kitchen, pantry, or fridge.</p>
-        </article>
-        <article class="step">
-            <div class="step-circle">2</div>
-            <h3>2. Set Your Preferences</h3>
-            <p>Choose your cuisine type, cooking time, difficulty level, and dietary needs.</p>
-        </article>
-        <article class="step">
-            <div class="step-circle">3</div>
-            <h3>3. Get Smart Matches</h3>
-            <p>Our Search Engine finds the best recipes that match your ingredients and preferences.</p>
-        </article>
-        <article class="step">
-            <div class="step-circle">4</div>
-            <h3>4. Start Cooking</h3>
-            <p>Follow step-by-step instructions and create delicious meals with confidence.</p>
-        </article>
+      </nav>
     </div>
-</section>
+  </header>
 
-<!-- Popular cuisines, images are not added as they need to be original -->
-<section class="popular_recipes">
-    <h2>Popular Recipes</h2>
-    <p>Discover what's treding in the kitchen right now.<p>
-    
-    <div class="recipes_row">
-        <article>
-            <h3>Chicken Adobo</h3>
-            <p>30 mins | Difficulty: Easy</p>
+  <!-- Intro -->
+  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 bg-gradient-to-b from-white to-gray-50">
+    <p class="text-6xl md:text-8xl font-extrabold leading-tight">Discover your next</p>
+    <p class="text-6xl md:text-8xl font-extrabold leading-tight text-primary">Favorite Dish</p>
+    <p class="mx-auto max-w-3xl text-gray-700 text-lg md:text-xl mt-6">Explore thousands of delicious recipes, cooking tips, and culinary adventures</p>
+    <p class="mx-auto max-w-3xl text-gray-700 text-lg md:text-xl">From quick weeknight dinners to gourmet masterpieces.</p>
+  </section>
+
+  <!-- Features -->
+  <section class="min-h-screen flex flex-col justify-center items-center bg-white px-6">
+    <div class="max-w-container-lg mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">Why Choose DishCovery?</h2>
+      <p class="text-gray-600 mb-12">We make cooking accessible, enjoyable, and rewarding for everyone.</p>
+
+      <div class="flex flex-wrap justify-center gap-8">
+        <article class="w-[300px] bg-white rounded-lg p-8 shadow-md transition-transform transform hover:-translate-y-2">
+          <h3 class="text-xl font-semibold text-primary mb-3">Smart Recipe Finder</h3>
+          <p class="text-gray-600 leading-relaxed">Find the perfect recipe based on your ingredients, dietary preferences, cooking time, and skill level. Our intelligent search makes cooking effortless.</p>
         </article>
 
-        <article>
-            <h3>Spaghetti</h3>
-            <p>12 mins | Difficulty: Easy</p>
+        <article class="w-[300px] bg-white rounded-lg p-8 shadow-md transition-transform transform hover:-translate-y-2">
+          <h3 class="text-xl font-semibold text-primary mb-3">Visual Gallery</h3>
+          <p class="text-gray-600 leading-relaxed">Browse stunning food photography and step-by-step visual guides. Every recipe comes with beautiful images to inspire your culinary journey.</p>
         </article>
 
-        <article>
-            <h3>Kimchi Fried Rice</h3>
-            <p>20 mins | Difficulty: Easy</p>
+        <article class="w-[300px] bg-white rounded-lg p-8 shadow-md transition-transform transform hover:-translate-y-2">
+          <h3 class="text-xl font-semibold text-primary mb-3">Community Driven</h3>
+          <p class="text-gray-600 leading-relaxed">Join a passionate community of food lovers. Share your creations, get cooking tips, and discover recipes from chefs around the world.</p>
         </article>
-        </div>
-    <button class="popular_recipes_button" onclick="window.location.href='recipe_finder.html'">View All Recipes</button>
-</section>
-
-<!-- World cuisines, images not added -->
-<section class="explore_recipes">
-    <h2>Explore World Cuisines</h2>
-    <p>Take your taste buds on a journey around the glove.</p>
-    
-    <div class="explore_recipes_row">
-        <article>
-            <h3>Philippines</h3>
-            <p>100 recipes</p>
-        </article>
-
-        <article>
-            <h3>Japan</h3>
-            <p>100 recipes</p>
-        </article>  
-
-        <article>
-            <h3>Italy</h3>
-            <p>100 recipes</p>
-        </article>  
-
-        <article>
-            <h3>Korea</h3>
-            <p>100 recipes</p>
-        </article>  
-
-        <article>
-            <h3>France</h3>
-            <p>100 recipes</p>
-        </article>  
-
-        <article>
-            <h3>India</h3>
-            <p>100 recipes</p>
-        </article>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="master_your_kitchen">
-    <h2>Master your kitchen</h2>
-    <p>Essential cooking tips and techniques to elevate your culinary skills</p>
+  <!-- How it works -->
+ <section class="min-h-screen flex flex-col justify-center items-center bg-page-bg px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-semibold mb-4">How DishCovery Works</h2>
+      <p class="text-gray-600 mb-8">From ingredients to amazing meals in just a few simple steps.</p>
 
-    <div class="master_kitchen_row">
-        <article>
-            <h3>Knife skills mastery</h3>
-            <p>Learn proper cutting techniques for faster, safer, and more professional cooking results.</p>
+      <div class="flex flex-wrap justify-center gap-6">
+        <article class="min-w-[250px] p-6 text-center">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white bg-blue-500 mb-4">1</div>
+          <h3 class="text-lg font-semibold mb-2">1. Add Your Ingredients</h3>
+          <p class="text-gray-600 leading-relaxed">Tell us what ingredients you have in your kitchen, pantry, or fridge.</p>
         </article>
 
-        <article>
-            <h3>Flavor Building</h3>
-            <p>Understand how to layer flavors and create depth in your dishes with herbs and spices.</p>
+        <article class="min-w-[250px] p-6 text-center">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white bg-green-600 mb-4">2</div>
+          <h3 class="text-lg font-semibold mb-2">2. Set Your Preferences</h3>
+          <p class="text-gray-600 leading-relaxed">Choose your cuisine type, cooking time, difficulty level, and dietary needs.</p>
         </article>
 
-        <article>
-            <h3>Temperature Control</h3>
-            <p>Master heat management for perfect cooking results every time, from searing to simmering.</p>
+        <article class="min-w-[250px] p-6 text-center">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white bg-purple-600 mb-4">3</div>
+          <h3 class="text-lg font-semibold mb-2">3. Get Smart Matches</h3>
+          <p class="text-gray-600 leading-relaxed">Our Search Engine finds the best recipes that match your ingredients and preferences.</p>
         </article>
+
+        <article class="min-w-[250px] p-6 text-center">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto text-2xl font-bold text-white bg-primary mb-4">4</div>
+          <h3 class="text-lg font-semibold mb-2">4. Start Cooking</h3>
+          <p class="text-gray-600 leading-relaxed">Follow step-by-step instructions and create delicious meals with confidence.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Recipes -->
+  <section class="bg-white py-16 md:py-24">
+    <div class="max-w-container-lg mx-auto px-6 text-center">
+      <h2 class="text-3xl font-semibold mb-2">Popular Recipes</h2>
+      <p class="text-gray-600 mb-8">Discover what's trending in the kitchen right now.</p>
+
+      <div class="flex flex-wrap justify-center gap-6">
+        <article class="min-w-[220px] max-w-xs p-6 bg-white rounded-lg shadow-md text-center">
+          <h3 class="font-semibold mb-2">Chicken Adobo</h3>
+          <p class="text-gray-600">30 mins | Difficulty: Easy</p>
+        </article>
+
+        <article class="min-w-[220px] max-w-xs p-6 bg-white rounded-lg shadow-md text-center">
+          <h3 class="font-semibold mb-2">Spaghetti</h3>
+          <p class="text-gray-600">12 mins | Difficulty: Easy</p>
+        </article>
+
+        <article class="min-w-[220px] max-w-xs p-6 bg-white rounded-lg shadow-md text-center">
+          <h3 class="font-semibold mb-2">Kimchi Fried Rice</h3>
+          <p class="text-gray-600">20 mins | Difficulty: Easy</p>
+        </article>
+      </div>
+
+      <div class="mt-8">
+        <button onclick="window.location.href='recipe_finder.html'"
+                class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white rounded-full px-8 py-3 text-lg font-semibold shadow-md transition hover:opacity-95">
+          View All Recipes
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Explore World Cuisines -->
+  <section class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-gray-50 to-white px-6">
+    <div class="max-w-container-lg mx-auto text-center">
+      <h2 class="text-3xl font-semibold mb-2">Explore World Cuisines</h2>
+      <p class="text-gray-600 mb-6">Take your taste buds on a journey around the globe.</p>
+
+      <div class="flex flex-wrap justify-center gap-6">
+        <article class="min-w-[180px] p-6 bg-white rounded-lg shadow-sm text-center">
+          <h3 class="font-semibold">Philippines</h3><p class="text-gray-600">100 recipes</p>
+        </article>
+        <article class="min-w-[180px] p-6 bg-white rounded-lg shadow-sm text-center">
+          <h3 class="font-semibold">Japan</h3><p class="text-gray-600">100 recipes</p>
+        </article>
+        <article class="min-w-[180px] p-6 bg-white rounded-lg shadow-sm text-center">
+          <h3 class="font-semibold">Italy</h3><p class="text-gray-600">100 recipes</p>
+        </article>
+        <article class="min-w-[180px] p-6 bg-white rounded-lg shadow-sm text-center">
+          <h3 class="font-semibold">Korea</h3><p class="text-gray-600">100 recipes</p>
+        </article>
+        <article class="min-w-[180px] p-6 bg-white rounded-lg shadow-sm text-center">
+          <h3 class="font-semibold">France</h3><p class="text-gray-600">100 recipes</p>
+        </article>
+        <article class="min-w-[180px] p-6 bg-white rounded-lg shadow-sm text-center">
+          <h3 class="font-semibold">India</h3><p class="text-gray-600">100 recipes</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Master Your Kitchen -->
+  <section class="min-h-screen flex flex-col justify-center items-center bg-rose-100 px-6">
+    <div class="max-w-container-lg mx-auto text-center">
+      <h2 class="text-3xl font-semibold mb-3">Master your kitchen</h2>
+      <p class="text-gray-600 max-w-3xl mx-auto mb-8">Essential cooking tips and techniques to elevate your culinary skills</p>
+
+      <div class="flex flex-wrap justify-center gap-6">
+        <article class="min-w-[260px] p-6 bg-white rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold mb-2">Knife skills mastery</h3>
+          <p class="text-gray-600 leading-relaxed">Learn proper cutting techniques for faster, safer, and more professional cooking results.</p>
+        </article>
+
+        <article class="min-w-[260px] p-6 bg-white rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold mb-2">Flavor Building</h3>
+          <p class="text-gray-600 leading-relaxed">Understand how to layer flavors and create depth in your dishes with herbs and spices.</p>
+        </article>
+
+        <article class="min-w-[260px] p-6 bg-white rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold mb-2">Temperature Control</h3>
+          <p class="text-gray-600 leading-relaxed">Master heat management for perfect cooking results every time, from searing to simmering.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stay Updated -->
+  <section class="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white px-6">
+    <div class="max-w-2xl mx-auto text-center">
+      <h1 class="text-2xl md:text-3xl font-semibold mb-2">Stay updated with DishCovery</h1>
+      <p class="mb-6">Get weekly recipe recommendations, cooking tips, and exclusive content delivered to your inbox</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <input id="email_address" name="email_address" type="email" placeholder="Enter your email address"
+               class="w-full sm:w-auto min-w-[260px] px-6 py-3 rounded-full text-gray-900" />
+        <button class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white rounded-full px-8 py-3 font-semibold">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey CTA -->
+  <section class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-primary to-primary-2 text-white px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-2xl md:text-3xl font-semibold mb-2">Ready to start your culinary journey?</h1>
+      <p class="mb-6">Join thousands of home cooks discovering amazing recipes every day</p>
+      <button class="inline-block bg-white text-primary rounded-full px-8 py-3 font-semibold">Get started today</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
+    <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="footer_column text-gray-300">
+        <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+      </div>
+
+      <div class="footer_links">
+        <h3 class="text-white text-lg mb-3">Quick Links</h3>
+        <ul class="space-y-2 text-gray-300">
+          <li><a href="#" class="hover:text-primary">About Us</a></li>
+          <li><a href="#" class="hover:text-primary">Recipe Finder</a></li>
+          <li><a href="#" class="hover:text-primary">Gallery</a></li>
+          <li><a href="#" class="hover:text-primary">Contact</a></li>
+          <li><a href="#" class="hover:text-primary">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer_contact">
+        <h3 class="text-white text-lg mb-3">Contact Info</h3>
+        <p class="text-gray-300">hello@dishcovery.com</p>
+        <p class="text-gray-300">+1 (555) 123-4567</p>
+        <p class="text-gray-300">123 Culinary Street, Food City</p>
+      </div>
     </div>
 
-    <div class="master_kitchen_row">
-        <article>
-            <h3>Meal Prep Secrets</h3>
-            <p>Efficient strategies for planning and preparing meals ahead of time to save time and money.</p>
-        </article>
-
-        <article>
-            <h3>Ingredient Substitutions</h3>
-            <p>Smart swaps and alternatives when you're missing ingredients or want healthier options.</p>
-        </article>
-
-        <article>
-            <h3>Kitchen Organization</h3>
-            <p>Set up your kitchen for maximum efficiency and create a workspace that inspires cooking.</p>
-        </article>
+    <div class="border-t border-white/10 mt-12 pt-6 text-center">
+      <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
+      <div class="flex gap-6 justify-center mt-4">
+        <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
+        <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
+        <a href="#" class="text-gray-300 hover:text-primary">Website Builder</a>
+      </div>
     </div>
-</section>
-
-<!-- Stories section, will be added if participants are chosen -->
-
-<section class="stay_updated">
-    <h1>Stay updated with DishCovery</h1>
-    <p>Get weekly recipe recommendations, cooking tips, and exclusive content delivered to your inbox</p>
-    <label for="email_address"></label>
-    <input class="label-design" type="text" id="email_address" name="email_address" placeholder="Enter your email address">
-    
-    <button>Subscribe</button>
-</section>
-
-<!-- Get started -->
-<section class="journey_design">
-    <h1>Ready to start your culinary journey?</h1>
-    <p>Join thousands of home cooks discovering amazing recipes every day</p>
-    <button>Get started today</button>
-</section>
-
-<!-- Footer added -->
-<footer>
-    <div class="footer_container">
-        <div class="footer_column">
-            <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
-        </div>
-
-        <div class="footer_contact">
-            <h3>Contact Info</h3>
-            <p>hello@dishcovery.com</p>
-            <p>+1 (555) 123-4567</p>
-            <p>123 Culinary Street, Food City</p>
-        </div>
-
-        <div class="footer_follow">
-            <ul>
-                <p>Follow Us on</p>
-                <a href="#">Facebook</a> |
-                <a href="#">Twitter</a> |
-                <a href="#">Instagram</a>
-            </ul>
-        </div>
-    </div>
-
-    <div class="footer_bottom">
-        <p>© 2025 DishCovery. All rights reserved.</p>
-        <div class="footer_bottom_links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-        </div>
-    </div>
-</footer>
+  </footer>
 
 </body>
 </html>
