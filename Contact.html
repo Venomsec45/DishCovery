@@ -6,7 +6,31 @@
   <title>DishCovery — Contact</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="design/contact.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ff6a00',
+            'primary-2': '#ff3300',
+            'page-bg': '#eeeeee'
+          },
+          boxShadow: {
+            'md-soft': '0 6px 18px rgba(0,0,0,0.06)',
+            'lg-soft': '0 12px 30px rgba(0,0,0,0.08)',
+            'xl-soft': '0 20px 40px rgba(0,0,0,0.1)'
+          },
+          maxWidth: {
+            'container-lg': '1200px'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root { --site-font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+    html,body { font-family: var(--site-font); }
+  </style>
 </head>
 
 <body class="font-sans antialiased text-gray-900" style="font-family: 'Outfit', 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background-color: rgb(238,238,238);">
@@ -41,26 +65,47 @@
   </p>
 </section>
 
-  <section class="contact-wrapper">
-    <div class="contact-grid">
-      <div class="contact-card bg-white rounded-[12px] shadow-[0_6px_18px_rgba(15,23,42,0.06)]">
-        <h3 class="text-2xl font-bold text-[#0f1723] mb-4">Send us a Message</h3>
-
-        <form class="space-y-4" onsubmit="event.preventDefault(); alert('Message sent (demo)');">
-          <div class="form-row">
-            <label for="name" class="block mb-2 text-sm font-semibold text-[#111827]">Full Name *</label>
-            <input id="name" name="name" type="text" placeholder="Enter your full name" class="w-full px-4 py-3 rounded-md border border-[#e6e9ee] bg-white text-sm text-[#111827] outline-none transition-shadow focus:border-[#ff6a00] focus:shadow-[0_6px_18px_rgba(255,106,0,0.06)]" />
+  <section class="max-w-container-lg mx-auto px-6 py-16 md:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+      <div class="bg-white rounded-2xl shadow-lg-soft p-8 md:p-10 border border-gray-100">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 bg-gradient-to-r from-primary to-primary-2 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
           </div>
+          <h3 class="text-2xl md:text-3xl font-bold text-gray-900">Send us a Message</h3>
+        </div>
 
-          <div class="form-row">
-            <label for="email" class="block mb-2 text-sm font-semibold text-[#111827]">Email Address *</label>
-            <input id="email" name="email" type="email" placeholder="Enter your email address" class="w-full px-4 py-3 rounded-md border border-[#e6e9ee] bg-white text-sm text-[#111827] outline-none transition-shadow focus:border-[#ff6a00] focus:shadow-[0_6px_18px_rgba(255,106,0,0.06)]" />
-          </div>
-
-          <div class="form-row">
-            <label for="subject" class="block mb-2 text-sm font-semibold text-[#111827]">Subject *</label>
+        <form class="space-y-6" onsubmit="event.preventDefault(); alert('Message sent (demo)');">
+          <div class="relative">
+            <label for="name" class="block mb-2 text-sm font-semibold text-gray-700">Full Name *</label>
             <div class="relative">
-              <select id="subject" name="subject" class="w-full px-4 py-3 pr-10 rounded-md border border-[#e6e9ee] bg-white text-sm text-[#111827] outline-none transition-shadow focus:border-[#ff6a00] focus:shadow-[0_6px_18px_rgba(255,106,0,0.06)]">
+              <input id="name" name="name" type="text" placeholder="Enter your full name" class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10" />
+              <div class="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative">
+            <label for="email" class="block mb-2 text-sm font-semibold text-gray-700">Email Address *</label>
+            <div class="relative">
+              <input id="email" name="email" type="email" placeholder="Enter your email address" class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10" />
+              <div class="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 3.307l-7.5 7.5-7.5-7.5m15 0l-7.5 7.5-7.5-7.5m15 0v15a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18.307V3.307" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative">
+            <label for="subject" class="block mb-2 text-sm font-semibold text-gray-700">Subject *</label>
+            <div class="relative">
+              <select id="subject" name="subject" class="w-full px-4 py-4 pl-16 pr-12 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10 appearance-none">
                 <option>Select a subject</option>
                 <option>General Inquiry</option>
                 <option>Recipe Question</option>
@@ -68,66 +113,130 @@
                 <option>Partnership</option>
                 <option>Feedback</option>
               </select>
-              <!-- decorative arrow (keeps look similar to original) -->
-              <div class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-700">▾</div>
+              <div class="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                </svg>
+              </div>
+              <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</div>
             </div>
           </div>
 
-          <div class="form-row">
-            <label for="message" class="block mb-2 text-sm font-semibold text-[#111827]">Message *</label>
-            <textarea id="message" name="message" placeholder="Tell us how we can help you..." class="w-full px-4 py-3 rounded-md border border-[#e6e9ee] bg-white text-sm text-[#111827] min-h-[160px] resize-y outline-none transition-shadow focus:border-[#ff6a00] focus:shadow-[0_6px_18px_rgba(255,106,0,0.06)]"></textarea>
-            <div class="char-count text-[13px] text-[#6b7280] mt-2">0/500 characters</div>
+          <div class="relative">
+            <label for="message" class="block mb-2 text-sm font-semibold text-gray-700">Message *</label>
+            <div class="relative">
+              <textarea id="message" name="message" placeholder="Tell us how we can help you..." class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 min-h-[160px] resize-y outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10"></textarea>
+              <div class="absolute left-4 top-4 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+            </div>
+            <div class="char-count text-xs text-gray-500 mt-2 text-right">0/500 characters</div>
           </div>
 
-          <button type="submit" class="btn-primary w-full inline-block mt-2 bg-gradient-to-r from-[#ff6a00] to-[#ff3b2f] text-white py-3 rounded-[10px] font-bold text-[16px] shadow-[0_8px_24px_rgba(255,106,0,0.12)] hover:transform hover:-translate-y-0.5 transition-transform">
-            Send Message
+          <button type="submit" class="w-full bg-gradient-to-r from-primary to-primary-2 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-xl-soft hover:shadow-xl-soft hover:-translate-y-1 transition-all duration-300 hover:from-primary-2 hover:to-primary">
+            <span class="flex items-center justify-center gap-2">
+              Send Message
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+              </svg>
+            </span>
           </button>
         </form>
       </div>
 
-      <!-- Right / contact info -->
-      <aside class="contact-info pt-1">
-        <div class="info-heading text-xl font-bold text-[#0f1723] mb-4">Get in Touch</div>
+      <!-- Contact Info -->
+      <aside class="space-y-8">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 bg-gradient-to-r from-primary to-primary-2 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+            </svg>
+          </div>
+          <h3 class="text-2xl md:text-3xl font-bold text-gray-900">Get in Touch</h3>
+        </div>
 
-        <div class="info-item flex gap-4 items-start mb-5">
-          <div class="info-icon w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: linear-gradient(180deg,#ff7a2b,#ff3b2f); box-shadow: 0 6px 18px rgba(15,23,42,0.06);">✉</div>
-          <div class="info-text text-sm text-[#374151]">
-            <div class="title font-bold text-[#111827] mb-1">Email Us</div>
-            <div>hello@dishcovery.com<br/>support@dishcovery.com</div>
+        <div class="space-y-6">
+          <div class="flex gap-4 items-start group">
+            <div class="w-14 h-14 bg-gradient-to-r from-primary to-primary-2 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg-soft group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="font-bold text-gray-900 mb-1">Email Us</div>
+              <div class="text-gray-600 leading-relaxed">
+                hello@dishcovery.com<br/>
+                support@dishcovery.com
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start group">
+            <div class="w-14 h-14 bg-gradient-to-r from-primary to-primary-2 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg-soft group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="font-bold text-gray-900 mb-1">Call Us</div>
+              <div class="text-gray-600 leading-relaxed">
+                +1 (555) 123-4567<br/>
+                Mon–Fri, 9AM–6PM EST
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start group">
+            <div class="w-14 h-14 bg-gradient-to-r from-primary to-primary-2 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg-soft group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.458-7.5 11.458s-7.5-4.316-7.5-11.458a7.5 7.5 0 1115 0z" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="font-bold text-gray-900 mb-1">Visit Us</div>
+              <div class="text-gray-600 leading-relaxed">
+                123 Culinary Street<br/>
+                Food District, NY 10001
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start group">
+            <div class="w-14 h-14 bg-gradient-to-r from-primary to-primary-2 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg-soft group-hover:scale-110 transition-transform duration-300">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="font-bold text-gray-900 mb-1">Response Time</div>
+              <div class="text-gray-600 leading-relaxed">
+                We typically respond within 24 hours. Emergency support available 24/7.
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="info-item flex gap-4 items-start mb-5">
-          <div class="info-icon w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: linear-gradient(180deg,#ff7a2b,#ff3b2f); box-shadow: 0 6px 18px rgba(15,23,42,0.06);">📞</div>
-          <div class="info-text text-sm text-[#374151]">
-            <div class="title font-bold text-[#111827] mb-1">Call Us</div>
-            <div>+1 (555) 123-4567<br/>Mon–Fri, 9AM–6PM EST</div>
-          </div>
-        </div>
-
-        <div class="info-item flex gap-4 items-start mb-5">
-          <div class="info-icon w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: linear-gradient(180deg,#ff7a2b,#ff3b2f); box-shadow: 0 6px 18px rgba(15,23,42,0.06);">📍</div>
-          <div class="info-text text-sm text-[#374151]">
-            <div class="title font-bold text-[#111827] mb-1">Visit Us</div>
-            <div>123 Culinary Street<br/>Food District, NY 10001</div>
-          </div>
-        </div>
-
-        <div class="info-item flex gap-4 items-start mb-5">
-          <div class="info-icon w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style="background: linear-gradient(180deg,#ff7a2b,#ff3b2f); box-shadow: 0 6px 18px rgba(15,23,42,0.06);">⏱</div>
-          <div class="info-text text-sm text-[#374151]">
-            <div class="title font-bold text-[#111827] mb-1">Response Time</div>
-            <div>We typically respond within 24 hours. Emergency support available 24/7.</div>
-          </div>
-        </div>
-
-        <div class="mt-4">
-          <div class="info-heading mb-2 text-lg font-bold">Follow Us</div>
-          <div class="follow-list flex gap-3 mt-2" aria-label="Social links">
-            <a class="follow-pill w-9 h-9 rounded-full inline-flex items-center justify-center text-sm font-bold bg-[#f3f4f6] text-[#111827] shadow-[0_2px_6px_rgba(15,23,42,0.06)] hover:translate-y-[-3px] transition-transform" href="#" aria-label="Facebook" title="Facebook">f</a>
-            <a class="follow-pill w-9 h-9 rounded-full inline-flex items-center justify-center text-sm font-bold bg-[#f3f4f6] text-[#111827] shadow-[0_2px_6px_rgba(15,23,42,0.06)]" href="#" aria-label="Twitter" title="Twitter">t</a>
-            <a class="follow-pill w-9 h-9 rounded-full inline-flex items-center justify-center text-sm font-bold bg-[#f3f4f6] text-[#111827] shadow-[0_2px_6px_rgba(15,23,42,0.06)]" href="#" aria-label="Instagram" title="Instagram">ig</a>
-            <a class="follow-pill w-9 h-9 rounded-full inline-flex items-center justify-center text-sm font-bold bg-[#f3f4f6] text-[#111827] shadow-[0_2px_6px_rgba(15,23,42,0.06)]" href="#" aria-label="YouTube" title="YouTube">yt</a>
+        <div class="pt-6 border-t border-gray-200">
+          <h4 class="text-lg font-bold text-gray-900 mb-4">Follow Us</h4>
+          <div class="flex gap-3" aria-label="Social links">
+            <a class="w-12 h-12 bg-gray-100 hover:bg-primary rounded-2xl inline-flex items-center justify-center text-gray-700 hover:text-white shadow-md-soft hover:shadow-lg-soft hover:-translate-y-1 transition-all duration-300" href="#" aria-label="Facebook" title="Facebook">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a class="w-12 h-12 bg-gray-100 hover:bg-primary rounded-2xl inline-flex items-center justify-center text-gray-700 hover:text-white shadow-md-soft hover:shadow-lg-soft hover:-translate-y-1 transition-all duration-300" href="#" aria-label="X (Twitter)" title="X (Twitter)">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a class="w-12 h-12 bg-gray-100 hover:bg-primary rounded-2xl inline-flex items-center justify-center text-gray-700 hover:text-white shadow-md-soft hover:shadow-lg-soft hover:-translate-y-1 transition-all duration-300" href="#" aria-label="Instagram" title="Instagram">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </a>
+            <a class="w-12 h-12 bg-gray-100 hover:bg-primary rounded-2xl inline-flex items-center justify-center text-gray-700 hover:text-white shadow-md-soft hover:shadow-lg-soft hover:-translate-y-1 transition-all duration-300" href="#" aria-label="YouTube" title="YouTube">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
           </div>
         </div>
       </aside>

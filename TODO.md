@@ -1,0 +1,4 @@
+- [x] Update body class to remove min-h-screen
+- [x] Update main class to add h-screen and relative
+- [x] Update form class to add absolute centering classes
+- [x] Remove the spacer div
