@@ -78,10 +78,26 @@
     </header>
 
     <!-- Search -->
-    <form class="flex flex-col sm:flex-row items-stretch gap-3 mb-10" role="search" aria-label="Search FAQs">
-      <input type="text" id="search" name="search" placeholder="Search frequently asked questions..." class="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#ff6a00]" />
-      <button type="submit" class="mt-2 sm:mt-0 sm:ml-2 bg-[#ff6a00] text-white px-6 py-3 rounded-lg hover:bg-[#ff5500] transition">Search</button>
-    </form>
+    <div class="relative mb-10">
+      <form class="relative" role="search" aria-label="Search FAQs">
+        <div class="relative">
+          <input type="text" id="search" name="search" placeholder="Search frequently asked questions..." class="w-full px-6 py-4 pl-14 pr-4 rounded-2xl border-2 border-gray-200 bg-white text-gray-900 text-sm outline-none transition-all duration-300 focus:border-primary focus:bg-gray-50 focus:shadow-xl-soft focus:ring-4 focus:ring-primary/10" />
+          <div class="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </div>
+        </div>
+        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-primary to-primary-2 text-white px-6 py-2 rounded-xl font-medium text-sm shadow-lg-soft hover:shadow-xl-soft hover:-translate-y-0.5 transition-all duration-300 hover:from-primary-2 hover:to-primary">
+          <span class="flex items-center gap-2">
+            Search
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </span>
+        </button>
+      </form>
+    </div>
 
     <section class="space-y-12">
       <div>
