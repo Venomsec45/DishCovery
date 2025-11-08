@@ -6,6 +6,7 @@
     <title>DishCovery Website</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="design/recipe_finder.css">
+    <link rel="stylesheet" href="design/index_style.css">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <script>
@@ -25,26 +26,150 @@
                 }
             }
         }
+
+        // Interactive JavaScript for Recipe Finder
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('input[placeholder="Search recipes, ingredients, or cuisines..."]');
+            const recipeCards = document.querySelectorAll('.recipe-card');
+            const sortSelect = document.querySelector('select');
+
+            // Search functionality
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                recipeCards.forEach(card => {
+                    const title = card.dataset.title.toLowerCase();
+                    const description = card.dataset.description.toLowerCase();
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeIn 0.3s ease-in-out';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // Sort functionality
+            sortSelect.addEventListener('change', function() {
+                const sortBy = this.value;
+                const recipeGrid = document.querySelector('.grid');
+                const cardsArray = Array.from(recipeCards);
+
+                cardsArray.sort((a, b) => {
+                    switch(sortBy) {
+                        case 'Highest Rated':
+                            const ratingA = parseFloat(a.querySelector('.absolute').textContent);
+                            const ratingB = parseFloat(b.querySelector('.absolute').textContent);
+                            return ratingB - ratingA;
+                        case 'Cooking Time':
+                            const timeA = parseInt(a.querySelector('[data-lucide="clock"]').parentElement.textContent.split(' ')[0]);
+                            const timeB = parseInt(b.querySelector('[data-lucide="clock"]').parentElement.textContent.split(' ')[0]);
+                            return timeA - timeB;
+                        case 'Newest':
+                            // For demo, randomize order
+                            return Math.random() - 0.5;
+                        default:
+                            return 0;
+                    }
+                });
+
+                cardsArray.forEach(card => {
+                    recipeGrid.appendChild(card);
+                });
+            });
+
+            // Add click animations to buttons
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // Specific button functionalities
+            document.querySelectorAll('.timer-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.recipe-card');
+                    const title = card.dataset.title;
+                    alert(`Timer started for ${title}! Set your cooking time.`);
+                });
+            });
+
+            document.querySelectorAll('.rate-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.recipe-card');
+                    const title = card.dataset.title;
+                    const rating = prompt(`Rate ${title} (1-5 stars):`);
+                    if (rating && rating >= 1 && rating <= 5) {
+                        alert(`Thank you for rating ${title} ${rating} stars!`);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.view-recipe-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.recipe-card');
+                    const title = card.dataset.title;
+                    const description = card.dataset.description;
+                    alert(`Recipe: ${title}\n\n${description}\n\nFull recipe details would be shown here.`);
+                });
+            });
+
+            // Add hover effects to recipe cards
+            recipeCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+
+            // Load more functionality
+            const loadMoreBtn = document.querySelector('button:last-of-type');
+            loadMoreBtn.addEventListener('click', function() {
+                // Simulate loading more recipes
+                this.textContent = 'Loading...';
+                this.disabled = true;
+                setTimeout(() => {
+                    // In a real app, you'd fetch more recipes here
+                    alert('More recipes would be loaded here!');
+                    this.textContent = 'Load More Recipes';
+                    this.disabled = false;
+                }, 1000);
+            });
+        });
+
+        // Add fadeIn animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
   </head>
 
-<body class="bg-[#eeeeee] m-0 p-0 overflow-x-hidden font-['Outfit']">
+<body>
 
-  <header class="flex justify-between items-center px-[4vw] py-[2vw] bg-[#f8f8f8] sticky top-0 z-[100] border-b-[3px] border-[#efefef] box-border">
+  <header>
     <div class="logo">
       <h1 class="text-[2rem] font-semibold text-[#333]">DishCovery</h1>
     </div>
 
     <nav>
-      <ul class="flex gap-[28px] list-none">
-        <li><a href="index.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">Home</a></li>
-        <li><a href="About_Us.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">About Us</a></li>
-        <li><a href="#" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">Recipe Finder</a></li>
-        <li><a href="Gallery.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">Gallery</a></li>
-        <li><a href="Contact.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">Contact</a></li>
-        <li><a href="Faq.html" class="no-underline text-[#333] text-[16px] font-medium pr-[34px] hover:text-[#ff6a00] transition-colors duration-300">FAQ</a></li>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="About_Us.html">About Us</a></li>
+        <li><a href="#">Recipe Finder</a></li>
+        <li><a href="Gallery.html">Gallery</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+        <li><a href="Faq.html">FAQ</a></li>
         <li class="login">
-          <a href="Log_In.html" class="bg-gradient-to-r from-[#ff6a00] to-[#ff3300] text-white px-[18px] py-[8px] rounded-full border-2 border-transparent transition-all duration-500 hover:bg-[#eeeeee] hover:text-[#333] hover:border-[#333] no-underline">Log In</a>
+          <a href="Log_In.html">Log In</a>
         </li>
       </ul>
     </nav>
@@ -82,11 +207,15 @@
       </div>
 
       <!-- Search Bar -->
-      <div class="max-w-4xl mx-auto flex rounded-full shadow-2xl shadow-gray-200 overflow-hidden border border-gray-100 p-1">
-          <input type="text" placeholder="Search recipes, ingredients, or cuisines..." class="flex-grow px-6 py-4 text-gray-700 focus:outline-none bg-white placeholder-gray-400">
-          <button class="bg-dish-primary text-white p-4 rounded-full ml-2 transition-all hover:bg-opacity-90 flex items-center justify-center w-16 h-16 transform hover:scale-105">
-              <i data-lucide="search" class="w-6 h-6"></i>
-          </button>
+      <div class="max-w-4xl mx-auto relative">
+          <div class="flex rounded-full shadow-2xl shadow-gray-300 overflow-hidden border border-gray-200 bg-gradient-to-r from-white to-gray-50 p-1 hover:shadow-3xl transition-shadow duration-300">
+              <input type="text" placeholder="Search recipes, ingredients, or cuisines..." class="flex-grow px-6 py-4 text-gray-700 focus:outline-none bg-transparent placeholder-gray-500 text-lg">
+              <button class="bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white p-4 rounded-full ml-2 transition-all hover:from-dish-accent-pink hover:to-dish-primary flex items-center justify-center w-16 h-16 transform hover:scale-110 hover:rotate-12">
+                  <i data-lucide="search" class="w-6 h-6"></i>
+              </button>
+          </div>
+          <!-- Optional: Add a subtle glow effect -->
+          <div class="absolute inset-0 rounded-full bg-gradient-to-r from-dish-primary/10 to-dish-accent-pink/10 blur-xl -z-10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
       </div>
   </section>
 
@@ -137,113 +266,224 @@
   </section>
 </main>
 
-<hr>
+<!-- Recipes Section -->
+<section class="py-16 bg-gradient-to-br from-gray-50 to-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-dish-dark mb-4 md:mb-0">Found 24 Recipes</h2>
+      <div class="flex items-center space-x-2">
+        <label class="text-gray-700 font-medium">Sort by:</label>
+        <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-dish-primary focus:border-transparent">
+          <option>Most Popular</option>
+          <option>Newest</option>
+          <option>Highest Rated</option>
+          <option>Cooking Time</option>
+        </select>
+      </div>
+    </div>
 
-<!--Recipe, Images and other stuff not yet added-->
-<h2>Found (TEMP) recipes</h2>
+    <!-- Recipe Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <!-- Recipe Card 1 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Grilled Chicken Salad" data-description="Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop" alt="Grilled Chicken Salad" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Grilled Chicken Salad</h3>
+          <p class="text-gray-600 text-sm mb-4">Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>25 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>128 reviews</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+            </button>
+            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+            </button>
+          </div>
+          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+            View Recipe
+          </button>
+        </div>
+      </div>
 
-<label>Sort by:</label>
-<select>
-  <option>Most Popular</option>
-  <option>Newest</option>
-  <option>Highest Rated</option>
-  <option>Cooking Time</option>
-</select>
+      <!-- Recipe Card 2 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Vegetable Stir Fry" data-description="Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Vegetable Stir Fry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Vegetable Stir Fry</h3>
+          <p class="text-gray-600 text-sm mb-4">Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>15 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>95 reviews</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+            </button>
+            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+            </button>
+          </div>
+          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+            View Recipe
+          </button>
+        </div>
+      </div>
 
-<br><br>
+      <!-- Recipe Card 3 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Beef Tacos" data-description="Spicy ground beef with fresh toppings in soft corn tortillas.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Beef Tacos</h3>
+          <p class="text-gray-600 text-sm mb-4">Spicy ground beef with fresh toppings in soft corn tortillas.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>30 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>156 reviews</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+            </button>
+            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+            </button>
+          </div>
+          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+            View Recipe
+          </button>
+        </div>
+      </div>
 
-<section>
-  <article>
-    <img src="TEMP" alt="Temp" width="250">
-    <h3>Temp</h3>
-    <p>TEMp</p>
-    <p>TEMP mins | Easy</p>
-    <p>TEMP reviews</p>
-    <button>Timer</button>
-    <button>Rate</button>
-    <br><br>
-    <button>View Recipe</button>
-  </article>
+      <!-- Recipe Card 4 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Pasta Carbonara" data-description="Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1551782450-17144efb5723?w=400&h=300&fit=crop" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Pasta Carbonara</h3>
+          <p class="text-gray-600 text-sm mb-4">Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>20 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>203 reviews</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+            </button>
+            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+            </button>
+          </div>
+          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+            View Recipe
+          </button>
+        </div>
+      </div>
+    </div>
 
-  <br>
-
-  <article>
-    <img src="TEMP" alt="Temp" width="250">
-    <h3>Temp</h3>
-    <p>TEMP</p>
-    <p>TEMP mins | Easy</p>
-    <p>TEMP reviews</p>
-    <button>Timer</button>
-    <button>Rate</button>
-    <br><br>
-    <button>View Recipe</button>
-  </article>
+    <!-- Load More Button -->
+    <div class="text-center mt-12">
+      <button class="bg-dish-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+        Load More Recipes
+      </button>
+    </div>
+  </div>
 </section>
-
-<br><br>
-<button>Load More Recipes</button>
 
 <!-- FEATURE SECTION -->
-<section>
-  <h2>Smart Cooking & Meal Planning Tips</h2>
-  <p>Enhance your cooking efficiency and explore international cuisines</p>
+<section class="py-16 bg-gradient-to-br from-white to-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-dish-dark mb-4">Smart Cooking & Meal Planning Tips</h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Enhance your cooking efficiency and explore international cuisines with our intelligent features</p>
+    </div>
 
-  <table>
-    <tr>
-      <td>
-        <h3>Reduce Food Waste</h3>
-        <p>Use our smart ingredient matcher to find recipes that use up ingredients before they expire, saving money and helping the environment.</p>
-      </td>
-      <td>
-        <h3>Explore International Cuisines</h3>
-        <p>Discover authentic recipes from 20+ countries and expand your culinary horizons with diverse flavors and cooking techniques.</p>
-      </td>
-      <td>
-        <h3>Efficient Meal Planning</h3>
-        <p>Filter by cooking time, difficulty, and dietary needs to find recipes that fit your schedule and lifestyle perfectly.</p>
-      </td>
-      <td>
-        <h3>Cooking Creativity</h3>
-        <p>Get inspired with step-by-step guides, professional tips, and creative variations to enhance your cooking skills.</p>
-      </td>
-    </tr>
-  </table>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Feature Card 1 -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <div class="w-12 h-12 bg-dish-green rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <span class="text-white font-bold text-xl">1</span>
+        </div>
+        <h3 class="text-xl font-bold text-dish-dark mb-3">Reduce Food Waste</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Use our smart ingredient matcher to find recipes that use up ingredients before they expire, saving money and helping the environment.</p>
+      </div>
+
+      <!-- Feature Card 2 -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <div class="w-12 h-12 bg-dish-accent-blue rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <span class="text-white font-bold text-xl">2</span>
+        </div>
+        <h3 class="text-xl font-bold text-dish-dark mb-3">Explore International Cuisines</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Discover authentic recipes from 20+ countries and expand your culinary horizons with diverse flavors and cooking techniques.</p>
+      </div>
+
+      <!-- Feature Card 3 -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <div class="w-12 h-12 bg-dish-accent-pink rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <span class="text-white font-bold text-xl">3</span>
+        </div>
+        <h3 class="text-xl font-bold text-dish-dark mb-3">Efficient Meal Planning</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Filter by cooking time, difficulty, and dietary needs to find recipes that fit your schedule and lifestyle perfectly.</p>
+      </div>
+
+      <!-- Feature Card 4 -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <div class="w-12 h-12 bg-dish-primary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <span class="text-white font-bold text-xl">4</span>
+        </div>
+        <h3 class="text-xl font-bold text-dish-dark mb-3">Cooking Creativity</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Get inspired with step-by-step guides, professional tips, and creative variations to enhance your cooking skills.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<hr>
-
-<footer class="bg-gray-800 text-white py-12 mt-auto">
-  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-8 text-sm">
-    <div class="md:w-1/2">
+<footer>
+  <div class="footer_container">
+    <div class="footer_column">
       <p>
         Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
       </p>
     </div>
 
-    <div class="md:w-1/2 flex flex-col md:flex-row justify-between">
-      <div>
-        <h3 class="font-semibold mb-2 text-orange-400">Contact Info</h3>
-        <p>hello@dishcovery.com</p>
-        <p>+1 (555) 123-4567</p>
-        <p>123 Culinary Street, Food City</p>
-      </div>
+    <div class="footer_contact">
+      <h3>Contact Info</h3>
+      <p>hello@dishcovery.com</p>
+      <p>+1 (555) 123-4567</p>
+      <p>123 Culinary Street, Food City</p>
+    </div>
 
-      <div class="text-left">
-        <h3 class="font-semibold mb-2 text-orange-400">Follow Us</h3>
-        <div class="space-x-3">
-          <a href="#" class="hover:underline">Facebook</a>
-          <a href="#" class="hover:underline">Twitter</a>
-          <a href="#" class="hover:underline">Instagram</a>
-        </div>
-      </div>
+    <div class="footer_follow">
+      <h3>Follow Us</h3>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul>
     </div>
   </div>
 
-  <div class="border-t border-gray-700 mt-8 pt-4 text-sm flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto px-6">
-    <p class="mb-2 md:mb-0">© 2025 DishCovery. All rights reserved.</p>
-    <div class="space-x-4">
-      <a href="#" class="hover:underline">Privacy Policy</a>
-      <a href="#" class="hover:underline">Terms of Service</a>
+  <div class="footer_bottom">
+    <p>© 2025 DishCovery. All rights reserved.</p>
+    <div class="footer_bottom_links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
     </div>
   </div>
 </footer>
