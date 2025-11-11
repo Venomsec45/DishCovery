@@ -207,21 +207,31 @@
       </div>
 
       <!-- Search Bar -->
-      <div class="max-w-4xl mx-auto relative">
-          <div class="flex rounded-full shadow-2xl shadow-gray-300 overflow-hidden border border-gray-200 bg-gradient-to-r from-white to-gray-50 p-1 hover:shadow-3xl transition-shadow duration-300">
-              <input type="text" placeholder="Search recipes, ingredients, or cuisines..." class="flex-grow px-6 py-4 text-gray-700 focus:outline-none bg-transparent placeholder-gray-500 text-lg">
-              <button class="bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white p-4 rounded-full ml-2 transition-all hover:from-dish-accent-pink hover:to-dish-primary flex items-center justify-center w-16 h-16 transform hover:scale-110 hover:rotate-12">
-                  <i data-lucide="search" class="w-6 h-6"></i>
+      <div class="max-w-5xl mx-auto relative">
+          <div class="flex rounded-full shadow-2xl shadow-gray-300 overflow-hidden border-2 border-gray-200 bg-gradient-to-r from-orange-50 via-white to-pink-50 p-2 hover:shadow-3xl hover:border-orange-400 transition-all duration-500 group">
+              <div class="flex items-center px-4">
+                  <svg class="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+              </div>
+              <input type="text" placeholder="Search recipes, ingredients, or cuisines..." class="flex-grow px-4 py-4 text-gray-700 focus:outline-none bg-transparent placeholder-gray-400 text-lg font-medium focus:text-gray-900 transition-colors duration-300">
+              <button class="bg-gradient-to-br from-orange-400 to-orange-600 text-white w-16 h-16 rounded-full ml-3 transition-all duration-300 hover:from-orange-500 hover:to-orange-700 flex items-center justify-center transform hover:scale-105 hover:shadow-lg group-hover:shadow-xl">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
               </button>
           </div>
-          <!-- Optional: Add a subtle glow effect -->
-          <div class="absolute inset-0 rounded-full bg-gradient-to-r from-dish-primary/10 to-dish-accent-pink/10 blur-xl -z-10 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+          <!-- Enhanced glow effect -->
+          <div class="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400/20 via-pink-400/20 to-orange-400/20 blur-2xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <!-- Floating particles effect -->
+          <div class="absolute -top-2 -right-2 w-4 h-4 bg-orange-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-300"></div>
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-pink-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-300" style="animation-delay: 0.2s;"></div>
       </div>
   </section>
 
   <!-- Filters -->
   <section class="py-6 border-b border-gray-200 mb-12">
-      <div class="flex flex-wrap justify-center md:justify-start gap-3 text-sm">
+      <div class="flex flex-wrap justify-center gap-3 text-sm">
           <!-- Dropdown Button Template -->
           <div class="relative inline-block">
               <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
@@ -270,7 +280,7 @@
 <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold text-dish-dark mb-4 md:mb-0">Found 24 Recipes</h2>
+      <h2 class="text-3xl md:text-4xl font-bold text-dish-dark mb-4 md:mb-0">Found 28 Recipes</h2>
       <div class="flex items-center space-x-2">
         <label class="text-gray-700 font-medium">Sort by:</label>
         <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-dish-primary focus:border-transparent">
@@ -287,7 +297,7 @@
       <!-- Recipe Card 1 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Grilled Chicken Salad" data-description="Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop" alt="Grilled Chicken Salad" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop" alt="Grilled Chicken Salad" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
         <div class="p-6">
@@ -326,7 +336,7 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>95 reviews</span>
           </div>
-          <div class="flex space-x-2">
+          <div class="flex space-x-3">
             <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
               <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
             </button>
@@ -343,7 +353,7 @@
       <!-- Recipe Card 3 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Beef Tacos" data-description="Spicy ground beef with fresh toppings in soft corn tortillas.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://www.thecookingtwins.com/wp-content/uploads/2025/09/authentic-mexican-ground-beef-taco-recipe-featured.webp" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
         <div class="p-6">
@@ -371,7 +381,7 @@
       <!-- Recipe Card 4 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Pasta Carbonara" data-description="Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1551782450-17144efb5723?w=400&h=300&fit=crop" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUsjlvUNdAnlL1qyxjCZFunw0ku6InQG9AA&s" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
         <div class="p-6">
@@ -381,6 +391,118 @@
             <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>20 mins</span>
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>203 reviews</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+            </button>
+            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+            </button>
+          </div>
+          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+            View Recipe
+          </button>
+        </div>
+      </div>
+
+      <!-- Recipe Card 5 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Thai Green Curry" data-description="Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=300&fit=crop" alt="Thai Green Curry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Thai Green Curry</h3>
+          <p class="text-gray-600 text-sm mb-4">Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>35 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>178 reviews</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+            </button>
+            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+            </button>
+          </div>
+          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+            View Recipe
+          </button>
+        </div>
+      </div>
+
+      <!-- Recipe Card 6 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Chocolate Chip Cookies" data-description="Classic homemade cookies with gooey chocolate chips and perfect texture.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop" alt="Chocolate Chip Cookies" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Chocolate Chip Cookies</h3>
+          <p class="text-gray-600 text-sm mb-4">Classic homemade cookies with gooey chocolate chips and perfect texture.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>45 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>312 reviews</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+            </button>
+            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+            </button>
+          </div>
+          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+            View Recipe
+          </button>
+        </div>
+      </div>
+
+      <!-- Recipe Card 7 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Mediterranean Quinoa Bowl" data-description="Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop" alt="Mediterranean Quinoa Bowl" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Mediterranean Quinoa Bowl</h3>
+          <p class="text-gray-600 text-sm mb-4">Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>30 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>142 reviews</span>
+          </div>
+          <div class="flex space-x-2">
+            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+            </button>
+            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+            </button>
+          </div>
+          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+            View Recipe
+          </button>
+        </div>
+      </div>
+
+      <!-- Recipe Card 8 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group" data-title="Classic Margherita Pizza" data-description="Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" alt="Classic Margherita Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Classic Margherita Pizza</h3>
+          <p class="text-gray-600 text-sm mb-4">Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>60 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>267 reviews</span>
           </div>
           <div class="flex space-x-2">
             <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
