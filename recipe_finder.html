@@ -33,21 +33,6 @@
             const recipeCards = document.querySelectorAll('.recipe-card');
             const sortSelect = document.querySelector('select');
 
-            // Search functionality
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                recipeCards.forEach(card => {
-                    const title = card.dataset.title.toLowerCase();
-                    const description = card.dataset.description.toLowerCase();
-                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                        card.style.display = 'block';
-                        card.style.animation = 'fadeIn 0.3s ease-in-out';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-
             // Sort functionality
             sortSelect.addEventListener('change', function() {
                 const sortBy = this.value;
@@ -177,14 +162,18 @@
                 const recipeGrid = document.querySelector('.grid');
                 recipeGrid.innerHTML = '';
 
+                if (recipes.length === 0) {
+                    recipeGrid.innerHTML = `<p class="text-center text-gray-500 col-span-full">No recipes found. Try a different search term!</p>`;
+                }
+
                 recipes.slice(0, displayedRecipes).forEach(recipe => {
                     const cardHTML = `
-                        <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="${recipe.title}" data-description="${recipe.description}">
+                        <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="${recipe.title}" data-description="${recipe.description}">
                             <div class="relative">
                                 <img src="${recipe.image}" alt="${recipe.title}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                                 <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">${recipe.rating} ★</div>
                             </div>
-                            <div class="p-6">
+                            <div class="p-6 flex flex-col flex-grow">
                                 <h3 class="text-xl font-bold text-dish-dark mb-2">${recipe.title}</h3>
                                 <p class="text-gray-600 text-sm mb-4">${recipe.description}</p>
                                 <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -192,17 +181,19 @@
                                     <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>${recipe.difficulty}</span>
                                     <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>${recipe.reviews} reviews</span>
                                 </div>
-                                <div class="flex space-x-2">
-                                    <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                                        <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-                                    </button>
-                                    <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                                        <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+                                <div class="mt-auto pt-4">
+                                    <div class="flex space-x-2">
+                                        <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                                            <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+                                        </button>
+                                        <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                                            <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+                                        </button>
+                                    </div>
+                                    <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+                                        View Recipe
                                     </button>
                                 </div>
-                                <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-                                    View Recipe
-                                </button>
                             </div>
                         </div>
                     `;
@@ -254,6 +245,44 @@
                     });
                 });
             }
+
+            // --- Enhanced Search Functionality ---
+            let searchTimeout;
+            const searchBtn = document.getElementById('search-btn');
+
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const recipeGrid = document.querySelector('.grid');
+
+                // Add fade-out animation
+                recipeGrid.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+
+                setTimeout(() => {
+                    if (searchTerm === '') {
+                        currentRecipes = [...allRecipes];
+                    } else {
+                        currentRecipes = allRecipes.filter(recipe =>
+                            recipe.title.toLowerCase().includes(searchTerm) ||
+                            recipe.description.toLowerCase().includes(searchTerm)
+                        );
+                    }
+                    displayedRecipes = currentRecipes.length; // Show all filtered results
+                    renderRecipes(currentRecipes);
+                    recipeGrid.classList.remove('opacity-0'); // Fade back in
+                }, 300); // Wait for fade-out to complete
+            }
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    performSearch();
+                }, 300); // Debounce delay
+            });
+
+            searchBtn.addEventListener('click', function() {
+                clearTimeout(searchTimeout); // Clear any pending live search
+                performSearch();
+            });
 
             // Initial render
             renderRecipes(currentRecipes);
@@ -352,7 +381,7 @@
                   </svg>
               </div>
               <input type="text" placeholder="Search recipes, ingredients, or cuisines..." class="flex-grow px-4 py-4 text-gray-700 focus:outline-none bg-transparent placeholder-gray-400 text-lg font-medium focus:text-gray-900 transition-colors duration-300">
-              <button class="bg-gradient-to-br from-orange-400 to-orange-600 text-white w-16 h-16 rounded-full ml-3 transition-all duration-300 hover:from-orange-500 hover:to-orange-700 flex items-center justify-center transform hover:scale-105 hover:shadow-lg group-hover:shadow-xl">
+              <button id="search-btn" class="bg-gradient-to-br from-orange-400 to-orange-600 text-white w-16 h-16 rounded-full ml-3 transition-all duration-300 hover:from-orange-500 hover:to-orange-700 flex items-center justify-center transform hover:scale-105 hover:shadow-lg group-hover:shadow-xl">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                   </svg>
@@ -432,12 +461,12 @@
     <!-- Recipe Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       <!-- Recipe Card 1 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Grilled Chicken Salad" data-description="Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Grilled Chicken Salad" data-description="Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop" alt="Grilled Chicken Salad" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Grilled Chicken Salad</h3>
           <p class="text-gray-600 text-sm mb-4">Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -445,27 +474,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>128 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 2 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Vegetable Stir Fry" data-description="Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Vegetable Stir Fry" data-description="Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Vegetable Stir Fry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Vegetable Stir Fry</h3>
           <p class="text-gray-600 text-sm mb-4">Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -473,27 +504,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>95 reviews</span>
           </div>
-          <div class="flex space-x-3">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-3">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 3 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Beef Tacos" data-description="Spicy ground beef with fresh toppings in soft corn tortillas.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Beef Tacos" data-description="Spicy ground beef with fresh toppings in soft corn tortillas.">
         <div class="relative">
           <img src="https://www.thecookingtwins.com/wp-content/uploads/2025/09/authentic-mexican-ground-beef-taco-recipe-featured.webp" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Beef Tacos</h3>
           <p class="text-gray-600 text-sm mb-4">Spicy ground beef with fresh toppings in soft corn tortillas.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -501,27 +534,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>156 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 4 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Pasta Carbonara" data-description="Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pasta Carbonara" data-description="Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.">
         <div class="relative">
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUsjlvUNdAnlL1qyxjCZFunw0ku6InQG9AA&s" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Pasta Carbonara</h3>
           <p class="text-gray-600 text-sm mb-4">Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -529,27 +564,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>203 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 5 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Thai Green Curry" data-description="Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Thai Green Curry" data-description="Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=300&fit=crop" alt="Thai Green Curry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Thai Green Curry</h3>
           <p class="text-gray-600 text-sm mb-4">Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -557,27 +594,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>178 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 6 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Chocolate Chip Cookies" data-description="Classic homemade cookies with gooey chocolate chips and perfect texture.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chocolate Chip Cookies" data-description="Classic homemade cookies with gooey chocolate chips and perfect texture.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop" alt="Chocolate Chip Cookies" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Chocolate Chip Cookies</h3>
           <p class="text-gray-600 text-sm mb-4">Classic homemade cookies with gooey chocolate chips and perfect texture.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -585,27 +624,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>312 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 7 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Mediterranean Quinoa Bowl" data-description="Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Mediterranean Quinoa Bowl" data-description="Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop" alt="Mediterranean Quinoa Bowl" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Mediterranean Quinoa Bowl</h3>
           <p class="text-gray-600 text-sm mb-4">Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -613,27 +654,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>142 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 8 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Classic Margherita Pizza" data-description="Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Classic Margherita Pizza" data-description="Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" alt="Classic Margherita Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Classic Margherita Pizza</h3>
           <p class="text-gray-600 text-sm mb-4">Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -641,27 +684,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>267 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 9 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Chicken Adobo" data-description="Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chicken Adobo" data-description="Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Chicken Adobo</h3>
           <p class="text-gray-600 text-sm mb-4">Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -669,27 +714,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>150 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 10 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Scrambled Eggs" data-description="Fluffy scrambled eggs with butter and milk for perfect texture.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Scrambled Eggs" data-description="Fluffy scrambled eggs with butter and milk for perfect texture.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1551782450-17144efb5723?w=400&h=300&fit=crop" alt="Scrambled Eggs" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.5 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Scrambled Eggs</h3>
           <p class="text-gray-600 text-sm mb-4">Fluffy scrambled eggs with butter and milk for perfect texture.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -697,27 +744,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>200 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 11 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Pepperoni Pizza" data-description="Crispy crust topped with tomato sauce, cheese, and pepperoni slices.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pepperoni Pizza" data-description="Crispy crust topped with tomato sauce, cheese, and pepperoni slices.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" alt="Pepperoni Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Pepperoni Pizza</h3>
           <p class="text-gray-600 text-sm mb-4">Crispy crust topped with tomato sauce, cheese, and pepperoni slices.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -725,27 +774,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>300 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 12 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Classic Burger" data-description="Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Classic Burger" data-description="Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop" alt="Classic Burger" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Classic Burger</h3>
           <p class="text-gray-600 text-sm mb-4">Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -753,27 +804,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>250 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 13 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Bibimbap" data-description="Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Bibimbap" data-description="Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400&h=300&fit=crop" alt="Bibimbap" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Bibimbap</h3>
           <p class="text-gray-600 text-sm mb-4">Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -781,27 +834,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>180 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 14 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Sushi Rolls" data-description="Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Sushi Rolls" data-description="Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop" alt="Sushi Rolls" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Sushi Rolls</h3>
           <p class="text-gray-600 text-sm mb-4">Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -809,27 +864,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>220 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 15 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Yang Chow Fried Rice" data-description="Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Yang Chow Fried Rice" data-description="Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" alt="Yang Chow Fried Rice" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Yang Chow Fried Rice</h3>
           <p class="text-gray-600 text-sm mb-4">Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -837,27 +894,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>195 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 16 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Crispy Fried Chicken" data-description="Golden, crispy fried chicken with seasoned coating and juicy interior.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Crispy Fried Chicken" data-description="Golden, crispy fried chicken with seasoned coating and juicy interior.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop" alt="Crispy Fried Chicken" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Crispy Fried Chicken</h3>
           <p class="text-gray-600 text-sm mb-4">Golden, crispy fried chicken with seasoned coating and juicy interior.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -865,27 +924,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>275 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 17 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Spaghetti Carbonara" data-description="Classic Italian pasta with eggs, cheese, pancetta, and black pepper.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Spaghetti Carbonara" data-description="Classic Italian pasta with eggs, cheese, pancetta, and black pepper.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1551892376-c73ba8b86727?w=400&h=300&fit=crop" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Spaghetti Carbonara</h3>
           <p class="text-gray-600 text-sm mb-4">Classic Italian pasta with eggs, cheese, pancetta, and black pepper.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -893,27 +954,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>320 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 18 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Pad Thai" data-description="Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pad Thai" data-description="Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=300&fit=crop" alt="Pad Thai" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Pad Thai</h3>
           <p class="text-gray-600 text-sm mb-4">Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -921,27 +984,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>245 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 19 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="French Toast" data-description="Golden, crispy bread soaked in egg mixture and cooked to perfection.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="French Toast" data-description="Golden, crispy bread soaked in egg mixture and cooked to perfection.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=300&fit=crop" alt="French Toast" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">French Toast</h3>
           <p class="text-gray-600 text-sm mb-4">Golden, crispy bread soaked in egg mixture and cooked to perfection.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -949,27 +1014,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>198 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 20 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Ramen" data-description="Japanese noodle soup with rich broth, tender noodles, and various toppings.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Ramen" data-description="Japanese noodle soup with rich broth, tender noodles, and various toppings.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1557872943-16a5ac2386cd?w=400&h=300&fit=crop" alt="Ramen" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Ramen</h3>
           <p class="text-gray-600 text-sm mb-4">Japanese noodle soup with rich broth, tender noodles, and various toppings.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -977,27 +1044,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>267 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 21 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Chicken Parmesan" data-description="Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chicken Parmesan" data-description="Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=400&h=300&fit=crop" alt="Chicken Parmesan" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Chicken Parmesan</h3>
           <p class="text-gray-600 text-sm mb-4">Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1005,27 +1074,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>340 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 22 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Beef Stroganoff" data-description="Tender beef strips in a creamy mushroom sauce served over egg noodles.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Beef Stroganoff" data-description="Tender beef strips in a creamy mushroom sauce served over egg noodles.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop" alt="Beef Stroganoff" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Beef Stroganoff</h3>
           <p class="text-gray-600 text-sm mb-4">Tender beef strips in a creamy mushroom sauce served over egg noodles.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1033,27 +1104,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>280 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 23 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Lasagna" data-description="Layered pasta with ground meat, ricotta cheese, and marinara sauce.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Lasagna" data-description="Layered pasta with ground meat, ricotta cheese, and marinara sauce.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=300&fit=crop" alt="Lasagna" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Lasagna</h3>
           <p class="text-gray-600 text-sm mb-4">Layered pasta with ground meat, ricotta cheese, and marinara sauce.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1061,27 +1134,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>420 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 24 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Tacos al Pastor" data-description="Mexican tacos with marinated pork, pineapple, and fresh toppings.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Tacos al Pastor" data-description="Mexican tacos with marinated pork, pineapple, and fresh toppings.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop" alt="Tacos al Pastor" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Tacos al Pastor</h3>
           <p class="text-gray-600 text-sm mb-4">Mexican tacos with marinated pork, pineapple, and fresh toppings.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1089,27 +1164,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>310 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 25 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Chicken Shawarma" data-description="Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chicken Shawarma" data-description="Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop" alt="Chicken Shawarma" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Chicken Shawarma</h3>
           <p class="text-gray-600 text-sm mb-4">Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1117,27 +1194,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>290 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 26 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Vegetable Curry" data-description="Aromatic Indian curry with mixed vegetables and coconut milk.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Vegetable Curry" data-description="Aromatic Indian curry with mixed vegetables and coconut milk.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop" alt="Vegetable Curry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Vegetable Curry</h3>
           <p class="text-gray-600 text-sm mb-4">Aromatic Indian curry with mixed vegetables and coconut milk.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1145,27 +1224,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>240 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 27 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Pancakes" data-description="Fluffy homemade pancakes served with maple syrup and butter.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pancakes" data-description="Fluffy homemade pancakes served with maple syrup and butter.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&h=300&fit=crop" alt="Pancakes" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Pancakes</h3>
           <p class="text-gray-600 text-sm mb-4">Fluffy homemade pancakes served with maple syrup and butter.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1173,27 +1254,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>380 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 28 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Waffles" data-description="Crispy Belgian waffles with whipped cream and fresh berries.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Waffles" data-description="Crispy Belgian waffles with whipped cream and fresh berries.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop" alt="Waffles" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Waffles</h3>
           <p class="text-gray-600 text-sm mb-4">Crispy Belgian waffles with whipped cream and fresh berries.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1201,27 +1284,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>320 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 29 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Grilled Salmon" data-description="Fresh salmon fillet grilled to perfection with lemon and herbs.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Grilled Salmon" data-description="Fresh salmon fillet grilled to perfection with lemon and herbs.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop" alt="Grilled Salmon" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Grilled Salmon</h3>
           <p class="text-gray-600 text-sm mb-4">Fresh salmon fillet grilled to perfection with lemon and herbs.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1229,27 +1314,29 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>350 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
 
       <!-- Recipe Card 30 -->
-      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group min-h-[500px]" data-title="Beef Stew" data-description="Hearty beef stew with vegetables and rich gravy.">
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Beef Stew" data-description="Hearty beef stew with vegetables and rich gravy.">
         <div class="relative">
           <img src="https://images.unsplash.com/photo-1534938665420-4193effeacc4?w=400&h=300&fit=crop" alt="Beef Stew" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
-        <div class="p-6">
+        <div class="p-6 flex flex-col flex-grow">
           <h3 class="text-xl font-bold text-dish-dark mb-2">Beef Stew</h3>
           <p class="text-gray-600 text-sm mb-4">Hearty beef stew with vegetables and rich gravy.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
@@ -1257,17 +1344,19 @@
             <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>290 reviews</span>
           </div>
-          <div class="flex space-x-2">
-            <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-            </button>
-            <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-              <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+          <div class="mt-auto pt-4">
+            <div class="flex space-x-2">
+              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+              </button>
+              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
+                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
+              </button>
+            </div>
+            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+              View Recipe
             </button>
           </div>
-          <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-            View Recipe
-          </button>
         </div>
       </div>
     </div>
