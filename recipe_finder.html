@@ -9,6 +9,36 @@
     <link rel="stylesheet" href="design/index_style.css">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+      #login-modal.modal-open #modal-content {
+        transform: scale(1);
+        opacity: 1;
+      }
+      #login-modal.modal-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      /* Premium White Background */
+      body {
+        background-color: #fafbfc; /* A clean, premium off-white, consistent with Gallery page */
+      }
+      /* Hamburger Icon Transitions from index.html */
+      .hamburger-line { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+      .menu-open .hamburger-line-1 { transform: translateY(7px) rotate(45deg); }
+      .menu-open .hamburger-line-2 { opacity: 0; }
+      .menu-open .hamburger-line-3 { transform: translateY(-7px) rotate(-45deg); }
+
+      /* Scroll-driven animations from index.html */
+      .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      }
+      .is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
     <script>
         tailwind.config = {
             theme: {
@@ -182,17 +212,19 @@
                                     <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>${recipe.reviews} reviews</span>
                                 </div>
                                 <div class="mt-auto pt-4">
-                                    <div class="flex space-x-2">
-                                        <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                                            <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
+                                    <div class="flex items-center justify-between">
+                                        <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                                            View Recipe
                                         </button>
-                                        <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                                            <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-                                        </button>
+                                        <div class="flex space-x-2 ml-3">
+                                            <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                                                <i data-lucide="timer" class="w-5 h-5"></i>
+                                            </button>
+                                            <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                                                <i data-lucide="star" class="w-5 h-5"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-                                        View Recipe
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -362,11 +394,11 @@
               <i data-lucide="leaf" class="w-5 h-5"></i>
               <span>Ingredient Matcher</span>
           </button>
-          <button class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-accent-blue">
+          <button id="leftover-saver-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-accent-blue">
               <i data-lucide="save" class="w-5 h-5"></i>
               <span>Leftover Saver</span>
           </button>
-          <button class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-accent-pink">
+          <button id="cook-with-friends-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-accent-pink">
               <i data-lucide="users" class="w-5 h-5"></i>
               <span>Cook with Friends</span>
           </button>
@@ -374,7 +406,7 @@
 
       <!-- Search Bar -->
       <div class="max-w-5xl mx-auto relative">
-          <div class="flex rounded-full shadow-2xl shadow-gray-300 overflow-hidden border-2 border-gray-200 bg-gradient-to-r from-orange-50 via-white to-pink-50 p-2 hover:shadow-3xl hover:border-orange-400 transition-all duration-500 group">
+          <div class="search-bar-container flex flex-col sm:flex-row rounded-full shadow-2xl shadow-gray-300/60 overflow-hidden border-2 border-transparent bg-white/60 backdrop-blur-sm p-2 hover:shadow-orange-400/20 transition-all duration-500 group">
               <div class="flex items-center px-4">
                   <svg class="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -396,7 +428,7 @@
   </section>
 
   <!-- Filters -->
-  <section class="py-6 border-b border-gray-200 mb-12">
+  <section class="py-6 border-b border-gray-200/80 mb-12 reveal-on-scroll">
       <div class="flex flex-wrap justify-center gap-3 text-sm">
           <!-- Dropdown Button Template -->
           <div class="relative inline-block">
@@ -443,7 +475,7 @@
 </main>
 
 <!-- Recipes Section -->
-<section class="py-16 bg-gradient-to-br from-gray-50 to-white">
+<section class="py-16 bg-transparent reveal-on-scroll">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col md:flex-row justify-between items-center mb-12">
       <h2 class="text-3xl md:text-4xl font-bold text-dish-dark mb-4 md:mb-0">Recipes for you</h2>
@@ -475,17 +507,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>128 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -505,17 +539,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>95 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-3">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -535,17 +571,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>156 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -565,17 +603,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>203 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -595,17 +635,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>178 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -625,17 +667,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>312 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -655,17 +699,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>142 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -685,17 +731,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>267 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -715,17 +763,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>150 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -745,17 +795,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>200 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -775,17 +827,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>300 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -805,17 +859,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>250 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -835,17 +891,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>180 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -865,17 +923,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>220 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -895,17 +955,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>195 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -925,17 +987,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>275 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -955,17 +1019,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>320 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -985,17 +1051,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>245 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1015,17 +1083,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>198 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1045,17 +1115,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>267 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1075,17 +1147,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>340 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1105,17 +1179,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>280 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1135,17 +1211,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>420 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1165,17 +1243,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>310 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1195,17 +1275,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>290 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1225,17 +1307,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>240 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1255,17 +1339,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>380 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1285,17 +1371,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>320 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1315,17 +1403,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>350 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1345,17 +1435,19 @@
             <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>290 reviews</span>
           </div>
           <div class="mt-auto pt-4">
-            <div class="flex space-x-2">
-              <button class="timer-btn flex-1 bg-dish-accent-blue text-white py-2 px-4 rounded-lg hover:bg-dish-accent-blue/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="timer" class="w-4 h-4 mr-2"></i>Timer
-              </button>
-              <button class="rate-btn flex-1 bg-dish-accent-pink text-white py-2 px-4 rounded-lg hover:bg-dish-accent-pink/80 transition-all duration-200 flex items-center justify-center shadow-md hover:shadow-lg transform hover:scale-105">
-                <i data-lucide="star" class="w-4 h-4 mr-2"></i>Rate
-              </button>
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
-            <button class="view-recipe-btn w-full mt-3 bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-              View Recipe
-            </button>
           </div>
         </div>
       </div>
@@ -1418,39 +1510,132 @@
   </div>
 </section>
 
-<footer>
-  <div class="footer_container">
-    <div class="footer_column">
-      <p>
+<footer class="bg-[#0f1b2c] text-gray-100 py-12">
+    <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="footer_column text-gray-300">
         Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
-      </p>
+      </div>
+
+      <div class="footer_contact">
+        <h3 class="text-white text-lg mb-3">Contact Info</h3>
+        <p class="text-gray-300">hello@dishcovery.com</p>
+        <p class="text-gray-300">+1 (555) 123-4567</p>
+        <p class="text-gray-300">123 Culinary Street, Food City</p>
+      </div>
     </div>
 
-    <div class="footer_contact">
-      <h3>Contact Info</h3>
-      <p>hello@dishcovery.com</p>
-      <p>+1 (555) 123-4567</p>
-      <p>123 Culinary Street, Food City</p>
+    <div class="border-t border-white/10 mt-12 pt-6 text-center">
+      <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
+      <div class="flex gap-6 justify-center mt-4">
+        <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
+        <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
+        <a href="#" class="text-gray-300 hover:text-primary">Website Builder</a>
+      </div>
     </div>
-
-    <div class="footer_follow">
-      <h3>Follow Us</h3>
-      <ul>
-        <li><a href="#">Facebook</a></li>
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">Instagram</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="footer_bottom">
-    <p>© 2025 DishCovery. All rights reserved.</p>
-    <div class="footer_bottom_links">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-    </div>
-  </div>
 </footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // --- Cook with Friends Modal Functionality ---
+    const cookWithFriendsBtn = document.getElementById('cook-with-friends-btn');
+    const loginModal = document.getElementById('login-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+ 
+    function toggleModal(show) {
+      if (loginModal) {
+        loginModal.classList.toggle('hidden', !show);
+        loginModal.classList.toggle('modal-open', show);
+      }
+    }
+ 
+    if (cookWithFriendsBtn) cookWithFriendsBtn.addEventListener('click', () => toggleModal(true));
+    if (closeModalBtn) closeModalBtn.addEventListener('click', () => toggleModal(false));
+    if (loginModal) loginModal.addEventListener('click', (e) => {
+        if (e.target === loginModal) toggleModal(false);
+    });
+
+    // --- Leftover Saver Modal Functionality ---
+    const leftoverSaverBtn = document.getElementById('leftover-saver-btn');
+    const leftoverModal = document.getElementById('leftover-modal');
+    const closeLeftoverModalBtn = document.getElementById('close-leftover-modal-btn');
+
+    function toggleLeftoverModal(show) {
+      if (leftoverModal) {
+        leftoverModal.classList.toggle('hidden', !show);
+        leftoverModal.classList.toggle('modal-open', show);
+      }
+    }
+
+    if (leftoverSaverBtn) leftoverSaverBtn.addEventListener('click', () => toggleLeftoverModal(true));
+    if (closeLeftoverModalBtn) closeLeftoverModalBtn.addEventListener('click', () => toggleLeftoverModal(false));
+    if (leftoverModal) leftoverModal.addEventListener('click', (e) => { if (e.target === leftoverModal) toggleLeftoverModal(false); });
+
+    // --- Global Keydown Listener for Modals ---
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (loginModal && !loginModal.classList.contains('hidden')) toggleModal(false);
+        if (leftoverModal && !leftoverModal.classList.contains('hidden')) toggleLeftoverModal(false);
+      }
+    });
+
+    // --- Scroll Animations ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+    // --- Hamburger Menu Toggle ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+    if (menuToggle && mainNav) {
+        menuToggle.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            this.classList.toggle('menu-open');
+            mainNav.classList.toggle('hidden');
+        });
+    }
+  });
+</script>
+
+<!-- Login Modal -->
+<div id="login-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 opacity-0 pointer-events-none">
+  <div id="modal-content" class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center relative transform transition-all duration-300 scale-95 opacity-0">
+      <button id="close-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 transition-colors">
+          <i data-lucide="x" class="w-7 h-7"></i>
+      </button>
+      <div class="w-20 h-20 bg-gradient-to-br from-orange-100 to-orange-200 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+        <i data-lucide="lock" class="w-10 h-10"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-dish-dark mb-4">Oops! You need to log in.</h2>
+      <p class="text-gray-600 mb-8">This feature is for members only. Please log in to cook with friends!</p>
+      <a href="Log_In.html" class="inline-block w-full bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+        Go to Log In
+      </a>
+  </div>
+</div>
+
+<!-- Leftover Saver Modal -->
+<div id="leftover-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 opacity-0 pointer-events-none">
+  <div id="modal-content-leftover" class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center relative transform transition-all duration-300 scale-95 opacity-0">
+      <button id="close-leftover-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 transition-colors">
+          <i data-lucide="x" class="w-7 h-7"></i>
+      </button>
+      <div class="w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        <i data-lucide="save" class="w-10 h-10"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-dish-dark mb-4">Oops, you must log in to save your leftover</h2>
+      <p class="text-gray-600 mb-8">This feature is for members only. Please log in to use the Leftover Saver!</p>
+      <a href="Log_In.html" class="inline-block w-full bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+        Go to Log In
+      </a>
+  </div>
+</div>
 
 </body>
 </html>
