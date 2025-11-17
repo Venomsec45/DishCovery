@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DishCovery Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="design/recipe_finder.css">
+    <link rel="stylesheet" href="design/index_style.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+      #login-modal.modal-open #modal-content {
+        transform: scale(1);
+        opacity: 1;
+      }
+      #login-modal.modal-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      /* Premium White Background */
+      body {
+        background-color: #fafbfc; /* A clean, premium off-white, consistent with Gallery page */
+      }
+      /* Hamburger Icon Transitions from index.html */
+      .hamburger-line { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
+      .menu-open .hamburger-line-1 { transform: translateY(7px) rotate(45deg); }
+      .menu-open .hamburger-line-2 { opacity: 0; }
+      .menu-open .hamburger-line-3 { transform: translateY(-7px) rotate(-45deg); }
+
+      /* Scroll-driven animations from index.html */
+      .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      }
+      .is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .menu-open .hamburger-line-1 { transform: translateY(6px) rotate(45deg); }
+      .menu-open .hamburger-line-2 { opacity: 0; }
+      .menu-open .hamburger-line-3 { transform: translateY(-6px) rotate(-45deg); }
+      .notification-card:hover .delete-icon {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dish-primary': '#FF7B5A',
+                        'dish-green': '#4CAF50',
+                        'dish-dark': '#1e293b',
+                        'dish-accent-blue': '#4A90E2',
+                        'dish-accent-pink': '#E94E77',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    boxShadow: {
+                      'md-soft': '0 6px 18px rgba(0,0,0,0.06)',
+                      'lg-soft': '0 12px 30px rgba(0,0,0,0.08)'
+                    },
+                    maxWidth: {
+                      'container-lg': '1200px',
+                      'container-xl': '1400px'
+                    },
+                }
+            }
+        }
+
+        // Interactive JavaScript for Recipe Finder
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('input[placeholder="Search recipes, ingredients, or cuisines..."]');
+            const recipeCards = document.querySelectorAll('.recipe-card');
+            const sortSelect = document.querySelector('select');
+
+            // Sort functionality
+            sortSelect.addEventListener('change', function() {
+                const sortBy = this.value;
+                const recipeGrid = document.querySelector('.grid');
+                const cardsArray = Array.from(recipeCards);
+
+                cardsArray.sort((a, b) => {
+                    switch(sortBy) {
+                        case 'Highest Rated':
+                            const ratingA = parseFloat(a.querySelector('.absolute').textContent);
+                            const ratingB = parseFloat(b.querySelector('.absolute').textContent);
+                            return ratingB - ratingA;
+                        case 'Cooking Time':
+                            const timeA = parseInt(a.querySelector('[data-lucide="clock"]').parentElement.textContent.split(' ')[0]);
+                            const timeB = parseInt(b.querySelector('[data-lucide="clock"]').parentElement.textContent.split(' ')[0]);
+                            return timeA - timeB;
+                        case 'Newest':
+                            // For demo, randomize order
+                            return Math.random() - 0.5;
+                        default:
+                            return 0;
+                    }
+                });
+
+                cardsArray.forEach(card => {
+                    recipeGrid.appendChild(card);
+                });
+            });
+
+            // Add click animations to buttons
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // Specific button functionalities
+            document.querySelectorAll('.timer-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.recipe-card');
+                    const title = card.dataset.title;
+                    alert(`Timer started for ${title}! Set your cooking time.`);
+                });
+            });
+
+            document.querySelectorAll('.rate-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.recipe-card');
+                    const title = card.dataset.title;
+                    const rating = prompt(`Rate ${title} (1-5 stars):`);
+                    if (rating && rating >= 1 && rating <= 5) {
+                        alert(`Thank you for rating ${title} ${rating} stars!`);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.view-recipe-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.recipe-card');
+                    const title = card.dataset.title;
+                    const description = card.dataset.description;
+                    alert(`Recipe: ${title}\n\n${description}\n\nFull recipe details would be shown here.`);
+                });
+            });
+
+            // Add hover effects to recipe cards
+            recipeCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+
+            // Recipe data for randomization
+            const allRecipes = [
+                { title: "Grilled Chicken Salad", description: "Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.", image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop", rating: "4.8", time: "25 mins", difficulty: "Easy", reviews: "128" },
+                { title: "Vegetable Stir Fry", description: "Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.", image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop", rating: "4.6", time: "15 mins", difficulty: "Easy", reviews: "95" },
+                { title: "Beef Tacos", description: "Spicy ground beef with fresh toppings in soft corn tortillas.", image: "https://www.thecookingtwins.com/wp-content/uploads/2025/09/authentic-mexican-ground-beef-taco-recipe-featured.webp", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "156" },
+                { title: "Pasta Carbonara", description: "Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUsjlvUNdAnlL1qyxjCZFunw0ku6InQG9AA&s", rating: "4.7", time: "20 mins", difficulty: "Medium", reviews: "203" },
+                { title: "Thai Green Curry", description: "Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.", image: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=300&fit=crop", rating: "4.8", time: "35 mins", difficulty: "Medium", reviews: "178" },
+                { title: "Chocolate Chip Cookies", description: "Classic homemade cookies with gooey chocolate chips and perfect texture.", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Easy", reviews: "312" },
+                { title: "Mediterranean Quinoa Bowl", description: "Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop", rating: "4.6", time: "30 mins", difficulty: "Easy", reviews: "142" },
+                { title: "Classic Margherita Pizza", description: "Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop", rating: "4.7", time: "60 mins", difficulty: "Medium", reviews: "267" },
+                { title: "Chicken Adobo", description: "Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.", image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop", rating: "4.8", time: "45 mins", difficulty: "Easy", reviews: "150" },
+                { title: "Scrambled Eggs", description: "Fluffy scrambled eggs with butter and milk for perfect texture.", image: "https://images.unsplash.com/photo-1551782450-17144efb5723?w=400&h=300&fit=crop", rating: "4.5", time: "5 mins", difficulty: "Easy", reviews: "200" },
+                { title: "Pepperoni Pizza", description: "Crispy crust topped with tomato sauce, cheese, and pepperoni slices.", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "300" },
+                { title: "Classic Burger", description: "Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Easy", reviews: "250" },
+                { title: "Bibimbap", description: "Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.", image: "https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400&h=300&fit=crop", rating: "4.8", time: "35 mins", difficulty: "Medium", reviews: "180" },
+                { title: "Sushi Rolls", description: "Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.", image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Medium", reviews: "220" },
+                { title: "Yang Chow Fried Rice", description: "Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.", image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop", rating: "4.7", time: "25 mins", difficulty: "Medium", reviews: "195" },
+                { title: "Crispy Fried Chicken", description: "Golden, crispy fried chicken with seasoned coating and juicy interior.", image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop", rating: "4.8", time: "40 mins", difficulty: "Medium", reviews: "275" },
+                { title: "Spaghetti Carbonara", description: "Classic Italian pasta with eggs, cheese, pancetta, and black pepper.", image: "https://images.unsplash.com/photo-1551892376-c73ba8b86727?w=400&h=300&fit=crop", rating: "4.9", time: "20 mins", difficulty: "Medium", reviews: "320" },
+                { title: "Pad Thai", description: "Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.", image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=300&fit=crop", rating: "4.7", time: "25 mins", difficulty: "Medium", reviews: "245" },
+                { title: "French Toast", description: "Golden, crispy bread soaked in egg mixture and cooked to perfection.", image: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=300&fit=crop", rating: "4.6", time: "15 mins", difficulty: "Easy", reviews: "198" },
+                { title: "Ramen", description: "Japanese noodle soup with rich broth, tender noodles, and various toppings.", image: "https://images.unsplash.com/photo-1557872943-16a5ac2386cd?w=400&h=300&fit=crop", rating: "4.8", time: "30 mins", difficulty: "Medium", reviews: "267" },
+                { title: "Chicken Parmesan", description: "Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.", image: "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Medium", reviews: "340" },
+                { title: "Beef Stroganoff", description: "Tender beef strips in a creamy mushroom sauce served over egg noodles.", image: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop", rating: "4.7", time: "35 mins", difficulty: "Medium", reviews: "280" },
+                { title: "Lasagna", description: "Layered pasta with ground meat, ricotta cheese, and marinara sauce.", image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=300&fit=crop", rating: "4.8", time: "90 mins", difficulty: "Medium", reviews: "420" },
+                { title: "Tacos al Pastor", description: "Mexican tacos with marinated pork, pineapple, and fresh toppings.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop", rating: "4.9", time: "40 mins", difficulty: "Medium", reviews: "310" },
+                { title: "Chicken Shawarma", description: "Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.", image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop", rating: "4.8", time: "50 mins", difficulty: "Medium", reviews: "290" },
+                { title: "Vegetable Curry", description: "Aromatic Indian curry with mixed vegetables and coconut milk.", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop", rating: "4.6", time: "35 mins", difficulty: "Easy", reviews: "240" },
+                { title: "Pancakes", description: "Fluffy homemade pancakes served with maple syrup and butter.", image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Easy", reviews: "380" },
+                { title: "Waffles", description: "Crispy Belgian waffles with whipped cream and fresh berries.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop", rating: "4.8", time: "25 mins", difficulty: "Easy", reviews: "320" },
+                { title: "Grilled Salmon", description: "Fresh salmon fillet grilled to perfection with lemon and herbs.", image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop", rating: "4.9", time: "20 mins", difficulty: "Easy", reviews: "350" },
+                { title: "Beef Stew", description: "Hearty beef stew with vegetables and rich gravy.", image: "https://images.unsplash.com/photo-1534938665420-4193effeacc4?w=400&h=300&fit=crop", rating: "4.7", time: "120 mins", difficulty: "Medium", reviews: "290" }
+            ];
+
+            let currentRecipes = [...allRecipes];
+            let displayedRecipes = 20; // Start with 20 recipes
+
+            // Function to shuffle array
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Function to render recipes
+            function renderRecipes(recipes) {
+                const recipeGrid = document.querySelector('.grid');
+                recipeGrid.innerHTML = '';
+
+                if (recipes.length === 0) {
+                    recipeGrid.innerHTML = `<p class="text-center text-gray-500 col-span-full">No recipes found. Try a different search term!</p>`;
+                }
+
+                recipes.slice(0, displayedRecipes).forEach(recipe => {
+                    const cardHTML = `
+                        <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="${recipe.title}" data-description="${recipe.description}">
+                            <div class="relative">
+                                <img src="${recipe.image}" alt="${recipe.title}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                                <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">${recipe.rating} ★</div>
+                            </div>
+                            <div class="p-6 flex flex-col flex-grow">
+                                <h3 class="text-xl font-bold text-dish-dark mb-2">${recipe.title}</h3>
+                                <p class="text-gray-600 text-sm mb-4">${recipe.description}</p>
+                                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                    <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>${recipe.time}</span>
+                                    <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>${recipe.difficulty}</span>
+                                    <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>${recipe.reviews} reviews</span>
+                                </div>
+                                <div class="mt-auto pt-4">
+                                    <div class="flex items-center justify-between">
+                                        <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                                            View Recipe
+                                        </button>
+                                        <div class="flex space-x-2 ml-3">
+                                            <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                                                <i data-lucide="timer" class="w-5 h-5"></i>
+                                            </button>
+                                            <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                                                <i data-lucide="star" class="w-5 h-5"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    recipeGrid.innerHTML += cardHTML;
+                });
+
+                // Re-attach event listeners after rendering
+                attachEventListeners();
+                lucide.createIcons();
+            }
+
+            // Function to attach event listeners to buttons
+            function attachEventListeners() {
+                document.querySelectorAll('.timer-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const card = this.closest('.recipe-card');
+                        const title = card.dataset.title;
+                        alert(`Timer started for ${title}! Set your cooking time.`);
+                    });
+                });
+
+                document.querySelectorAll('.rate-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const card = this.closest('.recipe-card');
+                        const title = card.dataset.title;
+                        const rating = prompt(`Rate ${title} (1-5 stars):`);
+                        if (rating && rating >= 1 && rating <= 5) {
+                            alert(`Thank you for rating ${title} ${rating} stars!`);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('.view-recipe-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const card = this.closest('.recipe-card');
+                        const title = card.dataset.title;
+                        const description = card.dataset.description;
+                        alert(`Recipe: ${title}\n\n${description}\n\nFull recipe details would be shown here.`);
+                    });
+                });
+
+                // Add hover effects to recipe cards
+                document.querySelectorAll('.recipe-card').forEach(card => {
+                    card.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-5px)';
+                    });
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = '';
+                    });
+                });
+            }
+
+            // --- Enhanced Search Functionality ---
+            let searchTimeout;
+            const searchBtn = document.getElementById('search-btn');
+
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const recipeGrid = document.querySelector('.grid');
+
+                // Add fade-out animation
+                recipeGrid.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+
+                setTimeout(() => {
+                    if (searchTerm === '') {
+                        currentRecipes = [...allRecipes];
+                    } else {
+                        currentRecipes = allRecipes.filter(recipe =>
+                            recipe.title.toLowerCase().includes(searchTerm) ||
+                            recipe.description.toLowerCase().includes(searchTerm)
+                        );
+                    }
+                    displayedRecipes = currentRecipes.length; // Show all filtered results
+                    renderRecipes(currentRecipes);
+                    recipeGrid.classList.remove('opacity-0'); // Fade back in
+                }, 300); // Wait for fade-out to complete
+            }
+
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    performSearch();
+                }, 300); // Debounce delay
+            });
+
+            searchBtn.addEventListener('click', function() {
+                clearTimeout(searchTimeout); // Clear any pending live search
+                performSearch();
+            });
+
+            // Initial render
+            renderRecipes(currentRecipes);
+
+            // Load more functionality
+            const loadMoreBtn = document.querySelector('button:last-of-type');
+            loadMoreBtn.addEventListener('click', function() {
+                if (displayedRecipes >= currentRecipes.length) {
+                    // Shuffle and reset if all recipes are shown
+                    currentRecipes = shuffleArray([...allRecipes]);
+                    displayedRecipes = 20;
+                    renderRecipes(currentRecipes);
+                    alert('Recipes randomized! Showing first 20 recipes.');
+                } else {
+                    // Load more recipes
+                    displayedRecipes += 10;
+                    if (displayedRecipes > currentRecipes.length) {
+                        displayedRecipes = currentRecipes.length;
+                    }
+                    renderRecipes(currentRecipes);
+                }
+            });
+        });
+
+        // Add fadeIn animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+  </head>
+
+<body>
+
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 transition-all duration-300">
+    <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="logo">
+        <h1 class="text-2xl md:text-3xl font-extrabold text-dish-primary">DishCovery</h1>
+      </div>
+
+      <!-- Hamburger Menu Button for Mobile -->
+      <button id="menu-toggle" class="md:hidden text-gray-800 focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+        <div class="w-7 h-7 relative">
+          <span class="hamburger-line hamburger-line-1 absolute top-1.5 left-0 w-full h-0.5 bg-current transition-transform duration-300"></span>
+          <span class="hamburger-line hamburger-line-2 absolute top-1/2 -translate-y-1/2 left-0 w-full h-0.5 bg-current transition-opacity duration-300"></span>
+          <span class="hamburger-line hamburger-line-3 absolute bottom-1.5 left-0 w-full h-0.5 bg-current transition-transform duration-300"></span>
+        </div>
+      </button>
+
+      <nav id="main-nav" aria-label="Main navigation" class="hidden md:flex md:items-center absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none">
+        <ul class="flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-8 text-center md:text-left w-full p-6 md:p-0">
+          <li><a href="recipe_finder_for_account.html" class="font-semibold text-gray-800 hover:text-dish-primary px-2 py-1 rounded-md transition-colors duration-300">Recipe Finder</a></li>
+          <li><a href="#" class="font-semibold text-gray-800 hover:text-dish-primary px-2 py-1 rounded-md transition-colors duration-300">Gallery</a></li>
+          <li class="login mt-4 md:mt-0">
+            <a href="account_dashboard.html" class="inline-block bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transform transition hover:-translate-y-0.5" aria-current="page">My Account</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="text-center py-16 md:py-24">
+      <h1 class="text-4xl md:text-6xl font-extrabold text-dish-dark mb-4">
+          Smart Recipe Finder
+      </h1>
+      <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10">
+          Discover the perfect recipe based on your available ingredients. Reduce food waste and explore international cuisines with our intelligent matching system.
+      </p>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <button class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-green">
+              <i data-lucide="leaf" class="w-5 h-5"></i>
+              <span>Ingredient Matcher</span>
+          </button>
+          <button id="leftover-saver-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-accent-blue">
+              <i data-lucide="save" class="w-5 h-5"></i>
+              <span>Leftover Saver</span>
+          </button>
+          <button id="cook-with-friends-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-accent-pink">
+              <i data-lucide="users" class="w-5 h-5"></i>
+              <span>Cook with Friends</span>
+          </button>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="max-w-5xl mx-auto relative">
+          <div class="search-bar-container flex flex-col sm:flex-row rounded-full shadow-2xl shadow-gray-300/60 overflow-hidden border-2 border-transparent bg-white/60 backdrop-blur-sm p-2 hover:shadow-orange-400/20 transition-all duration-500 group">
+              <div class="flex items-center px-4">
+                  <svg class="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+              </div>
+              <input type="text" placeholder="Search recipes, ingredients, or cuisines..." class="flex-grow px-4 py-4 text-gray-700 focus:outline-none bg-transparent placeholder-gray-400 text-lg font-medium focus:text-gray-900 transition-colors duration-300">
+              <button id="search-btn" class="bg-gradient-to-br from-orange-400 to-orange-600 text-white w-16 h-16 rounded-full ml-3 transition-all duration-300 hover:from-orange-500 hover:to-orange-700 flex items-center justify-center transform hover:scale-105 hover:shadow-lg group-hover:shadow-xl">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+              </button>
+          </div>
+          <!-- Enhanced glow effect -->
+          <div class="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400/20 via-pink-400/20 to-orange-400/20 blur-2xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <!-- Floating particles effect -->
+          <div class="absolute -top-2 -right-2 w-4 h-4 bg-orange-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-300"></div>
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-pink-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-300" style="animation-delay: 0.2s;"></div>
+      </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="py-6 border-b border-gray-200/80 mb-12 reveal-on-scroll">
+      <div class="flex flex-wrap justify-center gap-3 text-sm">
+          <!-- Dropdown Button Template -->
+          <div class="relative inline-block">
+              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+                  All Categories
+                  <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
+              </button>
+          </div>
+          <div class="relative inline-block">
+              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+                  All Cuisines
+                  <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
+              </button>
+          </div>
+          <div class="relative inline-block">
+              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+                  All Diets
+                  <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
+              </button>
+          </div>
+          <div class="relative inline-block">
+              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+                  All Ratings
+                  <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
+              </button>
+          </div>
+          <div class="relative inline-block">
+              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+                  All Levels
+                  <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
+              </button>
+          </div>
+          <div class="relative inline-block">
+              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+                  Any Time
+                  <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
+              </button>
+          </div>
+      </div>
+      <script>
+        lucide.createIcons();
+      </script>
+  </section>
+</main>
+
+<!-- Recipes Section -->
+<section class="py-16 bg-transparent reveal-on-scroll">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-dish-dark mb-4 md:mb-0">Recipes for you</h2>
+      <div class="flex items-center space-x-2">
+        <label class="text-gray-700 font-medium">Sort by:</label>
+        <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-dish-primary focus:border-transparent">
+          <option>Most Popular</option>
+          <option>Newest</option>
+          <option>Highest Rated</option>
+          <option>Cooking Time</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Recipe Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <!-- Recipe Card 1 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Grilled Chicken Salad" data-description="Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop" alt="Grilled Chicken Salad" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Grilled Chicken Salad</h3>
+          <p class="text-gray-600 text-sm mb-4">Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>25 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>128 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 2 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Vegetable Stir Fry" data-description="Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Vegetable Stir Fry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Vegetable Stir Fry</h3>
+          <p class="text-gray-600 text-sm mb-4">Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>15 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>95 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 3 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Beef Tacos" data-description="Spicy ground beef with fresh toppings in soft corn tortillas.">
+        <div class="relative">
+          <img src="https://www.thecookingtwins.com/wp-content/uploads/2025/09/authentic-mexican-ground-beef-taco-recipe-featured.webp" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Beef Tacos</h3>
+          <p class="text-gray-600 text-sm mb-4">Spicy ground beef with fresh toppings in soft corn tortillas.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>30 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>156 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 4 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pasta Carbonara" data-description="Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.">
+        <div class="relative">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUsjlvUNdAnlL1qyxjCZFunw0ku6InQG9AA&s" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Pasta Carbonara</h3>
+          <p class="text-gray-600 text-sm mb-4">Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>20 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>203 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 5 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Thai Green Curry" data-description="Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=300&fit=crop" alt="Thai Green Curry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Thai Green Curry</h3>
+          <p class="text-gray-600 text-sm mb-4">Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>35 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>178 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 6 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chocolate Chip Cookies" data-description="Classic homemade cookies with gooey chocolate chips and perfect texture.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop" alt="Chocolate Chip Cookies" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Chocolate Chip Cookies</h3>
+          <p class="text-gray-600 text-sm mb-4">Classic homemade cookies with gooey chocolate chips and perfect texture.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>45 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>312 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 7 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Mediterranean Quinoa Bowl" data-description="Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop" alt="Mediterranean Quinoa Bowl" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Mediterranean Quinoa Bowl</h3>
+          <p class="text-gray-600 text-sm mb-4">Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>30 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>142 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 8 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Classic Margherita Pizza" data-description="Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" alt="Classic Margherita Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Classic Margherita Pizza</h3>
+          <p class="text-gray-600 text-sm mb-4">Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>60 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>267 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 9 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chicken Adobo" data-description="Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Chicken Adobo</h3>
+          <p class="text-gray-600 text-sm mb-4">Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>45 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>150 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 10 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Scrambled Eggs" data-description="Fluffy scrambled eggs with butter and milk for perfect texture.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1551782450-17144efb5723?w=400&h=300&fit=crop" alt="Scrambled Eggs" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.5 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Scrambled Eggs</h3>
+          <p class="text-gray-600 text-sm mb-4">Fluffy scrambled eggs with butter and milk for perfect texture.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>5 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>200 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 11 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pepperoni Pizza" data-description="Crispy crust topped with tomato sauce, cheese, and pepperoni slices.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" alt="Pepperoni Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Pepperoni Pizza</h3>
+          <p class="text-gray-600 text-sm mb-4">Crispy crust topped with tomato sauce, cheese, and pepperoni slices.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>30 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>300 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 12 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Classic Burger" data-description="Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop" alt="Classic Burger" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Classic Burger</h3>
+          <p class="text-gray-600 text-sm mb-4">Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>20 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>250 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 13 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Bibimbap" data-description="Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400&h=300&fit=crop" alt="Bibimbap" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Bibimbap</h3>
+          <p class="text-gray-600 text-sm mb-4">Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>35 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>180 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 14 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Sushi Rolls" data-description="Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop" alt="Sushi Rolls" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Sushi Rolls</h3>
+          <p class="text-gray-600 text-sm mb-4">Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>45 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>220 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 15 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Yang Chow Fried Rice" data-description="Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" alt="Yang Chow Fried Rice" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Yang Chow Fried Rice</h3>
+          <p class="text-gray-600 text-sm mb-4">Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>25 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>195 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 16 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Crispy Fried Chicken" data-description="Golden, crispy fried chicken with seasoned coating and juicy interior.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop" alt="Crispy Fried Chicken" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Crispy Fried Chicken</h3>
+          <p class="text-gray-600 text-sm mb-4">Golden, crispy fried chicken with seasoned coating and juicy interior.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>40 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>275 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 17 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Spaghetti Carbonara" data-description="Classic Italian pasta with eggs, cheese, pancetta, and black pepper.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1551892376-c73ba8b86727?w=400&h=300&fit=crop" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Spaghetti Carbonara</h3>
+          <p class="text-gray-600 text-sm mb-4">Classic Italian pasta with eggs, cheese, pancetta, and black pepper.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>20 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>320 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 18 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pad Thai" data-description="Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=300&fit=crop" alt="Pad Thai" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Pad Thai</h3>
+          <p class="text-gray-600 text-sm mb-4">Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>25 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>245 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 19 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="French Toast" data-description="Golden, crispy bread soaked in egg mixture and cooked to perfection.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=300&fit=crop" alt="French Toast" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">French Toast</h3>
+          <p class="text-gray-600 text-sm mb-4">Golden, crispy bread soaked in egg mixture and cooked to perfection.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>15 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>198 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 20 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Ramen" data-description="Japanese noodle soup with rich broth, tender noodles, and various toppings.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1557872943-16a5ac2386cd?w=400&h=300&fit=crop" alt="Ramen" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Ramen</h3>
+          <p class="text-gray-600 text-sm mb-4">Japanese noodle soup with rich broth, tender noodles, and various toppings.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>30 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>267 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 21 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chicken Parmesan" data-description="Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=400&h=300&fit=crop" alt="Chicken Parmesan" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Chicken Parmesan</h3>
+          <p class="text-gray-600 text-sm mb-4">Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>45 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>340 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 22 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Beef Stroganoff" data-description="Tender beef strips in a creamy mushroom sauce served over egg noodles.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop" alt="Beef Stroganoff" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Beef Stroganoff</h3>
+          <p class="text-gray-600 text-sm mb-4">Tender beef strips in a creamy mushroom sauce served over egg noodles.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>35 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>280 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 23 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Lasagna" data-description="Layered pasta with ground meat, ricotta cheese, and marinara sauce.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=300&fit=crop" alt="Lasagna" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Lasagna</h3>
+          <p class="text-gray-600 text-sm mb-4">Layered pasta with ground meat, ricotta cheese, and marinara sauce.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>90 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>420 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 24 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Tacos al Pastor" data-description="Mexican tacos with marinated pork, pineapple, and fresh toppings.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop" alt="Tacos al Pastor" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Tacos al Pastor</h3>
+          <p class="text-gray-600 text-sm mb-4">Mexican tacos with marinated pork, pineapple, and fresh toppings.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>40 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>310 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 25 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chicken Shawarma" data-description="Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop" alt="Chicken Shawarma" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Chicken Shawarma</h3>
+          <p class="text-gray-600 text-sm mb-4">Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>50 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>290 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 26 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Vegetable Curry" data-description="Aromatic Indian curry with mixed vegetables and coconut milk.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop" alt="Vegetable Curry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Vegetable Curry</h3>
+          <p class="text-gray-600 text-sm mb-4">Aromatic Indian curry with mixed vegetables and coconut milk.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>35 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>240 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 27 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pancakes" data-description="Fluffy homemade pancakes served with maple syrup and butter.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&h=300&fit=crop" alt="Pancakes" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Pancakes</h3>
+          <p class="text-gray-600 text-sm mb-4">Fluffy homemade pancakes served with maple syrup and butter.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>20 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>380 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 28 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Waffles" data-description="Crispy Belgian waffles with whipped cream and fresh berries.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop" alt="Waffles" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Waffles</h3>
+          <p class="text-gray-600 text-sm mb-4">Crispy Belgian waffles with whipped cream and fresh berries.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>25 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>320 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 29 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Grilled Salmon" data-description="Fresh salmon fillet grilled to perfection with lemon and herbs.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop" alt="Grilled Salmon" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Grilled Salmon</h3>
+          <p class="text-gray-600 text-sm mb-4">Fresh salmon fillet grilled to perfection with lemon and herbs.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>20 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Easy</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>350 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Card 30 -->
+      <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Beef Stew" data-description="Hearty beef stew with vegetables and rich gravy.">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1534938665420-4193effeacc4?w=400&h=300&fit=crop" alt="Beef Stew" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <h3 class="text-xl font-bold text-dish-dark mb-2">Beef Stew</h3>
+          <p class="text-gray-600 text-sm mb-4">Hearty beef stew with vegetables and rich gravy.</p>
+          <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+            <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>120 mins</span>
+            <span class="flex items-center"><i data-lucide="chef-hat" class="w-4 h-4 mr-1"></i>Medium</span>
+            <span class="flex items-center"><i data-lucide="star" class="w-4 h-4 mr-1"></i>290 reviews</span>
+          </div>
+          <div class="mt-auto pt-4">
+            <div class="flex items-center justify-between">
+                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    View Recipe
+                </button>
+                <div class="flex space-x-2 ml-3">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                    </button>
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                        <i data-lucide="star" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load More Button -->
+    <div class="text-center mt-12">
+      <button class="bg-dish-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+        Load More Recipes
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE SECTION -->
+<section class="py-16 bg-gradient-to-br from-white to-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-dish-dark mb-4">Smart Cooking & Meal Planning Tips</h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">Enhance your cooking efficiency and explore international cuisines with our intelligent features</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Feature Card 1 -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <div class="w-12 h-12 bg-dish-green rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <span class="text-white font-bold text-xl">1</span>
+        </div>
+        <h3 class="text-xl font-bold text-dish-dark mb-3">Reduce Food Waste</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Use our smart ingredient matcher to find recipes that use up ingredients before they expire, saving money and helping the environment.</p>
+      </div>
+
+      <!-- Feature Card 2 -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <div class="w-12 h-12 bg-dish-accent-blue rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <span class="text-white font-bold text-xl">2</span>
+        </div>
+        <h3 class="text-xl font-bold text-dish-dark mb-3">Explore International Cuisines</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Discover authentic recipes from 20+ countries and expand your culinary horizons with diverse flavors and cooking techniques.</p>
+      </div>
+
+      <!-- Feature Card 3 -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <div class="w-12 h-12 bg-dish-accent-pink rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <span class="text-white font-bold text-xl">3</span>
+        </div>
+        <h3 class="text-xl font-bold text-dish-dark mb-3">Efficient Meal Planning</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Filter by cooking time, difficulty, and dietary needs to find recipes that fit your schedule and lifestyle perfectly.</p>
+      </div>
+
+      <!-- Feature Card 4 -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <div class="w-12 h-12 bg-dish-primary rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+          <span class="text-white font-bold text-xl">4</span>
+        </div>
+        <h3 class="text-xl font-bold text-dish-dark mb-3">Cooking Creativity</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">Get inspired with step-by-step guides, professional tips, and creative variations to enhance your cooking skills.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-[#0f1b2c] text-gray-100 py-12">
+    <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="footer_column text-gray-300">
+        Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
+      </div>
+
+      <div class="footer_contact">
+        <h3 class="text-white text-lg mb-3">Contact Info</h3>
+        <p class="text-gray-300">hello@dishcovery.com</p>
+        <p class="text-gray-300">+1 (555) 123-4567</p>
+        <p class="text-gray-300">123 Culinary Street, Food City</p>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 mt-12 pt-6 text-center">
+      <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
+      <div class="flex gap-6 justify-center mt-4">
+        <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
+        <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
+        <a href="#" class="text-gray-300 hover:text-primary">Website Builder</a>
+      </div>
+    </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // --- Cook with Friends Modal Functionality ---
+    const cookWithFriendsBtn = document.getElementById('cook-with-friends-btn');
+    const loginModal = document.getElementById('login-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+ 
+    function toggleModal(show) {
+      if (loginModal) {
+        loginModal.classList.toggle('hidden', !show);
+        loginModal.classList.toggle('modal-open', show);
+      }
+    }
+ 
+    if (cookWithFriendsBtn) cookWithFriendsBtn.addEventListener('click', () => toggleModal(true));
+    if (closeModalBtn) closeModalBtn.addEventListener('click', () => toggleModal(false));
+    if (loginModal) loginModal.addEventListener('click', (e) => {
+        if (e.target === loginModal) toggleModal(false);
+    });
+
+    // --- Leftover Saver Modal Functionality ---
+    const leftoverSaverBtn = document.getElementById('leftover-saver-btn');
+    const leftoverModal = document.getElementById('leftover-modal');
+    const closeLeftoverModalBtn = document.getElementById('close-leftover-modal-btn');
+
+    function toggleLeftoverModal(show) {
+      if (leftoverModal) {
+        leftoverModal.classList.toggle('hidden', !show);
+        leftoverModal.classList.toggle('modal-open', show);
+      }
+    }
+
+    if (leftoverSaverBtn) leftoverSaverBtn.addEventListener('click', () => toggleLeftoverModal(true));
+    if (closeLeftoverModalBtn) closeLeftoverModalBtn.addEventListener('click', () => toggleLeftoverModal(false));
+    if (leftoverModal) leftoverModal.addEventListener('click', (e) => { if (e.target === leftoverModal) toggleLeftoverModal(false); });
+
+    // --- Global Keydown Listener for Modals ---
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (loginModal && !loginModal.classList.contains('hidden')) toggleModal(false);
+        if (leftoverModal && !leftoverModal.classList.contains('hidden')) toggleLeftoverModal(false);
+      }
+    });
+
+    // --- Scroll Animations ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+    // --- Hamburger Menu Toggle ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+    if (menuToggle && mainNav) {
+        menuToggle.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            this.classList.toggle('menu-open');
+            mainNav.classList.toggle('hidden');
+        });
+    }
+  });
+</script>
+
+<!-- Login Modal -->
+<div id="login-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 opacity-0 pointer-events-none">
+  <div id="modal-content" class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center relative transform transition-all duration-300 scale-95 opacity-0">
+      <button id="close-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 transition-colors">
+          <i data-lucide="x" class="w-7 h-7"></i>
+      </button>
+      <div class="w-20 h-20 bg-gradient-to-br from-orange-100 to-orange-200 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
+        <i data-lucide="lock" class="w-10 h-10"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-dish-dark mb-4">Oops! You need to log in.</h2>
+      <p class="text-gray-600 mb-8">This feature is for members only. Please log in to cook with friends!</p>
+      <a href="Log_In.html" class="inline-block w-full bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+        Go to Log In
+      </a>
+  </div>
+</div>
+
+<!-- Leftover Saver Modal -->
+<div id="leftover-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 opacity-0 pointer-events-none">
+  <div id="modal-content-leftover" class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center relative transform transition-all duration-300 scale-95 opacity-0">
+      <button id="close-leftover-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 transition-colors">
+          <i data-lucide="x" class="w-7 h-7"></i>
+      </button>
+      <div class="w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        <i data-lucide="save" class="w-10 h-10"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-dish-dark mb-4">Oops, you must log in to save your leftover</h2>
+      <p class="text-gray-600 mb-8">This feature is for members only. Please log in to use the Leftover Saver!</p>
+      <a href="Log_In.html" class="inline-block w-full bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:from-dish-accent-pink hover:to-dish-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
+        Go to Log In
+      </a>
+  </div>
+</div>
+
+</body>
+</html>
