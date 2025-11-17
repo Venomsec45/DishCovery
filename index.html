@@ -114,6 +114,27 @@
       justify-content: center;
       align-items: center;
     }
+
+    /* Floating icons for hero section */
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+      50% { transform: translateY(-25px) rotate(15deg); opacity: 0.8; }
+      100% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+    }
+    .floating-icon {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      padding: 1rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      animation: float 6s ease-in-out infinite;
+      backdrop-filter: blur(5px);
+    }
+    .floating-icon img {
+      width: 40px;
+      height: 40px;
+      opacity: 0.7;
+    }
   </style>
 </head>
 <body class="text-text-primary antialiased">
@@ -149,23 +170,32 @@
   </header>
 
   <!-- Intro -->
-  <section class="py-16 md:py-24 min-h-screen flex flex-col justify-center items-center text-center px-4 md:px-6 bg-transparent relative overflow-hidden">
-    <!-- Premium background elements -->
-    <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_20%,rgba(255,106,0,0.1),transparent_50%)]"></div>
-    <div class="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_80%,rgba(59,130,246,0.1),transparent_50%)]"></div>
-    <!-- Subtle geometric patterns -->
-    <div class="absolute top-20 left-20 w-32 h-32 bg-gradient-to-br from-orange-200/50 to-transparent rounded-full blur-2xl animate-[spin_20s_linear_infinite]"></div>
-    <div class="absolute bottom-20 right-20 w-40 h-40 bg-gradient-to-br from-blue-200/50 to-transparent rounded-full blur-2xl animate-[spin_25s_linear_infinite_reverse]"></div>
+  <section class="py-16 md:py-24 min-h-screen flex flex-col justify-center items-center text-center px-4 md:px-6 bg-white relative overflow-hidden">
+    <!-- Background Image with Gradient Overlay -->
+    <div class="absolute inset-0 z-0">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&h=1080&fit=crop&q=80" alt="Background of delicious food spread" class="w-full h-full object-cover opacity-20">
+      <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
+    </div>
+
+    <!-- Floating Icons -->
+    <div class="floating-icon hidden md:block" style="top: 15%; left: 10%; animation-delay: 0s;"><img src="https://www.svgrepo.com/show/493829/avocado.svg" alt="Avocado icon"></div>
+    <div class="floating-icon hidden md:block" style="top: 25%; right: 12%; animation-delay: 1s;"><img src="https://www.svgrepo.com/show/493873/carrot.svg" alt="Carrot icon"></div>
+    <div class="floating-icon hidden md:block" style="bottom: 20%; left: 20%; animation-delay: 2s;"><img src="https://www.svgrepo.com/show/493823/vegetable.svg" alt="Broccoli icon"></div>
+    <div class="floating-icon hidden md:block" style="bottom: 15%; right: 25%; animation-delay: 3s;"><img src="https://www.svgrepo.com/show/494024/tomato.svg" alt="Tomato icon"></div>
 
     <div class="relative z-10 reveal-on-scroll">
       <h1 class="text-[clamp(40px,8vw,80px)] font-extrabold leading-tight">
-        <span class="bg-gradient-to-r from-gray-900 via-orange-600 to-gray-900 bg-clip-text text-transparent">Discover your next</span><br>
-        <span class="text-primary">Favorite 
+        <span class="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">Discover your next</span><br>
+        <span class="text-primary">Favorite Dish
           <span id="animated-text-container" class="animated-text-wrapper"></span>
         </span>
       </h1>
-      <p class="mx-auto max-w-3xl text-gray-700 text-lg md:text-xl mt-8">Explore thousands of delicious recipes, cooking tips, and culinary adventures</p>
-      <p class="mx-auto max-w-3xl text-gray-700 text-lg md:text-xl mt-2">From quick weeknight dinners to gourmet masterpieces.</p>
+      <p class="mx-auto max-w-3xl text-gray-700 text-lg md:text-xl mt-8">Explore thousands of delicious recipes, cooking tips, and culinary adventures.</p>
+      <div class="mt-10">
+        <a href="recipe_finder.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white rounded-full px-10 py-4 text-lg font-semibold shadow-lg-soft hover:shadow-primary/30 transform hover:-translate-y-1 transition-all duration-300">
+          Find a Recipe Now
+        </a>
+      </div>
     </div>
   </section>
 
@@ -226,32 +256,44 @@
         <div class="space-y-16">
             <!-- Step 1 -->
             <div class="md:grid md:grid-cols-2 md:gap-12 items-center relative">
-                <div class="text-center md:text-left md:col-start-2">
-                    <h3 class="text-xl font-semibold mb-3 text-gray-900">Add Your Ingredients</h3>
+                <div class="text-center md:text-left md:col-start-2 p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-md-soft">
+                    <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                      <i data-lucide="shopping-basket" class="w-6 h-6 text-primary"></i>
+                      <h3 class="text-xl font-semibold text-gray-900">Add Your Ingredients</h3>
+                    </div>
                     <p class="text-gray-600 leading-relaxed">Tell us what ingredients you have in your kitchen, pantry, or fridge.</p>
                 </div>
                 <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg flex-shrink-0 mx-auto md:mx-0 my-4 md:my-0 md:col-start-1 md:row-start-1 md:ml-auto md:mr-[-3rem] relative z-10">1</div>
             </div>
             <!-- Step 2 -->
             <div class="md:grid md:grid-cols-2 md:gap-12 items-center relative">
-                <div class="text-center md:text-right">
-                    <h3 class="text-xl font-semibold mb-3 text-gray-900">Set Your Preferences</h3>
+                <div class="text-center md:text-right p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-md-soft">
+                    <div class="flex items-center justify-center md:justify-end gap-3 mb-2">
+                      <i data-lucide="sliders-horizontal" class="w-6 h-6 text-primary"></i>
+                      <h3 class="text-xl font-semibold text-gray-900">Set Your Preferences</h3>
+                    </div>
                     <p class="text-gray-600 leading-relaxed">Choose your cuisine type, cooking time, difficulty level, and dietary needs.</p>
                 </div>
                 <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white bg-gradient-to-r from-green-500 to-green-600 shadow-lg flex-shrink-0 mx-auto md:mx-0 my-4 md:my-0 md:mr-auto md:ml-[-3rem] relative z-10">2</div>
             </div>
             <!-- Step 3 -->
-            <div class="md:grid md:grid-cols-2 md:gap-12 items-center relative">
-                <div class="text-center md:text-left md:col-start-2">
-                    <h3 class="text-xl font-semibold mb-3 text-gray-900">Get Smart Matches</h3>
+            <div class="md:grid md-grid-cols-2 md:gap-12 items-center relative">
+                <div class="text-center md:text-left md:col-start-2 p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-md-soft">
+                    <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                      <i data-lucide="sparkles" class="w-6 h-6 text-primary"></i>
+                      <h3 class="text-xl font-semibold text-gray-900">Get Smart Matches</h3>
+                    </div>
                     <p class="text-gray-600 leading-relaxed">Our Search Engine finds the best recipes that match your ingredients and preferences.</p>
                 </div>
                 <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white bg-gradient-to-r from-purple-500 to-purple-600 shadow-lg flex-shrink-0 mx-auto md:mx-0 my-4 md:my-0 md:col-start-1 md:row-start-1 md:ml-auto md:mr-[-3rem] relative z-10">3</div>
             </div>
             <!-- Step 4 -->
             <div class="md:grid md:grid-cols-2 md:gap-12 items-center relative">
-                <div class="text-center md:text-right">
-                    <h3 class="text-xl font-semibold mb-3 text-gray-900">Start Cooking</h3>
+                <div class="text-center md:text-right p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-md-soft">
+                    <div class="flex items-center justify-center md:justify-end gap-3 mb-2">
+                      <i data-lucide="chef-hat" class="w-6 h-6 text-primary"></i>
+                      <h3 class="text-xl font-semibold text-gray-900">Start Cooking</h3>
+                    </div>
                     <p class="text-gray-600 leading-relaxed">Follow step-by-step instructions and create delicious meals with confidence.</p>
                 </div>
                 <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white bg-gradient-to-r from-primary to-primary-2 shadow-lg flex-shrink-0 mx-auto md:mx-0 my-4 md:my-0 md:mr-auto md:ml-[-3rem] relative z-10">4</div>
@@ -269,7 +311,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Recipe Card 1 -->
-      <div class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer">
+      <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
         <img src="https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Chicken Adobo</h3>
@@ -279,9 +321,9 @@
             <span><i data-lucide="chef-hat" class="inline w-4 h-4 mr-1"></i>Easy</span>
           </div>
         </div>
-      </div>
+      </a>
       <!-- Recipe Card 2 -->
-      <div class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer">
+      <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
         <img src="https://images.unsplash.com/photo-1608796319547-52a3aa368bdc?w=400&h=300&fit=crop" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Spaghetti Carbonara</h3>
@@ -291,9 +333,9 @@
             <span><i data-lucide="chef-hat" class="inline w-4 h-4 mr-1"></i>Medium</span>
           </div>
         </div>
-      </div>
+      </a>
       <!-- Recipe Card 3 -->
-      <div class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer">
+      <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
         <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" alt="Kimchi Fried Rice" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Kimchi Fried Rice</h3>
@@ -303,17 +345,17 @@
             <span><i data-lucide="chef-hat" class="inline w-4 h-4 mr-1"></i>Easy</span>
           </div>
         </div>
-      </article>
+      </a>
     </div>
   </div>
   <div class="text-center mt-12">
-    <button onclick="window.location.href='recipe_finder.html'" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white rounded-full px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-primary/30 transform hover:-translate-y-1 transition-all duration-300">
+    <a href="recipe_finder.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white rounded-full px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-primary/30 transform hover:-translate-y-1 transition-all duration-300">
       View All Recipes
-    </button>
+    </a>
   </div>
 </section>
 
-<!-- Update World Cuisines section -->
+<!-- World Cuisines section -->
 <section class="py-16 md:py-24 flex flex-col justify-center items-center bg-transparent px-4 md:px-6 relative reveal-on-scroll">
   <div class="max-w-container-lg mx-auto text-center relative z-10">
     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Explore World Cuisines</h2>
@@ -355,7 +397,7 @@
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Indian</h3>
         </div>
-      </article>
+      </a>
     </div>
   </div>
 </section>
@@ -364,54 +406,57 @@
   <section class="py-16 md:py-24 relative bg-transparent reveal-on-scroll">
   <div class="max-w-container-lg mx-auto px-4 md:px-6 text-center">
     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Master Your Kitchen</h2>
-    <p class="text-black max-w-3xl mx-auto">Essential cooking tips and techniques to elevate your culinary skills</p>
+    <p class="text-gray-600 max-w-3xl mx-auto">Essential cooking tips and techniques to elevate your culinary skills</p>
   </div>
 
-  <div class="max-w-container-lg mx-auto px-4 md:px-6 grid md:grid-cols-3 gap-8 mt-12">
-    <article class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer">
+  <div class="max-w-container-lg mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+    <a href="#" class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer block text-center">
       <div class="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
         <i data-lucide="knife" class="w-8 h-8"></i>
       </div>
       <h3 class="text-lg font-semibold text-primary mb-3">Knife Skills Mastery</h3>
       <p class="text-gray-600 leading-relaxed">Learn proper cutting techniques for faster, safer, and more professional cooking results.</p>
-    </article>
+    </a>
 
-    <article class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer">
+    <a href="#" class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer block text-center">
       <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-yellow-200 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-6">
         <i data-lucide="flame" class="w-8 h-8"></i>
       </div>
       <h3 class="text-lg font-semibold text-primary mb-3">Flavor Building</h3>
       <p class="text-gray-600 leading-relaxed">Understand how to layer flavors and create depth in your dishes with herbs and spices.</p>
-    </article>
+    </a>
 
-    <article class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer">
+    <a href="#" class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer block text-center">
       <div class="w-16 h-16 bg-gradient-to-br from-indigo-100 to-indigo-200 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6">
         <i data-lucide="thermometer" class="w-8 h-8"></i>
       </div>
       <h3 class="text-lg font-semibold text-primary mb-3">Temperature Control</h3>
       <p class="text-gray-600 leading-relaxed">Master heat management for perfect cooking results every time, from searing to simmering.</p>
-    </article>
-    <article class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer">
-        <div class="w-16 h-16 bg-gradient-to-br from-teal-100 to-teal-200 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i data-lucide="clipboard-check" class="w-8 h-8"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-primary mb-3">Meal Prep Secrets</h3>
-        <p class="text-gray-600 leading-relaxed">Efficient strategies for planning and preparing meals ahead of time to save time and money.</p>
-    </article>
-    <article class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer">
-        <div class="w-16 h-16 bg-gradient-to-br from-cyan-100 to-cyan-200 text-cyan-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i data-lucide="repeat" class="w-8 h-8"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-primary mb-3">Ingredient Substitutions</h3>
-        <p class="text-gray-600 leading-relaxed">Smart swaps and alternatives when you're missing ingredients or want healthier options.</p>
-    </article>
-    <article class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer">
-        <div class="w-16 h-16 bg-gradient-to-br from-fuchsia-100 to-fuchsia-200 text-fuchsia-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <i data-lucide="archive" class="w-8 h-8"></i>
-        </div>
-        <h3 class="text-lg font-semibold text-primary mb-3">Kitchen Organization</h3>
-        <p class="text-gray-600 leading-relaxed">Set up your kitchen for maximum efficiency and create a workspace that inspires cooking.</p>
-    </article>
+    </a>
+
+    <a href="#" class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer block text-center">
+      <div class="w-16 h-16 bg-gradient-to-br from-teal-100 to-teal-200 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i data-lucide="clipboard-check" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-primary mb-3">Meal Prep Secrets</h3>
+      <p class="text-gray-600 leading-relaxed">Efficient strategies for planning and preparing meals ahead of time to save time and money.</p>
+    </a>
+
+    <a href="#" class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer block text-center">
+      <div class="w-16 h-16 bg-gradient-to-br from-cyan-100 to-cyan-200 text-cyan-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i data-lucide="repeat" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-primary mb-3">Ingredient Substitutions</h3>
+      <p class="text-gray-600 leading-relaxed">Smart swaps and alternatives when you're missing ingredients or want healthier options.</p>
+    </a>
+
+    <a href="#" class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer block text-center">
+      <div class="w-16 h-16 bg-gradient-to-br from-fuchsia-100 to-fuchsia-200 text-fuchsia-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <i data-lucide="archive" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-primary mb-3">Kitchen Organization</h3>
+      <p class="text-gray-600 leading-relaxed">Set up your kitchen for maximum efficiency and create a workspace that inspires cooking.</p>
+    </a>
   </div>
 </section>
 
@@ -421,27 +466,27 @@
       <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Sustainable Cooking</h2>
       <p class="text-gray-600 mb-12 mx-auto max-w-2xl">Learn eco-friendly cooking practices that are good for you and the planet.</p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg-soft border border-gray-100 cursor-pointer transition-transform hover:-translate-y-2">
+        <a href="#" class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg-soft border border-gray-100 cursor-pointer transition-transform hover:-translate-y-2 block">
           <div class="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <i data-lucide="recycle" class="w-8 h-8"></i>
           </div>
           <h3 class="text-xl font-semibold mb-2">Reduce Waste</h3>
           <p class="text-gray-600">Tips to minimize food waste in your kitchen.</p>
-        </div>
-        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg-soft border border-gray-100 cursor-pointer transition-transform hover:-translate-y-2">
+        </a>
+        <a href="#" class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg-soft border border-gray-100 cursor-pointer transition-transform hover:-translate-y-2 block">
           <div class="w-16 h-16 bg-gradient-to-br from-lime-100 to-lime-200 text-lime-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <i data-lucide="sprout" class="w-8 h-8"></i>
           </div>
           <h3 class="text-xl font-semibold mb-2">Local Ingredients</h3>
           <p class="text-gray-600">Support local farmers and fresh produce.</p>
-        </div>
-        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg-soft border border-gray-100 cursor-pointer transition-transform hover:-translate-y-2">
+        </a>
+        <a href="#" class="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-lg-soft border border-gray-100 cursor-pointer transition-transform hover:-translate-y-2 block">
           <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <i data-lucide="zap" class="w-8 h-8"></i>
           </div>
           <h3 class="text-xl font-semibold mb-2">Energy Efficient</h3>
           <p class="text-gray-600">Cook smarter to save energy and money.</p>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -460,11 +505,11 @@
     <div class="max-w-3xl mx-auto text-center relative z-10">
       <h2 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-orange-200 to-white bg-clip-text text-transparent">Stay updated with DishCovery</h2>
       <p class="text-xl text-gray-300 mb-12 leading-relaxed">Get weekly recipe recommendations, cooking tips, and exclusive content delivered to your inbox</p>
-      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center max-w-lg mx-auto">
+      <form class="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
         <input id="email_address" name="email_address" type="email" placeholder="Enter your email address"
-               class="w-full px-8 py-4 rounded-full text-gray-900 text-lg font-medium shadow-2xl focus:outline-none focus:ring-4 focus:ring-orange-400/50 transition-all duration-300" />
-        <button class="inline-block bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full px-10 py-4 font-bold text-lg shadow-2xl hover:shadow-orange-500/30 transform hover:scale-105 transition-all duration-300">Subscribe</button>
-      </div>
+               class="w-full px-8 py-4 rounded-full text-gray-900 text-lg font-medium shadow-2xl focus:outline-none focus:ring-4 focus:ring-orange-400/50 transition-all duration-300" required />
+        <button type="submit" class="w-full sm:w-auto flex-shrink-0 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full px-10 py-4 font-bold text-lg shadow-2xl hover:shadow-orange-500/30 transform hover:scale-105 transition-all duration-300">Subscribe</button>
+      </form>
     </div>
   </section>
 
@@ -481,7 +526,7 @@
     <div class="max-w-4xl mx-auto text-center relative z-10">
       <h2 class="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">Ready to start your culinary journey?</h2>
       <p class="text-xl md:text-2xl text-orange-100 mb-12 leading-relaxed">Join thousands of home cooks discovering amazing recipes every day</p>
-      <button onclick="window.location.href='Log_In.html'" class="inline-block bg-white text-orange-600 hover:text-orange-700 rounded-full px-12 py-5 font-bold text-xl shadow-2xl hover:shadow-white/30 transform hover:scale-105 transition-all duration-300">Get started today</button>
+      <a href="Sign_Up.html" class="inline-block bg-white text-orange-600 hover:text-orange-700 rounded-full px-12 py-5 font-bold text-xl shadow-2xl hover:shadow-white/30 transform hover:scale-105 transition-all duration-300">Get Started Today</a>
     </div>
   </section>
 
@@ -489,23 +534,33 @@
   <footer class="bg-[#0f1b2c] text-gray-100 py-12">
     <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
       <div class="footer_column text-gray-300">
-        <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+        <h2 class="text-2xl font-extrabold text-primary mb-4">DishCovery</h2>
+        <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform.</p>
       </div>
 
       <div class="footer_contact">
-        <h3 class="text-white text-lg mb-3">Contact Info</h3>
+        <h3 class="text-white text-lg font-semibold mb-3">Contact Info</h3>
         <p class="text-gray-300">hello@dishcovery.com</p>
         <p class="text-gray-300">+1 (555) 123-4567</p>
         <p class="text-gray-300">123 Culinary Street, Food City</p>
       </div>
+
+      <div>
+        <h3 class="text-white text-lg font-semibold mb-3">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="About_Us.html" class="text-gray-300 hover:text-primary transition-colors">About Us</a></li>
+          <li><a href="recipe_finder.html" class="text-gray-300 hover:text-primary transition-colors">Recipe Finder</a></li>
+          <li><a href="Faq.html" class="text-gray-300 hover:text-primary transition-colors">FAQ</a></li>
+          <li><a href="Contact.html" class="text-gray-300 hover:text-primary transition-colors">Contact</a></li>
+        </ul>
+      </div>
     </div>
 
     <div class="border-t border-white/10 mt-12 pt-6 text-center">
-      <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
+      <p class="text-gray-400">&copy; 2024 DishCovery. All rights reserved.</p>
       <div class="flex gap-6 justify-center mt-4">
-        <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
-        <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
-        <a href="#" class="text-gray-300 hover:text-primary">Website Builder</a>
+        <a href="#" class="text-gray-400 hover:text-primary text-sm">Privacy Policy</a>
+        <a href="#" class="text-gray-400 hover:text-primary text-sm">Terms of Service</a>
       </div>
     </div>
   </footer>
@@ -562,8 +617,14 @@
             textContainer.appendChild(newWordSpan);
         }
 
+        // Initial word
+        const initialWord = document.createElement('span');
+        initialWord.className = 'text-slider';
+        initialWord.textContent = words[0];
+        initialWord.style.transform = 'translateY(0)';
+        textContainer.appendChild(initialWord);
+
         setInterval(changeWord, 2500); // Change word every 2.5 seconds
-        changeWord(); // Start the animation
     });
   </script>
 </body>
