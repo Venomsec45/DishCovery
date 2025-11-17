@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DishCovery Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // Enable dark mode
+        theme: {
+          extend: {
+            colors: {
+              primary: '#ff6a00',
+              'primary-2': '#ff3300',
+              'page-bg': '#f8fafc', // A light gray for page background
+              // Dark mode colors
+              'dark-bg': '#111827',
+              'dark-card': '#1f2937',
+              'dark-border': '#374151',
+              'dark-text': '#d1d5db',
+              'dark-text-secondary': '#9ca3af',
+              'dark-input': '#374151',
+              'dark-unread-bg': '#2c241f',
+              'dark-read-bg': '#1f2937',
+              'dark-read-hover': '#374151'
+            },
+            boxShadow: {
+              'md-soft': '0 6px 18px rgba(0,0,0,0.06)',
+              'lg-soft': '0 12px 30px rgba(0,0,0,0.08)'
+            },
+            maxWidth: { 
+              'container-lg': '1200px',
+              'container-xl': '1400px' // New wider container
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
+    <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="logo">
+        <h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1>
+      </div>
+
+      <!-- Hamburger Menu Button for Mobile -->
+      <button id="menu-toggle" class="md:hidden text-gray-800 focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+        <div class="w-7 h-7 relative">
+          <span class="hamburger-line hamburger-line-1 absolute top-1.5 left-0 w-full h-0.5 bg-current transition-transform duration-300"></span>
+          <span class="hamburger-line hamburger-line-2 absolute top-1/2 -translate-y-1/2 left-0 w-full h-0.5 bg-current transition-opacity duration-300"></span>
+          <span class="hamburger-line hamburger-line-3 absolute bottom-1.5 left-0 w-full h-0.5 bg-current transition-transform duration-300"></span>
+        </div>
+      </button>
+      <style>
+        .menu-open .hamburger-line-1 { transform: translateY(6px) rotate(45deg); }
+        .menu-open .hamburger-line-2 { opacity: 0; }
+        .menu-open .hamburger-line-3 { transform: translateY(-6px) rotate(-45deg); }
+        .notification-card:hover .delete-icon {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      </style>
+
+      <nav id="main-nav" aria-label="Main navigation" class="hidden md:flex md:items-center absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none dark:bg-dark-card md:dark:bg-transparent">
+        <ul class="flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-8 text-center md:text-left w-full p-6 md:p-0">
+          <li><a href="recipe_finder_for_account.html" class="font-semibold text-gray-800 hover:text-primary dark:text-dark-text dark:hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Recipe Finder</a></li>
+          <li><a href="#" class="font-semibold text-gray-800 hover:text-primary dark:text-dark-text dark:hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Gallery</a></li>
+          <li class="login mt-4 md:mt-0">
+            <a href="account_dashboard.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transform transition hover:-translate-y-0.5" aria-current="page">My Account</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
+  <div class="max-w-container-xl mx-auto px-6 py-12 md:py-16">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      
+      <!-- Sidebar -->
+      <aside class="lg:col-span-3">
+        <div class="bg-white p-6 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <h2 class="text-xl font-bold text-gray-800 mb-6 dark:text-dark-text">Account</h2>
+          <ul class="space-y-2">
+              <li><a href="account_dashboard.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="layout-grid" class="w-5 h-5"></i>Dashboard</a></li>
+              <li><a href="account_profile.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="user" class="w-5 h-5"></i>Profile</a></li>
+              <li><a href="account_notifications.html" class="flex items-center gap-3 font-bold text-primary bg-orange-50 dark:bg-primary/10 px-3 py-2 rounded-lg"><i data-lucide="bell" class="w-5 h-5"></i>Notifications</a></li>
+              <li><a href="account_help.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="help-circle" class="w-5 h-5"></i>Help Center</a></li>
+              <li><a href="account_settings.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="lg:col-span-9">
+        <div class="bg-white p-6 md:p-10 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-dark-text">Inbox</h2>
+            <button class="text-sm font-semibold text-primary hover:underline">Mark all as read</button>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Notification Item 1 (Unread) --> 
+            <div class="notification-card flex items-start gap-4 p-5 rounded-xl bg-orange-50 border-l-4 border-primary cursor-pointer hover:shadow-lg-soft transition-all duration-300 relative overflow-hidden dark:bg-dark-unread-bg dark:border-primary">
+              <div class="w-11 h-11 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="star" class="w-5 h-5"></i></div>
+              <div class="flex-grow pr-8">
+                <p class="font-bold text-gray-800 dark:text-dark-text">New Recipe Challenge! <span class="ml-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</span></p>
+                <p class="text-sm text-gray-600 mt-1 dark:text-dark-text-secondary">The "Summer Salads" challenge has just started. Submit your best recipe for a chance to win!</p>
+                <p class="text-xs text-gray-500 mt-2 dark:text-gray-400">2 hours ago</p>
+              </div>
+              <button class="delete-icon absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-red-500 opacity-0 transform translate-x-4 transition-all duration-300" aria-label="Delete notification">
+                <i data-lucide="trash-2" class="w-5 h-5"></i>
+              </button>
+            </div>
+
+            <!-- Notification Item 2 (Read) -->
+            <div class="notification-card flex items-start gap-4 p-5 rounded-xl bg-gray-50 cursor-pointer hover:shadow-lg-soft transition-all duration-300 relative overflow-hidden dark:bg-dark-read-bg dark:hover:bg-dark-read-hover">
+              <div class="w-11 h-11 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center flex-shrink-0 dark:bg-gray-700 dark:text-gray-400"><i data-lucide="message-square" class="w-5 h-5"></i></div>
+              <div class="flex-grow pr-8">
+                <p class="font-semibold text-gray-700 dark:text-dark-text">John Smith commented on your recipe</p>
+                <p class="text-sm text-gray-500 mt-1 dark:text-dark-text-secondary">"This was delicious! I added a pinch of chili flakes for some extra heat."</p>
+                <p class="text-xs text-gray-500 mt-2 dark:text-gray-400">1 day ago</p>
+              </div>
+              <button class="delete-icon absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-red-500 opacity-0 transform translate-x-4 transition-all duration-300" aria-label="Delete notification">
+                <i data-lucide="trash-2" class="w-5 h-5"></i>
+              </button>
+            </div>
+
+            <!-- Notification Item 3 (Read) -->
+            <div class="notification-card flex items-start gap-4 p-5 rounded-xl bg-gray-50 cursor-pointer hover:shadow-lg-soft transition-all duration-300 relative overflow-hidden dark:bg-dark-read-bg dark:hover:bg-dark-read-hover">
+              <div class="w-11 h-11 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center flex-shrink-0 dark:bg-gray-700 dark:text-gray-400"><i data-lucide="badge-check" class="w-5 h-5"></i></div>
+              <div class="flex-grow pr-8">
+                <p class="font-semibold text-gray-700 dark:text-dark-text">Welcome to DishCovery!</p>
+                <p class="text-sm text-gray-500 mt-1 dark:text-dark-text-secondary">Your account has been successfully created. Start exploring thousands of recipes now.</p>
+                <p class="text-xs text-gray-500 mt-2 dark:text-gray-400">3 days ago</p>
+              </div>
+              <button class="delete-icon absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-red-500 opacity-0 transform translate-x-4 transition-all duration-300" aria-label="Delete notification">
+                <i data-lucide="trash-2" class="w-5 h-5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+    
+<footer class="bg-[#0f1b2c] text-gray-100 py-12">
+<div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+  <div class="footer_column text-gray-300">
+    <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+  </div>
+
+  <div class="footer_contact">
+    <h3 class="text-white text-lg mb-3">Contact Info</h3>
+    <p class="text-gray-300">hello@dishcovery.com</p>
+    <p class="text-gray-300">+1 (555) 123-4567</p>
+    <p class="text-gray-300">123 Culinary Street, Food City</p>
+  </div>
+</div>
+
+<div class="border-t border-white/10 mt-12 pt-6 text-center">
+  <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
+  <div class="flex gap-6 justify-center mt-4">
+    <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
+    <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
+    <a href="#" class="text-gray-300 hover:text-primary">Website Builder</a>
+  </div>
+</div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Lucide Icons
+      lucide.createIcons();
+
+      // Mobile menu toggle
+      const menuToggle = document.getElementById('menu-toggle');
+      const mainNav = document.getElementById('main-nav');
+      menuToggle.addEventListener('click', function() {
+          const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+          this.classList.toggle('menu-open');
+          menuToggle.setAttribute('aria-expanded', !isExpanded);
+          mainNav.classList.toggle('hidden');
+      });
+
+      // --- Dark Mode ---
+      // Apply saved theme on page load without needing the toggle switch
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+  });
+</script>
+
+</body>
+</html>
