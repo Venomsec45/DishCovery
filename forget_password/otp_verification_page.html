@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DishCovery Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 transition-all duration-300">
+    <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="logo">
+        <h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1>
+      </div>
+
+      <!-- Hamburger Menu Button for Mobile -->
+      <button id="menu-toggle" class="md:hidden text-gray-800 focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+        <div class="w-6 h-6 relative">
+          <span class="hamburger-line hamburger-line-1 absolute top-1 left-0 w-full h-0.5 bg-current"></span>
+          <span class="hamburger-line hamburger-line-2 absolute top-1/2 -translate-y-1/2 left-0 w-full h-0.5 bg-current"></span>
+          <span class="hamburger-line hamburger-line-3 absolute bottom-1 left-0 w-full h-0.5 bg-current"></span>
+        </div>
+      </button>
+    </div>
+</header>
+
+<!-- OTP Box -->
+<h2>OTP authentication</h2>
+<p>OTP sent to your email address.<br>
+Enter the code below</p>
+
+<!-- 6 OTP Boxes -->
+<input type="text" maxlength="1" size="1">
+<input type="text" maxlength="1" size="1">
+<input type="text" maxlength="1" size="1">
+<input type="text" maxlength="1" size="1">
+<input type="text" maxlength="1" size="1">
+<input type="text" maxlength="1" size="1">
+<br><br>
+
+<button>Send</button>
+
+<hr>
+
+<!-- Footer -->
+<footer class="bg-[#0f1b2c] text-gray-100 py-12">
+<div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+  <div class="footer_column text-gray-300">
+    <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+  </div>
+
+  <div class="footer_contact">
+    <h3 class="text-white text-lg mb-3">Contact Info</h3>
+    <p class="text-gray-300">hello@dishcovery.com</p>
+    <p class="text-gray-300">+1 (555) 123-4567</p>
+    <p class="text-gray-300">123 Culinary Street, Food City</p>
+  </div>
+</div>
+
+<div class="border-t border-white/10 mt-12 pt-6 text-center">
+  <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
+  <div class="flex gap-6 justify-center mt-4">
+    <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
+    <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
+  </div>
+</div>
+</footer>
+
+</body>
+</html>
