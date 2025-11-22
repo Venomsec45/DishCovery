@@ -36,13 +36,10 @@
   </script>
 
   <style>
-    /* only minimal rule to ensure Outfit is used as site font (Tailwind utilities used for layout) */
     :root { --site-font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
     html,body { font-family: var(--site-font); }
     
-    /* Animated Gradient Background */
     body {
-      background: linear-gradient(-45deg, #fff5f2, #f0f5ff, #fff0f5, #f5f5ff);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
     }
@@ -53,13 +50,11 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Hamburger Icon Transitions */
     .hamburger-line { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
     .menu-open .hamburger-line-1 { transform: translateY(7px) rotate(45deg); }
     .menu-open .hamburger-line-2 { opacity: 0; }
     .menu-open .hamburger-line-3 { transform: translateY(-7px) rotate(-45deg); }
 
-    /* Scroll-driven animations */
     .reveal-on-scroll {
       opacity: 0;
       transform: translateY(30px);
@@ -70,12 +65,11 @@
       transform: translateY(0);
     }
 
-    /* --- Rebuilt Text Animation Styles --- */
     .animated-text-wrapper {
       position: relative;
       display: inline-flex;
-      vertical-align: bottom; /* Aligns the bottom of the container with the text baseline */
-      height: 1.2em;      /* Ensures the container has enough height for the text */
+      vertical-align: bottom; 
+      height: 1.2em;      
       overflow: hidden;
     }
     .animated-text-wrapper .text-slider {
@@ -96,26 +90,22 @@
       to { transform: translateY(-100%); }
     }
 
-
-    /* Adjust the section spacing and heights */
     section {
-      min-height: fit-content; /* Change from min-h-screen to prevent unnecessary spacing */
-      padding: 4rem 0; /* Add consistent vertical padding */
+      min-height: fit-content; 
+      padding: 4rem 0;
     }
 
     @media (min-width: 768px) {
       section {
-        padding: 6rem 0; /* Larger padding on desktop */
+        padding: 6rem 0; 
       }
     }
 
-    /* Ensure content is properly centered on mobile */
     .flex-wrap {
       justify-content: center;
       align-items: center;
     }
 
-    /* Floating icons for hero section */
     @keyframes float {
       0% { transform: translateY(0px) rotate(0deg); opacity: 1; }
       50% { transform: translateY(-25px) rotate(15deg); opacity: 0.8; }
@@ -366,7 +356,7 @@
 
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.unsplash.com/photo-1628045350372-754d1639893a?w=400&h=400&fit=crop" alt="Filipino Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/8625451/pexels-photo-8625451.jpeg" alt="Filipino Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Filipino</h3>
         </div>
