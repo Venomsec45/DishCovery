@@ -8,66 +8,104 @@
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
 
-<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 transition-all duration-300">
-    <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="logo">
-        <h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1>
-      </div>
-
-      <!-- Hamburger Menu Button for Mobile -->
-      <button id="menu-toggle" class="md:hidden text-gray-800 focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
-        <div class="w-6 h-6 relative">
-          <span class="hamburger-line hamburger-line-1 absolute top-1 left-0 w-full h-0.5 bg-current"></span>
-          <span class="hamburger-line hamburger-line-2 absolute top-1/2 -translate-y-1/2 left-0 w-full h-0.5 bg-current"></span>
-          <span class="hamburger-line hamburger-line-3 absolute bottom-1 left-0 w-full h-0.5 bg-current"></span>
-        </div>
-      </button>
-    </div>
+<header class="flex items-center justify-between px-[6vw] py-10 bg-white border-b border-gray-200 sticky top-0 z-50">
+  <h1 class="text-2xl font-bold text-[#333] tracking-tight text-[35px]">DishCovery</h1>
 </header>
 
-<!-- OTP Box -->
-<h2>OTP authentication</h2>
-<p>OTP sent to your email address.<br>
-Enter the code below</p>
-
-<!-- 6 OTP Boxes -->
-<input type="text" maxlength="1" size="1">
-<input type="text" maxlength="1" size="1">
-<input type="text" maxlength="1" size="1">
-<input type="text" maxlength="1" size="1">
-<input type="text" maxlength="1" size="1">
-<input type="text" maxlength="1" size="1">
-<br><br>
-
-<button>Send</button>
-
-<hr>
-
-<!-- Footer -->
-<footer class="bg-[#0f1b2c] text-gray-100 py-12">
-<div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-  <div class="footer_column text-gray-300">
-    <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+<main class="flex-grow bg-gray-50 flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div class="bg-white p-8 shadow-lg rounded-lg">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900">OTP Verification</h2>
+        <p class="mt-2 text-sm text-gray-600">An OTP has been sent to your email address. Please enter the code below to proceed.</p>
+      </div>
+      <form class="space-y-6" action="#" method="POST">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2 text-center">Enter 6-digit Code</label>
+          <div id="otp-container" class="flex justify-center gap-2 sm:gap-3">
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 sm:w-14 sm:h-14 text-center text-2xl font-semibold border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500">
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 sm:w-14 sm:h-14 text-center text-2xl font-semibold border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500">
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 sm:w-14 sm:h-14 text-center text-2xl font-semibold border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500">
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 sm:w-14 sm:h-14 text-center text-2xl font-semibold border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500">
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 sm:w-14 sm:h-14 text-center text-2xl font-semibold border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500">
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 sm:w-14 sm:h-14 text-center text-2xl font-semibold border border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500">
+          </div>
+        </div>
+        <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-800 hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500">Verify Code</button>
+      </form>
+    </div>
+    <p class="text-center text-sm text-gray-600">Didn't receive the code? <a href="#" class="font-medium text-slate-600 hover:text-slate-500">Resend OTP</a></p>
   </div>
+</main>
 
-  <div class="footer_contact">
-    <h3 class="text-white text-lg mb-3">Contact Info</h3>
-    <p class="text-gray-300">hello@dishcovery.com</p>
-    <p class="text-gray-300">+1 (555) 123-4567</p>
-    <p class="text-gray-300">123 Culinary Street, Food City</p>
-  </div>
-</div>
+<footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
+      <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="footer_column">
+              <p class="text-slate-400 leading-relaxed">Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+          </div>
 
-<div class="border-t border-white/10 mt-12 pt-6 text-center">
-  <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
-  <div class="flex gap-6 justify-center mt-4">
-    <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
-    <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
-  </div>
-</div>
-</footer>
+          <div class="footer_contact">
+              <h3 class="text-white text-lg mb-3">Contact Info</h3>
+              <address class="not-italic">
+                  <p class="text-slate-400 mb-1"><a href="mailto:hello@dishcovery.com" class="text-slate-300 hover:text-primary transition-colors duration-300">hello@dishcovery.com</a></p>
+                  <p class="text-slate-400 mb-1"><a href="tel:+15551234567" class="text-slate-300 hover:text-primary transition-colors duration-300">+1 (555) 123-4567</a></p>
+                  <p class="text-slate-400">123 Culinary Street, Food City</p>
+              </address>
+          </div>
+
+          <nav class="footer_social" aria-label="Social media links">
+              <h3 class="text-white text-lg mb-3">Follow Us</h3>
+              <ul class="flex gap-4">
+                  <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Facebook">
+                      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                  </a></li>
+                  <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Instagram">
+                      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                  </a></li>
+                  <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on X (Twitter)">
+                      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a></li>
+              </ul>
+          </nav>
+      </div>
+
+      <div class="footer_bottom border-t border-white/10 mt-12 pt-6">
+          <div class="max-w-container-lg mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+              <p class="text-slate-400 text-center md:text-left">
+                  &copy; 2024 DishCovery. All rights reserved.
+              </p>
+
+              <nav class="footer_bottom_links flex gap-6 text-center md:text-right">
+                  <a href="privacy.html" class="text-slate-400 hover:text-primary transition-colors duration-300">Privacy Policy</a>
+                  <a href="terms.html" class="text-slate-400 hover:text-primary transition-colors duration-300">Terms of Service</a>
+              </nav>
+          </div>
+      </div>
+  </footer>
+
+<script>
+  const otpContainer = document.getElementById('otp-container');
+  const inputs = otpContainer.querySelectorAll('.otp-input');
+  
+  inputs.forEach((input, index) => {
+    input.addEventListener('input', () => {
+      if (input.value.length === 1 && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+    });
+    
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' && input.value.length === 0 && index > 0) {
+        inputs[index - 1].focus();
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
