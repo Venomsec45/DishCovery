@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DishCovery Website</title>
 
@@ -39,17 +39,6 @@
     :root { --site-font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
     html,body { font-family: var(--site-font); }
     
-    body {
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-    }
-
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
     .hamburger-line { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
     .menu-open .hamburger-line-1 { transform: translateY(7px) rotate(45deg); }
     .menu-open .hamburger-line-2 { opacity: 0; }
@@ -163,18 +152,18 @@
   <section class="py-16 md:py-24 min-h-screen flex flex-col justify-center items-center text-center px-4 md:px-6 bg-white relative overflow-hidden">
     <!-- Background Image with Gradient Overlay -->
     <div class="absolute inset-0 z-0">
-      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&h=1080&fit=crop&q=80" alt="Background of delicious food spread" class="w-full h-full object-cover opacity-20">
+      <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Background of delicious food spread" class="w-full h-full object-cover opacity-20">
       <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
     </div>
 
     <!-- Floating Icons -->
-    <div class="floating-icon hidden md:block" style="top: 15%; left: 10%; animation-delay: 0s;"><img src="https://www.svgrepo.com/show/493829/avocado.svg" alt="Avocado icon"></div>
-    <div class="floating-icon hidden md:block" style="top: 25%; right: 12%; animation-delay: 1s;"><img src="https://www.svgrepo.com/show/493873/carrot.svg" alt="Carrot icon"></div>
-    <div class="floating-icon hidden md:block" style="bottom: 20%; left: 20%; animation-delay: 2s;"><img src="https://www.svgrepo.com/show/493823/vegetable.svg" alt="Broccoli icon"></div>
-    <div class="floating-icon hidden md:block" style="bottom: 15%; right: 25%; animation-delay: 3s;"><img src="https://www.svgrepo.com/show/494024/tomato.svg" alt="Tomato icon"></div>
-    <div class="floating-icon hidden md:block" style="top: 5%; left: 40%; animation-delay: 4s;"><img src="https://www.svgrepo.com/show/493843/apple.svg" alt="Apple icon"></div>
-    <div class="floating-icon hidden md:block" style="bottom: 5%; left: 45%; animation-delay: 5s;"><img src="https://www.svgrepo.com/show/493850/cheese.svg" alt="Cheese icon"></div>
-    <div class="floating-icon hidden md:block" style="top: 40%; right: 5%; animation-delay: 6s;"><img src="https://www.svgrepo.com/show/493854/chili.svg" alt="Chili icon"></div>
+    <div class="floating-icon hidden md:block" style="top: 15%; left: 10%; animation-delay: 0s;"><img src="https://www.svgrepo.com/show/493060/avocado.svg" alt="Avocado icon"></div>
+    <div class="floating-icon hidden md:block" style="top: 25%; right: 12%; animation-delay: 1s;"><img src="https://www.svgrepo.com/show/493315/carrot.svg" alt="Carrot icon"></div>
+    <div class="floating-icon hidden md:block" style="bottom: 20%; left: 20%; animation-delay: 2s;"><img src="https://www.svgrepo.com/show/493216/broccoli.svg" alt="Broccoli icon"></div>
+    <div class="floating-icon hidden md:block" style="bottom: 15%; right: 25%; animation-delay: 3s;"><img src="https://www.svgrepo.com/show/495987/tomato.svg" alt="Tomato icon"></div>
+    <div class="floating-icon hidden md:block" style="top: 5%; left: 40%; animation-delay: 4s;"><img src="https://www.svgrepo.com/show/493068/apple.svg" alt="Apple icon"></div>
+    <div class="floating-icon hidden md:block" style="bottom: 5%; left: 45%; animation-delay: 5s;"><img src="https://www.svgrepo.com/show/493339/cheese.svg" alt="Cheese icon"></div>
+    <div class="floating-icon hidden md:block" style="top: 40%; right: 5%; animation-delay: 6s;"><img src="https://www.svgrepo.com/show/493354/chili.svg" alt="Chili icon"></div>
 
     <div class="relative z-10 reveal-on-scroll">
       <h1 class="text-[clamp(40px,8vw,80px)] font-extrabold leading-tight">
@@ -305,7 +294,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Recipe Card 1 -->
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
-        <img src="https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/5710253/pexels-photo-5710253.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Chicken Adobo</h3>
           <p class="text-gray-600 text-sm mb-4">Tender chicken marinated in vinegar, soy sauce, and garlic.</p>
@@ -317,7 +306,7 @@
       </a>
       <!-- Recipe Card 2 -->
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
-        <img src="https://images.unsplash.com/photo-1608796319547-52a3aa368bdc?w=400&h=300&fit=crop" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/128408/pexels-photo-128408.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Spaghetti Carbonara</h3>
           <p class="text-gray-600 text-sm mb-4">Classic Italian pasta with eggs, cheese, and pancetta.</p>
@@ -329,7 +318,7 @@
       </a>
       <!-- Recipe Card 3 -->
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
-        <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" alt="Kimchi Fried Rice" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/8968457/pexels-photo-8968457.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Kimchi Fried Rice" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Kimchi Fried Rice</h3>
           <p class="text-gray-600 text-sm mb-4">Spicy and savory Korean fried rice with kimchi and a fried egg.</p>
@@ -356,37 +345,37 @@
 
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.pexels.com/photos/8625451/pexels-photo-8625451.jpeg" alt="Filipino Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/14831333/pexels-photo-14831333.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop" alt="Filipino Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Filipino</h3>
         </div>
       </a>
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=400&fit=crop" alt="Japanese Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/2098085/pexels-photo-2098085.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop" alt="Japanese Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Japanese</h3>
         </div>
       </a>
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=400&fit=crop" alt="Italian Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/2762942/pexels-photo-2762942.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop" alt="Italian Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Italian</h3>
         </div>
       </a>
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400&h=400&fit=crop" alt="Korean Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/60619/bibimbap-rice-food-korean-60619.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop" alt="Korean Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Korean</h3>
         </div>
       </a>
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=400&fit=crop" alt="French Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/262959/pexels-photo-262959.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop" alt="French Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">French</h3>
         </div>
       </a>
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=400&fit=crop" alt="Indian Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop" alt="Indian Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Indian</h3>
         </div>
