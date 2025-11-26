@@ -160,7 +160,7 @@
                 </button>
                 <button class="gradient-appetizers px-4 py-3 rounded-full font-semibold shadow-smx hover:-translate-y-0.5 transition flex items-center space-x-2" role="tab" aria-selected="false" aria-controls="appetizers">
                     <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0">
-                        <path d="M12 2a5 5 0 00-5 5v6a5 5 0 0010 0V7a5 5 0 00-5-5z"></path>
+                        <path d="M17.5 17.5c-1.5 1.5-3.5 2.5-5.5 2.5-2 0-4-1-5.5-2.5M5 7h14M8.5 2h7"></path><path d="M12 12.5c-1.5 1.5-3.5 2.5-5.5 2.5M12 12.5c1.5 1.5 3.5 2.5 5.5 2.5"></path>
                     </svg>
                     <span>Appetizers</span>
                 </button>
@@ -197,6 +197,26 @@
             </div>
         </section>
 
+        <!-- Login Prompt Modal -->
+        <div id="login-prompt-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm" aria-labelledby="login-prompt-title" role="dialog" aria-modal="true">
+            <div class="bg-white rounded-2xl shadow-lgx max-w-md w-full m-4 p-8 text-center transform transition-all" role="document">
+                <h3 id="login-prompt-title" class="text-2xl font-bold text-text-primary mb-4">Oops! You need to log in.</h3>
+                <p class="text-text-secondary mb-6">To explore our full gallery and save your favorite photos, please log in or create an account.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="Log_In.html" class="inline-block bg-gradient-to-r from-[#ff7a2a] to-[#ff3b00] text-white font-extrabold px-6 py-3 rounded-full shadow-[0_6px_18px_rgba(255,106,0,0.15)] hover:translate-y-[-2px] transition-transform">
+                        Log In
+                    </a>
+                    <a href="#" class="inline-block bg-slate-100 text-text-primary font-bold px-6 py-3 rounded-full hover:bg-slate-200 transition-colors">
+                        Sign Up
+                    </a>
+                </div>
+                <button id="close-modal-btn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors" aria-label="Close login prompt">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+        <!-- End Login Prompt Modal -->
+
         <section class="gallery-section max-w-container-lg mx-auto text-center my-10 px-6" aria-labelledby="gallery-title">
             <h3 id="gallery-title" class="text-2xl md:text-3xl font-semibold mb-2">All Photos</h3>
             <p class="text-text-secondary mb-6">Showing 9 beautiful food photographs</p>
@@ -209,7 +229,7 @@
                     <img loading="lazy" src="https://images.unsplash.com/photo-1481391145929-5bcf567d5211?w=400&h=600&fit=crop" alt="Assorted chocolate truffles with cocoa dusting" class="w-full h-full object-cover transform transition-transform duration-700 hover:scale-105" width="1000" height="1333">
                 </figure>
                 <figure class="gallery-item relative overflow-hidden rounded-2xl bg-white shadow-mdx aspect-[3/4] hover:-translate-y-2 hover:shadow-lgx transition-transform" role="listitem">
-                    <img loading="lazy" src="https://images.unsplash.com/photo-1464207687429-7505649dae38?w=400&h=600&fit=crop" alt="Fresh aromatic herbs and greens" class="w-full h-full object-cover transform transition-transform duration-700 hover:scale-105" width="1000" height="1333">
+                    <img loading="lazy" src="https://images.pexels.com/photos/2098085/pexels-photo-2098085.jpeg" alt="Fresh aromatic herbs and greens" class="w-full h-full object-cover transform transition-transform duration-700 hover:scale-105" width="1000" height="1333">
                 </figure>
                 <figure class="gallery-item relative overflow-hidden rounded-2xl bg-white shadow-mdx aspect-[3/4] hover:-translate-y-2 hover:shadow-lgx transition-transform" role="listitem">
                     <img loading="lazy" src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=400&h=600&fit=crop" alt="Elegant seafood platter with prawns and garnish" class="w-full h-full object-cover transform transition-transform duration-700 hover:scale-105" width="1000" height="1333">
@@ -249,7 +269,7 @@
                     </div>
 
                     <figure class="photo rounded-[20px] overflow-hidden shadow-lgx transform transition hover:-translate-y-2">
-                        <img loading="lazy" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=760&fit=crop" alt="Professional food photography studio setup" class="w-full h-auto" width="1200" height="760">
+                        <img loading="lazy" src="https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg" alt="Professional food photography studio setup" class="w-full h-auto" width="1200" height="760">
                         <figcaption class="sr-only">Behind the scenes at our food photography studio</figcaption>
                     </figure>
                 </div>
@@ -279,9 +299,8 @@
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                     </a></li>
                     <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Instagram">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.802c-3.116 0-3.472.012-4.696.068-2.622.12-3.83 1.324-3.95 3.95-.056 1.224-.067 1.578-.067 4.696s.011 3.472.067 4.696c.12 2.622 1.323 3.83 3.95 3.95 1.224.056 1.58.068 4.696.068s3.472-.012 4.696-.068c2.622-.12 3.83-1.323 3.95-3.95.056-1.224.067-1.578.067-4.696s-.011-3.472-.067-4.696c-.12-2.622-1.323-3.83-3.95-3.95-1.224-.056-1.58-.068-4.696-.068zm0 3.064a5.132 5.132 0 100 10.264 5.132 5.132 0 000-10.264zm0 8.462a3.33 3.33 0 110-6.66 3.33 3.33 0 010 6.66zm5.338-9.87a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z"/>
                         </svg>
                     </a></li>
                     <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on X (Twitter)">
@@ -308,17 +327,32 @@
     <!-- existing script for simple filter behavior (unchanged) -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle filter buttons
+            // --- Modal and Filter Logic ---
+            const loginModal = document.getElementById('login-prompt-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
             const filterButtons = document.querySelectorAll('.filters button');
+            const loadMoreBtn = document.querySelector('.load-more');
+
+            function showModal() {
+                loginModal.classList.remove('hidden');
+                loginModal.classList.add('flex');
+            }
+
+            function hideModal() {
+                loginModal.classList.add('hidden');
+                loginModal.classList.remove('flex');
+            }
+
             filterButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    filterButtons.forEach(btn => {
-                        btn.classList.remove('active');
-                        btn.setAttribute('aria-selected', 'false');
-                    });
-                    this.classList.add('active');
-                    this.setAttribute('aria-selected', 'true');
+                    // Instead of filtering, show the login prompt
+                    showModal();
                 });
+            });
+
+            loadMoreBtn.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent any default button action
+                showModal();
             });
 
             // Add unique gradient classes to each filter button
@@ -330,7 +364,15 @@
             buttons[4].classList.add('gradient-beverages');
             buttons[5].classList.add('gradient-ingredients');
 
-            // Mobile menu toggle
+            // Close modal functionality
+            closeModalBtn.addEventListener('click', hideModal);
+            loginModal.addEventListener('click', function(event) {
+                if (event.target === loginModal) {
+                    hideModal();
+                }
+            });
+
+            // --- Mobile Menu Logic ---
             const menuToggle = document.getElementById('menu-toggle');
             const mainNav = document.getElementById('main-nav');
             const hamburgerLines = document.querySelectorAll('.hamburger-line');
