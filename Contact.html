@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DishCovery — Contact</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Lexend:wght@100..900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -28,14 +29,26 @@
     }
   </script>
   <style>
-    :root { --site-font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
-    html,body { font-family: var(--site-font); }
+    :root { --site-font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; --heading-font: "Lexend", sans-serif; }
+    html,body { font-family: var(--site-font); background-color: var(--page-bg); }
+    h1, h2, h3, h4, h5, h6 { font-family: var(--heading-font); }
+
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 </head>
 
-<body class="font-sans antialiased text-gray-900" style="font-family: 'Outfit', 'Lexend', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background-color: rgb(238,238,238);">
+<body class="font-sans antialiased text-gray-900">
+<!-- Header -->
 <header id="siteHeader" class="flex justify-between items-center px-[2vw] py-[2vw] bg-white/80 backdrop-blur-md sticky top-0 z-[100] border-b border-[#e5e5e5] transition-all duration-300">
-  <h1 class="text-[1.8rem] md:text-[2rem] font-semibold text-[#222] tracking-tight">DishCovery</h1>
+  <h1 class="text-[1.8rem] md:text-[2rem] font-semibold text-gray-900 tracking-tight">DishCovery</h1>
 
   <button id="menuBtn" class="md:hidden text-3xl text-[#222] transition-transform duration-300">
     ☰
@@ -57,15 +70,16 @@
   </nav>
 </header>
 
-<section class="contact-hero flex flex-col items-center text-center"
-          style="padding: clamp(60px, 12vw, 160px) 20px; background: linear-gradient(90deg, rgba(255,244,240,1) 0%, rgba(255,248,246,1) 50%, rgba(255,246,244,1) 100%); border-bottom: 1px solid rgba(0,0,0,0.03);">
-  <h2 class="font-extrabold text-[clamp(40px,8vw,96px)] leading-[1] mb-4" style="font-family:'Lexend','Outfit',sans-serif; color:#0f1723;">Contact Us</h2>
-  <p class="max-w-[1100px] text-gray-600 text-[clamp(16px,2.2vw,20px)] leading-[1.9] px-4">
+<!-- Hero Section -->
+<section class="contact-hero flex flex-col items-center text-center py-16 md:py-24 bg-white relative overflow-hidden reveal-on-scroll" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ff6a00\' fill-opacity=\'0.04\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); border-bottom: 1px solid rgba(0,0,0,0.03);">
+  <h2 class="font-extrabold text-[clamp(40px,8vw,96px)] leading-[1] mb-4 text-gray-900">Contact Us</h2>
+  <p class="max-w-[1100px] text-gray-700 text-[clamp(16px,2.2vw,20px)] leading-[1.9] px-4">
     Have a question, suggestion, or just want to share your cooking success? We'd love to hear from you! Get in touch with our team.
   </p>
 </section>
 
-  <section class="max-w-container-lg mx-auto px-6 py-16 md:py-24">
+<!-- Main Contact Section -->
+  <section class="max-w-container-lg mx-auto px-6 py-16 md:py-24 reveal-on-scroll">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
       <div class="bg-white rounded-2xl shadow-lg-soft p-8 md:p-10 border border-gray-100">
         <div class="flex items-center gap-3 mb-6">
@@ -81,7 +95,7 @@
           <div class="relative">
             <label for="name" class="block mb-2 text-sm font-semibold text-gray-700">Full Name *</label>
             <div class="relative">
-              <input id="name" name="name" type="text" placeholder="Enter your full name" class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10" />
+              <input id="name" name="name" type="text" placeholder="Enter your full name" class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10" required />
               <div class="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
@@ -93,7 +107,7 @@
           <div class="relative">
             <label for="email" class="block mb-2 text-sm font-semibold text-gray-700">Email Address *</label>
             <div class="relative">
-              <input id="email" name="email" type="email" placeholder="Enter your email address" class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10" />
+              <input id="email" name="email" type="email" placeholder="Enter your email address" class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10" required />
               <div class="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -105,7 +119,7 @@
           <div class="relative">
             <label for="subject" class="block mb-2 text-sm font-semibold text-gray-700">Subject *</label>
             <div class="relative">
-              <select id="subject" name="subject" class="w-full px-4 py-4 pl-16 pr-12 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10 appearance-none">
+              <select id="subject" name="subject" class="w-full px-4 py-4 pl-16 pr-12 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10 appearance-none" required>
                 <option>Select a subject</option>
                 <option>General Inquiry</option>
                 <option>Recipe Question</option>
@@ -118,14 +132,18 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
                 </svg>
               </div>
-              <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">▼</div>
+              <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+              </div>
             </div>
           </div>
 
           <div class="relative">
             <label for="message" class="block mb-2 text-sm font-semibold text-gray-700">Message *</label>
             <div class="relative">
-              <textarea id="message" name="message" placeholder="Tell us how we can help you..." class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 min-h-[160px] resize-y outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10"></textarea>
+              <textarea id="message" name="message" placeholder="Tell us how we can help you..." class="w-full px-4 py-4 pl-16 rounded-xl border-2 border-gray-200 bg-gray-50 text-sm text-gray-900 min-h-[160px] resize-y outline-none transition-all duration-300 focus:border-primary focus:bg-white focus:shadow-lg-soft focus:ring-4 focus:ring-primary/10" required></textarea>
               <div class="absolute left-4 top-4 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -146,7 +164,7 @@
         </form>
       </div>
 
-      <!-- Contact Info -->
+      <!-- Contact Info Cards -->
       <aside class="space-y-8">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-10 h-10 bg-gradient-to-r from-primary to-primary-2 rounded-full flex items-center justify-center">
@@ -158,7 +176,7 @@
         </div>
 
         <div class="space-y-6">
-          <div class="flex gap-4 items-start group">
+          <div class="flex gap-4 items-start group bg-white rounded-2xl shadow-md-soft p-6 border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-primary/20 cursor-pointer">
             <div class="w-14 h-14 bg-gradient-to-r from-primary to-primary-2 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg-soft group-hover:scale-110 transition-transform duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -173,7 +191,7 @@
             </div>
           </div>
 
-          <div class="flex gap-4 items-start group">
+          <div class="flex gap-4 items-start group bg-white rounded-2xl shadow-md-soft p-6 border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-primary/20 cursor-pointer">
             <div class="w-14 h-14 bg-gradient-to-r from-primary to-primary-2 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg-soft group-hover:scale-110 transition-transform duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
@@ -188,7 +206,7 @@
             </div>
           </div>
 
-          <div class="flex gap-4 items-start group">
+          <div class="flex gap-4 items-start group bg-white rounded-2xl shadow-md-soft p-6 border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-primary/20 cursor-pointer">
             <div class="w-14 h-14 bg-gradient-to-r from-primary to-primary-2 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg-soft group-hover:scale-110 transition-transform duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -204,7 +222,7 @@
             </div>
           </div>
 
-          <div class="flex gap-4 items-start group">
+          <div class="flex gap-4 items-start group bg-white rounded-2xl shadow-md-soft p-6 border border-gray-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-primary/20 cursor-pointer">
             <div class="w-14 h-14 bg-gradient-to-r from-primary to-primary-2 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg-soft group-hover:scale-110 transition-transform duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -244,62 +262,145 @@
   </section>
 
   <!-- FAQ -->
-  <section class="faq-section max-w-[1100px] mx-auto mt-12 px-5 py-10 text-center">
-    <h2 id="faq-heading" class="font-extrabold text-[clamp(28px,4.5vw,44px)] text-[#0f1723] mb-2">Frequently Asked Questions</h2>
-    <p class="lead text-[#6b7280] mb-6 text-lg">Quick answers to common questions</p>
+  <section class="faq-section max-w-[1100px] mx-auto px-5 py-16 md:py-24 text-center reveal-on-scroll">
+    <h2 id="faq-heading" class="font-extrabold text-[clamp(28px,4.5vw,44px)] text-gray-900 mb-2">Frequently Asked Questions</h2>
+    <p class="lead text-gray-700 mb-6 text-lg">Quick answers to common questions</p>
 
-    <div class="faq-grid grid grid-cols-2 gap-6 mt-4">
-      <article class="faq-card bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-transform hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
-        <h4 class="font-semibold mb-2">How do I submit my own recipe?</h4>
-        <p>Create an account and use our recipe submission form. All recipes are reviewed before publication.</p>
+    <div class="faq-grid grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      <article class="faq-card group bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-semibold mb-2 text-gray-800">How do I submit my own recipe?</h4>
+            <p class="text-gray-600">Create an account and use our recipe submission form. All recipes are reviewed before publication.</p>
+          </div>
+          <div class="text-primary opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 ml-4">&#10142;</div>
+        </div>
       </article>
 
-      <article class="faq-card bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-transform hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
-        <h4 class="font-semibold mb-2">Can I save my favorite recipes?</h4>
-        <p>Yes! Sign up for a free account to save recipes, create meal plans, and access your favorites anywhere.</p>
+      <article class="faq-card group bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-semibold mb-2 text-gray-800">Can I save my favorite recipes?</h4>
+            <p class="text-gray-600">Yes! Sign up for a free account to save recipes, create meal plans, and access your favorites anywhere.</p>
+          </div>
+          <div class="text-primary opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 ml-4">&#10142;</div>
+        </div>
       </article>
 
-      <article class="faq-card bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-transform hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
-        <h4 class="font-semibold mb-2">Are the recipes tested?</h4>
-        <p>Every recipe is tested by our culinary team to ensure accuracy and delicious results.</p>
+      <article class="faq-card group bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-semibold mb-2 text-gray-800">Are the recipes tested?</h4>
+            <p class="text-gray-600">Every recipe is tested by our culinary team to ensure accuracy and delicious results.</p>
+          </div>
+          <div class="text-primary opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 ml-4">&#10142;</div>
+        </div>
       </article>
 
-      <article class="faq-card bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-transform hover:-translate-y-2 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
-        <h4 class="font-semibold mb-2">Do you offer cooking classes?</h4>
-        <p>We partner with local chefs to offer virtual and in-person cooking classes. Check our events page!</p>
+      <article class="faq-card group bg-white rounded-[12px] p-6 shadow-[0_6px_18px_rgba(15,23,42,0.04)] text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(15,23,42,0.12)] cursor-pointer">
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-semibold mb-2 text-gray-800">Do you offer cooking classes?</h4>
+            <p class="text-gray-600">We partner with local chefs to offer virtual and in-person cooking classes. Check our events page!</p>
+          </div>
+          <div class="text-primary opacity-20 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 ml-4">&#10142;</div>
+        </div>
       </article>
     </div>
 
     <div class="mt-6">
-      <a class="faq-cta inline-block text-gray-800 hover:text-[#ff7a2b] transition-colors" href="Faq.html">View All FAQs →</a>
+      <a class="faq-cta inline-block text-gray-800 hover:text-primary transition-colors font-semibold text-lg" href="Faq.html">View All FAQs →</a>
     </div>
   </section>
 
-<footer class="bg-gray-800 text-white py-12 mt-auto">
-  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 text-sm">
-    <div>
-      <p class="text-gray-300 leading-relaxed">
+<!-- Footer -->
+<footer class="bg-[#0f1b2c] text-gray-100 py-12">
+  <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="footer_column text-gray-300">
+      <h2 class="text-2xl font-extrabold text-primary mb-4">DishCovery</h2>
+      <p>
         Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+    <div class="footer_contact">
+      <h3 class="text-white text-lg font-semibold mb-3">Contact Info</h3>
+      <p class="text-gray-300">hello@dishcovery.com</p>
+      <p class="text-gray-300">+1 (555) 123-4567</p>
+      <p class="text-gray-300">123 Culinary Street, Food City</p>
+    </div>
 
-      <div>
-        <h3 class="font-semibold mb-3 text-orange-400">Contact Info</h3>
-        <ul class="space-y-1 text-gray-300">
-          <li>hello@dishcovery.com</li>
-          <li>+1 (555) 123-4567</li>
-          <li>123 Culinary Street, Food City</li>
-        </ul>
-      </div>
+    <div>
+      <h3 class="text-white text-lg font-semibold mb-3">Quick Links</h3>
+      <ul class="space-y-2">
+        <li><a href="About_Us.html" class="text-gray-300 hover:text-primary transition-colors">About Us</a></li>
+        <li><a href="recipe_finder.html" class="text-gray-300 hover:text-primary transition-colors">Recipe Finder</a></li>
+        <li><a href="Faq.html" class="text-gray-300 hover:text-primary transition-colors">FAQ</a></li>
+        <li><a href="Contact.html" class="text-gray-300 hover:text-primary transition-colors">Contact</a></li>
+      </ul>
+    </div>
+  </div>
 
-      <div>
-        <h3 class="font-semibold mb-3 text-orange-400">Follow Us</h3>
-        <ul class="space-y-1 text-gray-300">
-          <li><a href="#" class="hover:text-orange-400 transition">Facebook</a></li>
-          <li><a href="#" class="hover:text-orange-400 transition">Instagram</a></li>
-          <li><a href="#" class="hover:text-orange-400 transition">X</a></li>
+  <div class="border-t border-white/10 mt-12 pt-6 text-center">
+    <p class="text-gray-400">&copy; 2024 DishCovery. All rights reserved.</p>
+    <div class="flex gap-6 justify-center mt-4">
+      <a href="#" class="text-gray-400 hover:text-primary text-sm">Privacy Policy</a>
+      <a href="#" class="text-gray-400 hover:text-primary text-sm">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+  <script>
+    // Character count for message textarea
+    const textarea = document.getElementById('message');
+    const cc = document.querySelector('.char-count');
+    if (textarea && cc) {
+      textarea.addEventListener('input', () => {
+        const len = textarea.value.length;
+        cc.textContent = Math.min(len, 500) + '/500 characters';
+      });
+    }
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById("menuBtn");
+    const navMenu = document.getElementById("navMenu");
+
+    menuBtn.addEventListener("click", () => {
+      navMenu.classList.toggle("hidden");
+      navMenu.classList.toggle("opacity-0");
+      navMenu.classList.toggle("scale-y-0");
+      menuBtn.textContent = navMenu.classList.contains("hidden") ? "☰" : "✖";
+    });
+
+    // Header shrink on scroll
+    const header = document.getElementById("siteHeader");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 10) {
+        header.classList.add("shadow-md", "py-[1.2vw]");
+      } else {
+        header.classList.remove("shadow-md", "py-[1.2vw]");
+      }
+    });
+
+    // Reveal on scroll animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Ensure Lucide icons are created if you decide to use them later
+    // lucide.createIcons();
+  </script>
+
+</body>
+</html>
         </ul>
       </div>
 
@@ -335,7 +436,7 @@
       navMenu.classList.toggle("hidden");
       navMenu.classList.toggle("opacity-0");
       navMenu.classList.toggle("scale-y-0");
-      menuBtn.textContent = menuBtn.textContent === "✖" ? "☰" : "✖";
+      menuBtn.textContent = navMenu.classList.contains("hidden") ? "☰" : "✖";
     });
   </script>
   <script>
