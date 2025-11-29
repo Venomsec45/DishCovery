@@ -26,11 +26,12 @@ Features:
 - Recipe finder
 - Friendly interface
 
-How to run DishCovery:
+INstallation instructions:
 
 1. Install XAMPP from official sources.
 2. Open terminal or command prompt if you are using a Windows computer
-3. Go to the XAMPP Folder, then, go to the htdocs folder, run this command "git clone"
+3. Go to the XAMPP Folder, then, go to the htdocs folder, run this command "git clone https://github.com/Venomsec45/DishCovery.git".
+4. Open XAMPP app
 
 Reminder:
 The following website is in a test and features functionality may vary different. It is not yet released to the public. Improvements will be applied in the website as we are open on suggestions and feedback. A collaboration can be made.
