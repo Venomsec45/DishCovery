@@ -39,6 +39,10 @@
       .menu-open .hamburger-line-1 { transform: translateY(6px) rotate(45deg); }
       .menu-open .hamburger-line-2 { opacity: 0; }
       .menu-open .hamburger-line-3 { transform: translateY(-6px) rotate(-45deg); }
+      /* Custom scrollbar for dark mode */
+      .dark ::-webkit-scrollbar-thumb {
+        background-color: #4b5563; /* dark-border equivalent */
+      }
     </style>
 </head>
 <body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
@@ -63,6 +67,10 @@
           <li><a href="#" class="font-semibold text-gray-800 hover:text-primary dark:text-dark-text dark:hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Gallery</a></li>
           <li class="login mt-4 md:mt-0">
             <a href="account_dashboard.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transform transition hover:-translate-y-0.5" aria-current="page">My Account</a>
+          </li>
+          <!-- Dark Mode Toggle -->
+          <li class="md:ml-4 mt-4 md:mt-0">
+            <button id="theme-toggle" aria-label="Toggle dark mode" class="p-2 rounded-full bg-gray-100 dark:bg-dark-border text-gray-700 dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"><i data-lucide="moon" class="w-5 h-5 dark:hidden"></i><i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i></button>
           </li>
         </ul>
       </nav>
@@ -185,28 +193,251 @@
   </div>
 </footer>
 
+<!-- Reusable Modal Structure -->
+<div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[9999] hidden opacity-0 transition-opacity duration-300">
+  <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg-soft w-full max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+    <div class="flex items-center justify-between p-6 border-b border-gray-100 dark:border-dark-border">
+      <h3 id="modal-title" class="text-2xl font-bold text-gray-800 dark:text-dark-text"></h3>
+      <button id="modal-close-btn" class="text-gray-500 hover:text-gray-700 dark:text-dark-text-secondary dark:hover:text-dark-text transition-colors duration-200">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    <div id="modal-content" class="p-6 space-y-4">
+      <!-- Content will be dynamically loaded here -->
+    </div>
+  </div>
+</div>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
       // Initialize Lucide Icons
       lucide.createIcons();
 
       // Mobile menu toggle
-      const menuToggle = document.getElementById('menu-toggle');
-      const mainNav = document.getElementById('main-nav');
-      menuToggle.addEventListener('click', function() {
-          const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-          this.classList.toggle('menu-open');
-          menuToggle.setAttribute('aria-expanded', !isExpanded);
-          mainNav.classList.toggle('hidden');
+      const menuToggle = document.getElementById('menu-toggle')
+      const mainNav = document.getElementById('main-nav')
+      if (menuToggle && mainNav) {
+        menuToggle.addEventListener('click', function() {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true'
+            this.classList.toggle('menu-open')
+            menuToggle.setAttribute('aria-expanded', !isExpanded)
+            mainNav.classList.toggle('hidden')
+        })
+      }
+
+      // --- Dark Mode Toggle ---
+      const themeToggle = document.getElementById('theme-toggle')
+      const htmlElement = document.documentElement
+
+      // Set initial theme based on localStorage or system preference
+      const savedTheme = localStorage.getItem('theme')
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        htmlElement.classList.add('dark')
+      } else {
+        htmlElement.classList.remove('dark')
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          htmlElement.classList.toggle('dark')
+          const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light'
+          localStorage.setItem('theme', currentTheme)
+          lucide.createIcons() // Re-render icons to update sun/moon
+        })
+      }
+
+      // --- Reusable Modal Logic ---
+      const detailModal = document.getElementById('detail-modal')
+      const modalTitle = document.getElementById('modal-title')
+      const modalContent = document.getElementById('modal-content')
+      const modalCloseBtn = document.getElementById('modal-close-btn')
+
+      function openModal(title, contentHTML) {
+        modalTitle.textContent = title
+        modalContent.innerHTML = contentHTML
+        detailModal.classList.remove('hidden')
+        setTimeout(() => {
+          detailModal.classList.add('opacity-100')
+          detailModal.querySelector('div').classList.remove('scale-95')
+          detailModal.querySelector('div').classList.add('scale-100')
+          lucide.createIcons() // Re-render icons inside the modal
+        }, 10) // Small delay for transition
+      }
+
+      function closeModal() {
+        detailModal.classList.remove('opacity-100')
+        detailModal.querySelector('div').classList.remove('scale-100')
+        detailModal.querySelector('div').classList.add('scale-95')
+        setTimeout(() => {
+          detailModal.classList.add('hidden')
+          modalContent.innerHTML = '' // Clear content
+        }, 300) // Match transition duration
+      }
+
+      modalCloseBtn.addEventListener('click', closeModal)
+      detailModal.addEventListener('click', (e) => {
+        if (e.target === detailModal) {
+          closeModal()
+        }
       });
 
-      // --- Dark Mode ---
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
+      // --- Simulated Data (replace with actual API calls in a real app) ---
+      const savedRecipesData = [
+        { id: 1, name: 'Classic Lasagna', image: 'https://images.unsplash.com/photo-1612807663387-991559981878?w=100&h=100&fit=crop', date: 'Saved 2 days ago' },
+        { id: 2, name: 'Spicy Chicken Tacos', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100&h=100&fit=crop', date: 'Saved 1 week ago' },
+        { id: 3, name: 'Vegetable Curry', image: 'https://images.unsplash.com/photo-1588166524941-cf51a774d77a?w=100&h=100&fit=crop', date: 'Saved 2 weeks ago' },
+        { id: 4, name: 'Homemade Pizza', image: 'https://images.unsplash.com/photo-1593560704721-fa36ee235943?w=100&h=100&fit=crop', date: 'Saved 1 month ago' },
+      ]
+
+      const submittedRecipesData = [
+        { id: 101, name: 'My Secret Chili Recipe', image: 'https://images.unsplash.com/photo-1626804475100-d1815147895a?w=100&h=100&fit=crop', status: 'Published', date: 'Submitted 3 months ago' },
+        { id: 102, name: 'Quick Breakfast Burrito', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100&h=100&fit=crop', status: 'Published', date: 'Submitted 5 months ago' },
+        { id: 103, name: 'Grandma\'s Apple Pie', image: 'https://images.unsplash.com/photo-1571772928015-7f1c19ff2e2e?w=100&h=100&fit=crop', status: 'Pending Review', date: 'Submitted 1 month ago' },
+      ]
+
+      const recentlyViewedData = [
+        { id: 201, name: 'Vegetable Stir Fry', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop', time: 'Viewed 2 hours ago', description: 'A quick and healthy stir fry with seasonal vegetables and a savory sauce.' },
+        { id: 202, name: 'Chocolate Chip Cookies', image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=100&h=100&fit=crop', time: 'Viewed yesterday', description: 'Classic chewy chocolate chip cookies, perfect for any occasion.' },
+        { id: 203, name: 'Creamy Tomato Pasta', image: 'https://images.unsplash.com/photo-1595908479120-6701d606d74c?w=100&h=100&fit=crop', time: 'Viewed 3 days ago', description: 'Easy and delicious pasta dish with a rich, creamy tomato sauce.' },
+      ]
+
+      const activityFeedData = [
+        { type: 'like', message: 'Your recipe "Spicy Chicken Tacos" received 5 new likes!', time: '1 hour ago', icon: 'heart' },
+        { type: 'comment', message: 'New comment on "Classic Lasagna" from Jane Doe.', time: '3 hours ago', icon: 'message-circle' },
+        { type: 'save', message: 'You saved "Vegetable Curry" to your Favorites collection.', time: 'yesterday', icon: 'bookmark' },
+        { type: 'update', message: 'Your profile picture was updated.', time: '2 days ago', icon: 'user' },
+      ]
+
+      const recommendationsData = [
+        { id: 301, name: 'Mediterranean Quinoa Salad', image: 'https://images.unsplash.com/photo-1512621776951-a579b569e791?w=200&h=150&fit=crop', tags: ['Healthy', 'Vegetarian', 'Quick'] },
+        { id: 302, name: 'Beef Stroganoff', image: 'https://images.unsplash.com/photo-1600891963908-912239455325?w=200&h=150&fit=crop', tags: ['Comfort Food', 'Dinner'] },
+        { id: 303, name: 'Lemon Garlic Shrimp Pasta', image: 'https://images.unsplash.com/photo-1555939594-58d7ab87130f?w=200&h=150&fit=crop', tags: ['Seafood', 'Easy'] },
+      ]
+
+      // Update stat counts
+      document.getElementById('saved-recipes-count').textContent = savedRecipesData.length
+      document.getElementById('submitted-recipes-count').textContent = submittedRecipesData.length
+
+      // Populate Recently Viewed Recipes
+      const recentlyViewedContainer = document.getElementById('recently-viewed-recipes')
+      if (recentlyViewedContainer) {
+        recentlyViewedData.forEach(recipe => {
+          const recipeElement = document.createElement('a')
+          recipeElement.href = '#'
+          recipeElement.classList.add('flex', 'items-center', 'gap-4', 'p-3', 'rounded-xl', 'hover:bg-gray-50', 'dark:hover:bg-dark-border/50', 'transition-colors', 'duration-200', 'recently-viewed-item')
+          recipeElement.dataset.recipeId = recipe.id
+          recipeElement.innerHTML = `
+            <img src="${recipe.image}" alt="${recipe.name}" class="w-16 h-16 rounded-lg object-cover">
+            <div class="flex-grow">
+              <p class="font-semibold text-gray-800 dark:text-dark-text">${recipe.name}</p>
+              <p class="text-sm text-gray-500 dark:text-dark-text-secondary">${recipe.time}</p>
+            </div>
+            <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+          `
+          recentlyViewedContainer.appendChild(recipeElement)
+        })
       }
+
+      // Populate Activity Feed
+      const activityFeedContainer = document.getElementById('activity-feed')
+      if (activityFeedContainer) {
+        activityFeedData.forEach(activity => {
+          const activityElement = document.createElement('div')
+          activityElement.classList.add('flex', 'items-start', 'gap-3', 'p-3', 'rounded-lg', 'bg-gray-50', 'dark:bg-dark-border/50')
+          activityElement.innerHTML = `
+            <i data-lucide="${activity.icon}" class="w-5 h-5 text-primary mt-1 flex-shrink-0"></i>
+            <div>
+              <p class="text-gray-800 dark:text-dark-text">${activity.message}</p>
+              <p class="text-sm text-gray-500 dark:text-dark-text-secondary">${activity.time}</p>
+            </div>
+          `
+          activityFeedContainer.appendChild(activityElement)
+        })
+      }
+
+      // Populate Recommendations
+      const recommendationsContainer = document.getElementById('recommendations')
+      if (recommendationsContainer) {
+        recommendationsData.forEach(recipe => {
+          const recipeElement = document.createElement('a')
+          recipeElement.href = '#'
+          recipeElement.classList.add('block', 'p-4', 'rounded-xl', 'bg-gray-50', 'dark:bg-dark-border/50', 'hover:bg-gray-100', 'dark:hover:bg-dark-border', 'transition-colors', 'duration-200', 'group')
+          recipeElement.innerHTML = `
+            <img src="${recipe.image}" alt="${recipe.name}" class="w-full h-32 object-cover rounded-lg mb-3">
+            <p class="font-semibold text-gray-800 dark:text-dark-text group-hover:text-primary transition-colors duration-200">${recipe.name}</p>
+            <div class="flex flex-wrap gap-1 mt-2">
+              ${recipe.tags.map(tag => `<span class="text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded-full">${tag}</span>`).join('')}
+            </div>
+          `
+          recommendationsContainer.appendChild(recipeElement)
+        })
+      }
+
+      // --- Event Listeners for Modal Triggers ---
+      document.getElementById('saved-recipes-stat').addEventListener('click', () => {
+        let content = '<ul class="space-y-3">'
+        savedRecipesData.forEach(recipe => {
+          content += `
+            <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-border/50 transition-colors duration-200">
+              <img src="${recipe.image}" alt="${recipe.name}" class="w-12 h-12 rounded-md object-cover">
+              <div class="flex-grow">
+                <p class="font-semibold text-gray-800 dark:text-dark-text">${recipe.name}</p>
+                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">${recipe.date}</p>
+              </div>
+              <a href="#" class="text-primary hover:text-primary-2"><i data-lucide="external-link" class="w-5 h-5"></i></a>
+            </li>
+          `
+        })
+        content += '</ul>'
+        openModal('Saved Recipes', content)
+      })
+
+      document.getElementById('submitted-recipes-stat').addEventListener('click', () => {
+        let content = '<ul class="space-y-3">'
+        submittedRecipesData.forEach(recipe => {
+          content += `
+            <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-border/50 transition-colors duration-200">
+              <img src="${recipe.image}" alt="${recipe.name}" class="w-12 h-12 rounded-md object-cover">
+              <div class="flex-grow">
+                <p class="font-semibold text-gray-800 dark:text-dark-text">${recipe.name}</p>
+                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Status: ${recipe.status} - ${recipe.date}</p>
+              </div>
+              <a href="#" class="text-primary hover:text-primary-2"><i data-lucide="external-link" class="w-5 h-5"></i></a>
+            </li>
+          `
+        })
+        content += '</ul>'
+        openModal('Submitted Recipes', content)
+      })
+
+      document.querySelectorAll('.recently-viewed-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault() // Prevent default link behavior
+          const recipeId = parseInt(item.dataset.recipeId)
+          const recipe = recentlyViewedData.find(r => r.id === recipeId)
+          if (recipe) {
+            const content = `
+              <img src="${recipe.image.replace('w=100&h=100', 'w=400&h=300')}" alt="${recipe.name}" class="w-full h-48 object-cover rounded-lg mb-4">
+              <p class="text-lg font-semibold text-gray-800 dark:text-dark-text">${recipe.name}</p>
+              <p class="text-gray-600 dark:text-dark-text-secondary">${recipe.description}</p>
+              <p class="text-sm text-gray-500 dark:text-dark-text-secondary mt-2">${recipe.time}</p>
+              <a href="#" class="inline-flex items-center gap-2 mt-4 text-primary hover:text-primary-2 font-semibold">
+                View Full Recipe <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+            `
+            openModal(recipe.name, content)
+          }
+        })
+      })
+
+      // Quick Action: Submit Your Own (example alert)
+      document.getElementById('submit-recipe-action').addEventListener('click', (e) => {
+        e.preventDefault()
+        alert('Redirecting to recipe submission form!')
+        // In a real app, you'd navigate to the submission page
+      })
   });
 </script>
 

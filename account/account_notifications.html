@@ -40,7 +40,7 @@
       }
     </script>
 </head>
-<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
+<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 flex flex-col min-h-screen">
 <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
     <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
       <div class="logo">
@@ -77,7 +77,7 @@
     </div>
   </header>
 
-<div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
+<div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 flex-grow">
   <div class="max-w-container-xl mx-auto px-6 py-12 md:py-16">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       
@@ -98,50 +98,33 @@
       <!-- Main Content -->
       <main class="lg:col-span-9">
         <div class="bg-white p-6 md:p-10 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
-          <div class="flex justify-between items-center mb-8">
+          <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 gap-4">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-dark-text">Inbox</h2>
-            <button class="text-sm font-semibold text-primary hover:underline">Mark all as read</button>
+            <div class="flex items-center gap-4">
+              <button id="mark-all-read-btn" class="text-sm font-semibold text-primary hover:underline">Mark all as read</button>
+              <button id="clear-all-btn" class="text-sm font-semibold text-red-500 hover:underline">Clear All</button>
+            </div>
           </div>
 
-          <div class="space-y-4">
-            <!-- Notification Item 1 (Unread) --> 
-            <div class="notification-card flex items-start gap-4 p-5 rounded-xl bg-orange-50 border-l-4 border-primary cursor-pointer hover:shadow-lg-soft transition-all duration-300 relative overflow-hidden dark:bg-dark-unread-bg dark:border-primary">
-              <div class="w-11 h-11 bg-primary/10 text-primary rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="star" class="w-5 h-5"></i></div>
-              <div class="flex-grow pr-8">
-                <p class="font-bold text-gray-800 dark:text-dark-text">New Recipe Challenge! <span class="ml-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</span></p>
-                <p class="text-sm text-gray-600 mt-1 dark:text-dark-text-secondary">The "Summer Salads" challenge has just started. Submit your best recipe for a chance to win!</p>
-                <p class="text-xs text-gray-500 mt-2 dark:text-gray-400">2 hours ago</p>
-              </div>
-              <button class="delete-icon absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-red-500 opacity-0 transform translate-x-4 transition-all duration-300" aria-label="Delete notification">
-                <i data-lucide="trash-2" class="w-5 h-5"></i>
-              </button>
-            </div>
+          <!-- Filter Tabs -->
+          <div class="border-b border-gray-200 dark:border-dark-border mb-6">
+            <nav class="flex -mb-px gap-6" aria-label="Tabs">
+              <button data-filter="all" class="filter-tab whitespace-nowrap py-3 px-1 border-b-2 font-semibold text-sm border-primary text-primary">All</button>
+              <button data-filter="unread" class="filter-tab whitespace-nowrap py-3 px-1 border-b-2 font-semibold text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-dark-text-secondary dark:hover:text-dark-text dark:hover:border-dark-border">Unread</button>
+            </nav>
+          </div>
 
-            <!-- Notification Item 2 (Read) -->
-            <div class="notification-card flex items-start gap-4 p-5 rounded-xl bg-gray-50 cursor-pointer hover:shadow-lg-soft transition-all duration-300 relative overflow-hidden dark:bg-dark-read-bg dark:hover:bg-dark-read-hover">
-              <div class="w-11 h-11 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center flex-shrink-0 dark:bg-gray-700 dark:text-gray-400"><i data-lucide="message-square" class="w-5 h-5"></i></div>
-              <div class="flex-grow pr-8">
-                <p class="font-semibold text-gray-700 dark:text-dark-text">John Smith commented on your recipe</p>
-                <p class="text-sm text-gray-500 mt-1 dark:text-dark-text-secondary">"This was delicious! I added a pinch of chili flakes for some extra heat."</p>
-                <p class="text-xs text-gray-500 mt-2 dark:text-gray-400">1 day ago</p>
-              </div>
-              <button class="delete-icon absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-red-500 opacity-0 transform translate-x-4 transition-all duration-300" aria-label="Delete notification">
-                <i data-lucide="trash-2" class="w-5 h-5"></i>
-              </button>
-            </div>
+          <div id="notifications-container" class="space-y-4">
+            <!-- Notifications will be dynamically inserted here -->
+          </div>
 
-            <!-- Notification Item 3 (Read) -->
-            <div class="notification-card flex items-start gap-4 p-5 rounded-xl bg-gray-50 cursor-pointer hover:shadow-lg-soft transition-all duration-300 relative overflow-hidden dark:bg-dark-read-bg dark:hover:bg-dark-read-hover">
-              <div class="w-11 h-11 bg-gray-200 text-gray-600 rounded-full flex items-center justify-center flex-shrink-0 dark:bg-gray-700 dark:text-gray-400"><i data-lucide="badge-check" class="w-5 h-5"></i></div>
-              <div class="flex-grow pr-8">
-                <p class="font-semibold text-gray-700 dark:text-dark-text">Welcome to DishCovery!</p>
-                <p class="text-sm text-gray-500 mt-1 dark:text-dark-text-secondary">Your account has been successfully created. Start exploring thousands of recipes now.</p>
-                <p class="text-xs text-gray-500 mt-2 dark:text-gray-400">3 days ago</p>
-              </div>
-              <button class="delete-icon absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-red-500 opacity-0 transform translate-x-4 transition-all duration-300" aria-label="Delete notification">
-                <i data-lucide="trash-2" class="w-5 h-5"></i>
-              </button>
+          <!-- Empty State -->
+          <div id="empty-state" class="hidden text-center py-16">
+            <div class="w-20 h-20 bg-gray-100 dark:bg-dark-border rounded-full flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="bell-off" class="w-10 h-10 text-gray-400 dark:text-dark-text-secondary"></i>
             </div>
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-dark-text">No Notifications Yet</h3>
+            <p class="text-gray-500 dark:text-dark-text-secondary mt-1">Your inbox is empty. We'll let you know when something new comes up.</p>
           </div>
         </div>
       </main>
@@ -196,6 +179,116 @@
       } else {
         document.documentElement.classList.remove('dark');
       }
+
+      // --- Notifications Logic ---
+      const NOTIFICATIONS_KEY = 'dishcovery_notifications_list';
+      const container = document.getElementById('notifications-container');
+      const emptyState = document.getElementById('empty-state');
+      const filterTabs = document.querySelectorAll('.filter-tab');
+      let currentFilter = 'all';
+
+      const mockNotifications = [
+        { id: 1, icon: 'star', title: 'New Recipe Challenge!', message: 'The "Summer Salads" challenge has just started. Submit your best recipe for a chance to win!', time: '2 hours ago', read: false, new: true },
+        { id: 2, icon: 'message-square', title: 'John Smith commented on your recipe', message: '"This was delicious! I added a pinch of chili flakes for some extra heat."', time: '1 day ago', read: true },
+        { id: 3, icon: 'badge-check', title: 'Welcome to DishCovery!', message: 'Your account has been successfully created. Start exploring thousands of recipes now.', time: '3 days ago', read: true },
+        { id: 4, icon: 'award', title: 'You earned a new badge!', message: 'Congratulations! You\'ve earned the "Community Chef" badge for submitting 5 recipes.', time: '5 days ago', read: false },
+      ];
+
+      function getNotifications() {
+        const data = localStorage.getItem(NOTIFICATIONS_KEY);
+        if (!data) {
+          localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(mockNotifications));
+          return mockNotifications;
+        }
+        return JSON.parse(data);
+      }
+
+      function saveNotifications(notifications) {
+        localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+      }
+
+      function renderNotifications() {
+        const notifications = getNotifications();
+        const filtered = notifications.filter(n => currentFilter === 'all' || !n.read);
+
+        container.innerHTML = '';
+        
+        if (filtered.length === 0) {
+          emptyState.classList.remove('hidden');
+          container.classList.add('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+          container.classList.remove('hidden');
+        }
+
+        filtered.forEach(n => {
+          const isUnread = !n.read;
+          const newBadge = n.new ? `<span class="ml-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</span>` : '';
+          const card = document.createElement('div');
+          card.className = `notification-card flex items-start gap-4 p-5 rounded-xl cursor-pointer hover:shadow-lg-soft transition-all duration-300 relative overflow-hidden ${isUnread ? 'bg-orange-50 border-l-4 border-primary dark:bg-dark-unread-bg dark:border-primary' : 'bg-gray-50 dark:bg-dark-read-bg dark:hover:bg-dark-read-hover'}`;
+          card.dataset.id = n.id;
+          card.innerHTML = `
+            <div class="w-11 h-11 ${isUnread ? 'bg-primary/10 text-primary' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400'} rounded-full flex items-center justify-center flex-shrink-0"><i data-lucide="${n.icon}" class="w-5 h-5"></i></div>
+            <div class="flex-grow pr-8">
+              <p class="${isUnread ? 'font-bold' : 'font-semibold'} text-gray-800 dark:text-dark-text">${n.title} ${newBadge}</p>
+              <p class="text-sm text-gray-600 mt-1 dark:text-dark-text-secondary">${n.message}</p>
+              <p class="text-xs text-gray-500 mt-2 dark:text-gray-400">${n.time}</p>
+            </div>
+            <button class="delete-icon absolute top-1/2 -translate-y-1/2 right-4 text-gray-400 hover:text-red-500 opacity-0 transform translate-x-4 transition-all duration-300" aria-label="Delete notification" data-id="${n.id}">
+              <i data-lucide="trash-2" class="w-5 h-5"></i>
+            </button>
+          `;
+          container.appendChild(card);
+        });
+        lucide.createIcons();
+      }
+
+      // Event Listeners
+      container.addEventListener('click', (e) => {
+        const card = e.target.closest('.notification-card');
+        const deleteBtn = e.target.closest('.delete-icon');
+        let notifications = getNotifications();
+
+        if (deleteBtn) {
+          const id = parseInt(deleteBtn.dataset.id);
+          saveNotifications(notifications.filter(n => n.id !== id));
+        } else if (card) {
+          const id = parseInt(card.dataset.id);
+          const notification = notifications.find(n => n.id === id);
+          if (notification && !notification.read) {
+            notification.read = true;
+            notification.new = false; // Also remove 'new' badge
+            saveNotifications(notifications);
+          }
+        }
+        renderNotifications();
+      });
+
+      document.getElementById('mark-all-read-btn').addEventListener('click', () => {
+        let notifications = getNotifications();
+        notifications.forEach(n => { n.read = true; n.new = false; });
+        saveNotifications(notifications);
+        renderNotifications();
+      });
+
+      document.getElementById('clear-all-btn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear all notifications?')) {
+          saveNotifications([]);
+          renderNotifications();
+        }
+      });
+
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          filterTabs.forEach(t => t.classList.remove('border-primary', 'text-primary'));
+          tab.classList.add('border-primary', 'text-primary');
+          currentFilter = tab.dataset.filter;
+          renderNotifications();
+        });
+      });
+
+      // Initial Render
+      renderNotifications();
   });
 </script>
 

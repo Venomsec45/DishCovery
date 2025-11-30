@@ -9,14 +9,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class', // Enable dark mode
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
             primary: '#ff6a00',
             'primary-2': '#ff3300',
             'page-bg': '#f8fafc',
-            // Dark mode colors
             'dark-bg': '#111827',
             'dark-card': '#1f2937',
             'dark-border': '#374151',
@@ -40,9 +39,18 @@
     .menu-open .hamburger-line-1 { transform: translateY(6px) rotate(45deg); }
     .menu-open .hamburger-line-2 { opacity: 0; }
     .menu-open .hamburger-line-3 { transform: translateY(-6px) rotate(-45deg); }
+    .modal-content-scale {
+      transform: scale(0.95);
+      opacity: 0;
+      transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-content-scale.show {
+      transform: scale(1);
+      opacity: 1;
+    }
   </style>
 </head>
-<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 font-sans">
+<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 font-sans flex flex-col min-h-screen">
   <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
     <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
       <div class="logo">
@@ -70,7 +78,7 @@
     </div>
   </header>
 
-<div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
+<div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 flex-grow">
   <div class="max-w-container-xl mx-auto px-6 py-12 md:py-16">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       
@@ -92,7 +100,7 @@
       <main class="lg:col-span-9">
         <div class="bg-white rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300 overflow-hidden">
           <!-- Cover Photo -->
-          <div id="bg-photo" class="h-48 bg-gradient-to-r from-primary to-primary-2 bg-cover bg-center relative group">
+          <div id="bg-photo" class="h-64 md:h-96 bg-gradient-to-r from-primary to-primary-2 bg-cover bg-center relative group">
             <input id="bg-input" type="file" accept="image/*" class="hidden">
             <label for="bg-input" class="absolute right-4 top-4 bg-white/80 text-gray-800 text-xs font-bold py-1.5 px-3 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
               <i data-lucide="camera" class="w-4 h-4"></i> Change Cover
@@ -100,11 +108,11 @@
           </div>
 
           <!-- Profile Info -->
-          <div class="px-6 md:px-8 pb-8">
-            <div class="flex flex-col md:flex-row items-center md:items-end -mt-16 md:-mt-20 relative">
+          <div class="px-6 md:px-8 pb-12">
+            <div class="flex flex-col md:flex-row items-center md:items-end -mt-24 md:-mt-40 relative">
               <!-- Avatar -->
               <div class="relative flex-shrink-0 group">
-                <img src="profile.png" alt="Profile picture" class="avatar w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-dark-card shadow-lg bg-white">
+                <img src="profile.png" alt="Profile picture" class="avatar w-40 h-40 md:w-56 md:h-56 rounded-full border-4 border-white dark:border-dark-card shadow-lg bg-white object-cover">
                 <input id="avatar-input" type="file" accept="image/*" class="hidden">
                 <label for="avatar-input" class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
                   <i data-lucide="camera" class="w-8 h-8 text-white"></i>
@@ -112,33 +120,34 @@
               </div>
 
               <!-- User Meta -->
-              <div class="meta text-center md:text-left md:ml-6 mt-4 md:mt-0 flex-grow">
-                <h1 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-dark-text">First Last</h1>
-                <p class="email-display text-gray-500 dark:text-dark-text-secondary mt-1">email@example.com</p>
-                <div class="stats flex justify-center md:justify-start gap-6 mt-4">
-                  <div class="text-center">
-                    <div class="font-bold text-lg text-gray-800 dark:text-dark-text">123</div>
-                    <div class="text-xs text-gray-500 dark:text-dark-text-secondary">Friends</div>
+              <div class="meta text-center md:text-left md:ml-8 mt-6 md:mt-0 flex-grow">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-dark-text">First Last</h1>
+                <p class="email-display text-gray-500 dark:text-dark-text-secondary mt-2 text-lg">email@example.com</p>
+                <div class="stats flex justify-center md:justify-start gap-8 mt-6">
+                  <div id="friends-btn" class="text-center cursor-pointer hover:opacity-75 transition-opacity">
+                    <div class="font-bold text-2xl text-gray-800 dark:text-dark-text">123</div>
+                    <div class="text-sm text-gray-500 dark:text-dark-text-secondary">Friends</div>
                   </div>
-                  <div class="text-center">
-                    <div class="font-bold text-lg text-gray-800 dark:text-dark-text">456</div>
-                    <div class="text-xs text-gray-500 dark:text-dark-text-secondary">Following</div>
+                  <div id="following-btn" class="text-center cursor-pointer hover:opacity-75 transition-opacity">
+                    <div class="font-bold text-2xl text-gray-800 dark:text-dark-text">456</div>
+                    <div class="text-sm text-gray-500 dark:text-dark-text-secondary">Following</div>
                   </div>
                 </div>
               </div>
 
               <!-- Edit Button -->
-              <div class="mt-4 md:mt-0">
-                <button id="edit-profile-btn" class="bg-gray-100 dark:bg-dark-border text-gray-700 dark:text-dark-text font-bold py-2 px-5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-2">
-                  <i data-lucide="edit-2" class="w-4 h-4"></i> Edit Profile
+              <div class="mt-6 md:mt-0">
+                <button id="edit-profile-btn" class="bg-gray-100 dark:bg-dark-border text-gray-700 dark:text-dark-text font-bold py-2 px-6 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-2 text-lg">
+                  <i data-lucide="edit-2" class="w-5 h-5"></i> Edit Profile
                 </button>
               </div>
             </div>
 
             <!-- Bio Section -->
-            <div class="mt-8 pt-8 border-t border-gray-200 dark:border-dark-border">
-              <h3 class="text-lg font-bold text-gray-800 dark:text-dark-text">About Me</h3>
-              <p class="bio mt-2 text-gray-600 dark:text-dark-text-secondary whitespace-pre-wrap">This is where the user can write a short bio — favourite cuisines, cooking style, or anything to share with the community.</p>
+            <div class="mt-12 pt-10 border-t border-gray-200 dark:border-dark-border">
+              <h3 class="text-2xl font-bold text-gray-800 dark:text-dark-text mb-3">About Me</h3>
+              <p class="bio mt-3 text-gray-600 dark:text-dark-text-secondary whitespace-pre-wrap text-lg leading-relaxed">This is where the user can write a short bio — favourite cuisines, cooking style, or anything to share with the community.</p>
+            </div>
             </div>
           </div>
         </div>
@@ -147,23 +156,36 @@
   </div>
 </div>
     
-<footer class="bg-[#0f1b2c] text-gray-100 py-12">
-  <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+<footer class="bg-[#0f1b2c] text-gray-100 py-6">
+  <div class="max-w-container-lg mx-auto px-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     <div class="footer_column text-gray-300">
-      <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+      <h2 class="text-lg font-extrabold text-primary mb-2">DishCovery</h2>
+      <p class="text-sm">Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform.</p>
     </div>
+
     <div class="footer_contact">
-      <h3 class="text-white text-lg mb-3">Contact Info</h3>
-      <p class="text-gray-300">hello@dishcovery.com</p>
-      <p class="text-gray-300">+1 (555) 123-4567</p>
-      <p class="text-gray-300">123 Culinary Street, Food City</p>
+      <h3 class="text-white text-sm font-semibold mb-2">Contact Info</h3>
+      <p class="text-gray-300 text-sm">hello@dishcovery.com</p>
+      <p class="text-gray-300 text-sm">+1 (555) 123-4567</p>
+      <p class="text-gray-300 text-sm">123 Culinary Street, Food City</p>
+    </div>
+
+    <div>
+      <h3 class="text-white text-sm font-semibold mb-2">Quick Links</h3>
+      <ul class="space-y-1">
+        <li><a href="About_Us.html" class="text-gray-300 hover:text-primary transition-colors text-sm">About Us</a></li>
+        <li><a href="recipe_finder.html" class="text-gray-300 hover:text-primary transition-colors text-sm">Recipe Finder</a></li>
+        <li><a href="Faq.html" class="text-gray-300 hover:text-primary transition-colors text-sm">FAQ</a></li>
+        <li><a href="Contact.html" class="text-gray-300 hover:text-primary transition-colors text-sm">Contact</a></li>
+      </ul>
     </div>
   </div>
-  <div class="border-t border-white/10 mt-12 pt-6 text-center">
-    <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
-    <div class="flex gap-6 justify-center mt-4">
-      <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
-      <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
+
+  <div class="border-t border-white/10 mt-6 pt-4 text-center">
+    <p class="text-gray-400 text-xs">&copy; 2024 DishCovery. All rights reserved.</p>
+    <div class="flex gap-4 justify-center mt-2">
+      <a href="#" class="text-gray-400 hover:text-primary text-xs">Privacy Policy</a>
+      <a href="#" class="text-gray-400 hover:text-primary text-xs">Terms of Service</a>
     </div>
   </div>
 </footer>
@@ -201,13 +223,41 @@
     </div>
   </div>
 
+  <!-- Friends Modal -->
+  <div id="friends-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="friends-modal-title">
+    <div class="modal-content-scale bg-white dark:bg-dark-card rounded-2xl shadow-2xl p-6 md:p-8 w-full max-w-2xl mx-4 text-left relative max-h-[80vh] flex flex-col">
+      <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200 dark:border-dark-border">
+        <h3 id="friends-modal-title" class="text-2xl font-bold text-gray-800 dark:text-dark-text">Friends</h3>
+        <button id="close-friends-modal" type="button" class="text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors p-1" aria-label="Close">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="friends-list" class="space-y-3 overflow-y-auto flex-grow pr-2">
+        <p class="text-gray-500 dark:text-dark-text-secondary text-center py-8">Loading friends...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Following Modal -->
+  <div id="following-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="following-modal-title">
+    <div class="modal-content-scale bg-white dark:bg-dark-card rounded-2xl shadow-2xl p-6 md:p-8 w-full max-w-2xl mx-4 text-left relative max-h-[80vh] flex flex-col">
+      <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200 dark:border-dark-border">
+        <h3 id="following-modal-title" class="text-2xl font-bold text-gray-800 dark:text-dark-text">Following</h3>
+        <button id="close-following-modal" type="button" class="text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors p-1" aria-label="Close">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="following-list" class="space-y-3 overflow-y-auto flex-grow pr-2">
+        <p class="text-gray-500 dark:text-dark-text-secondary text-center py-8">Loading who you follow...</p>
+      </div>
+    </div>
+  </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function(){
       (function(){
-        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Mobile menu toggle
         const menuToggle = document.getElementById('menu-toggle');
         const mainNav = document.getElementById('main-nav');
         if (menuToggle && mainNav) {
@@ -219,12 +269,11 @@
           });
         }
 
-        // --- Dark Mode ---
         const savedTheme = localStorage.getItem('theme') || 'light';
         if (savedTheme === 'dark') { document.documentElement.classList.add('dark'); } 
         else { document.documentElement.classList.remove('dark'); }
 
-        var MAX_BYTES = 4 * 1024 * 1024; // 4MB limit for uploads in form
+        var MAX_BYTES = 4 * 1024 * 1024;
         var ALLOWED = ['image/jpeg','image/png','image/webp','image/gif'];
 
         var bg = document.getElementById('bg-photo');
@@ -232,7 +281,6 @@
         var avatarInput = document.getElementById('avatar-input');
         var avatarImg = document.querySelector('.avatar');
 
-        // Elements for edit modal
         var editBtn = document.getElementById('edit-profile-btn');
         var modal = document.getElementById('edit-modal');
         var form = document.getElementById('edit-form');
@@ -241,6 +289,11 @@
         var emailEl = document.getElementById('email');
         var descEl = document.getElementById('description');
         var cancelBtn = document.getElementById('cancel-edit');
+
+        var friendsBtn = document.getElementById('friends-btn');
+        var followingBtn = document.getElementById('following-btn');
+        var friendsModal = document.getElementById('friends-modal');
+        var followingModal = document.getElementById('following-modal');
 
         function fileToDataURL(file, cb){
           var reader = new FileReader();
@@ -256,7 +309,6 @@
           return '';
         }
 
-        // load saved profile values
         try{
           var savedBg = localStorage.getItem('profile_bg');
           if(savedBg && bg){ bg.style.backgroundImage = 'url("'+savedBg+'")'; }
@@ -275,7 +327,6 @@
           if(savedBio){ var bio = document.querySelector('.bio'); if(bio) bio.textContent = savedBio; }
         }catch(e){ console.warn('localStorage not available', e); }
 
-        // wire bg and avatar input: preview and persist
         if(bgInput && bg){
           bgInput.addEventListener('change', function(e){
             var file = e.target.files && e.target.files[0];
@@ -296,36 +347,31 @@
           });
         }
 
-        // open modal and populate fields
         if(editBtn && modal){
           editBtn.addEventListener('click', function(){
-            // populate
             var h1 = document.querySelector('.meta h1');
             var parts = (h1 && h1.textContent) ? h1.textContent.split(' ') : ['',''];
             firstNameEl.value = parts[0] || '';
-            lastNameEl.value = parts.slice(1).join(' ') || ''; // Handles multi-word last names
+            lastNameEl.value = parts.slice(1).join(' ') || '';
             var emailElDom = document.querySelector('.email-display');
             emailEl.value = (emailElDom && emailElDom.textContent) ? emailElDom.textContent : '';
             var bioDom = document.querySelector('.bio');
             descEl.value = (bioDom && bioDom.textContent) ? bioDom.textContent : '';
             
             modal.classList.remove('hidden');
-            setTimeout(() => modal.querySelector('div').classList.remove('scale-95'), 10); // Animate in
+            setTimeout(() => modal.querySelector('div').classList.remove('scale-95'), 10);
 
-            // focus first field for accessibility
             firstNameEl.focus();
           });
         }
 
-        // cancel
-        function closeModal() {
+        function closeEditModal() {
           modal.querySelector('div').classList.add('scale-95');
           setTimeout(() => modal.classList.add('hidden'), 300);
         }
-        if(cancelBtn && modal){ cancelBtn.addEventListener('click', closeModal); }
-        if(modal){ modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); }); }
+        if(cancelBtn && modal){ cancelBtn.addEventListener('click', closeEditModal); }
+        if(modal){ modal.addEventListener('click', function(e){ if(e.target === modal) closeEditModal(); }); }
 
-        // form submit: update DOM and save
         if(form){
           form.addEventListener('submit', function(e){
             e.preventDefault();
@@ -333,15 +379,99 @@
             var last = lastNameEl.value.trim();
             var email = emailEl.value.trim();
             var bio = descEl.value.trim();
-            // update DOM
             var h1 = document.querySelector('.meta h1'); if(h1) h1.textContent = (first + ' ' + last).trim() || 'First Last';
             document.querySelectorAll('.email-display').forEach(el => el.textContent = email || 'email@example.com');
             var bioDom = document.querySelector('.bio'); if(bioDom) bioDom.textContent = bio || '';
-            // persist
             try{ localStorage.setItem('profile_first', first); localStorage.setItem('profile_last', last); localStorage.setItem('profile_email', email); localStorage.setItem('profile_bio', bio); }catch(e){ console.warn('could not save profile text', e); }
-            closeModal();
+            closeEditModal();
           });
         }
+
+        // Mock data
+        const mockUsers = [
+          { name: 'Jane Doe', avatar: 'https://i.pravatar.cc/150?img=1', following: true },
+          { name: 'Peter Jones', avatar: 'https://i.pravatar.cc/150?img=2', following: false },
+          { name: 'Maria Garcia', avatar: 'https://i.pravatar.cc/150?img=3', following: true },
+          { name: 'Sam Wilson', avatar: 'https://i.pravatar.cc/150?img=4', following: true },
+          { name: 'Li Wei', avatar: 'https://i.pravatar.cc/150?img=5', following: false },
+        ];
+
+        function renderUserList(containerId, users, type) {
+          const container = document.getElementById(containerId);
+          container.innerHTML = '';
+          if (users.length === 0) {
+            container.innerHTML = `<p class="text-gray-500 dark:text-dark-text-secondary text-center py-8">No users to show.</p>`;
+            return;
+          }
+          users.forEach(user => {
+            const isFollowing = user.following;
+            const buttonText = type === 'friends' ? 'Unfriend' : (isFollowing ? 'Following' : 'Follow');
+            const buttonClass = type === 'friends' 
+              ? 'bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-500/20 dark:text-red-400 dark:hover:bg-red-500/30'
+              : (isFollowing 
+                ? 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-dark-border dark:text-dark-text-secondary dark:hover:bg-gray-600'
+                : 'bg-primary text-white hover:bg-primary-2');
+
+            const userEl = document.createElement('div');
+            userEl.className = 'flex items-center gap-4 p-4 rounded-xl bg-gray-50 dark:bg-dark-input hover:bg-gray-100 dark:hover:bg-gray-700/50 transition-colors';
+            userEl.innerHTML = `
+              <img src="${user.avatar}" alt="${user.name}" class="w-14 h-14 rounded-full object-cover flex-shrink-0 border-2 border-gray-200 dark:border-dark-border">
+              <div class="flex-grow min-w-0">
+                <p class="font-semibold text-gray-800 dark:text-dark-text">${user.name}</p>
+                <p class="text-xs text-gray-500 dark:text-dark-text-secondary">Active recently</p>
+              </div>
+              <button class="text-sm font-semibold px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${buttonClass}">
+                ${buttonText}
+              </button>
+            `;
+            container.appendChild(userEl);
+          });
+        }
+
+        function openSocialModal(modalElement) {
+          modalElement.classList.remove('hidden');
+          setTimeout(() => {
+            const content = modalElement.querySelector('.modal-content-scale');
+            if (content) content.classList.add('show');
+          }, 10);
+          lucide.createIcons();
+        }
+
+        function closeSocialModal(modalElement) {
+          const content = modalElement.querySelector('.modal-content-scale');
+          if (content) content.classList.remove('show');
+          setTimeout(() => {
+            modalElement.classList.add('hidden');
+          }, 300);
+        }
+
+        // Friends Modal Events
+        friendsBtn.addEventListener('click', () => {
+          renderUserList('friends-list', mockUsers, 'friends');
+          openSocialModal(friendsModal);
+        });
+
+        document.getElementById('close-friends-modal').addEventListener('click', () => {
+          closeSocialModal(friendsModal);
+        });
+
+        friendsModal.addEventListener('click', (e) => {
+          if (e.target === friendsModal) closeSocialModal(friendsModal);
+        });
+
+        // Following Modal Events
+        followingBtn.addEventListener('click', () => {
+          renderUserList('following-list', mockUsers, 'following');
+          openSocialModal(followingModal);
+        });
+
+        document.getElementById('close-following-modal').addEventListener('click', () => {
+          closeSocialModal(followingModal);
+        });
+
+        followingModal.addEventListener('click', (e) => {
+          if (e.target === followingModal) closeSocialModal(followingModal);
+        });
       })();
     });
   </script>

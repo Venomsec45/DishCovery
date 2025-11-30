@@ -1,69 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dishcovery - Account settings</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class', // Enable dark mode
-        theme: {
-          extend: {
-            colors: {
-              primary: '#ff6a00',
-              'primary-2': '#ff3300',
-              'page-bg': '#f8fafc',
-              // Dark mode colors
-              'dark-bg': '#111827',
-              'dark-card': '#1f2937',
-              'dark-border': '#374151',
-              'dark-text': '#d1d5db',
-              'dark-text-secondary': '#9ca3af',
-              'dark-input': '#374151',
-              'dark-disabled': '#1f2937'
-            },
-            boxShadow: {
-              'md-soft': '0 6px 18px rgba(0,0,0,0.06)',
-              'lg-soft': '0 12px 30px rgba(0,0,0,0.08)'
-            },
-            maxWidth: { 
-              'container-lg': '1200px',
-              'container-xl': '1400px'
-            }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DishCovery - Account Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class', // Enable dark mode
+      theme: {
+        extend: {
+          colors: {
+            primary: '#ff6a00',
+            'primary-2': '#ff3300',
+            'page-bg': '#f8fafc',
+            // Dark mode colors
+            'dark-bg': '#111827',
+            'dark-card': '#1f2937',
+            'dark-border': '#374151',
+            'dark-text': '#d1d5db',
+            'dark-text-secondary': '#9ca3af',
+            'dark-input': '#374151',
+          },
+          boxShadow: {
+            'md-soft': '0 6px 18px rgba(0,0,0,0.06)',
+            'lg-soft': '0 12px 30px rgba(0,0,0,0.08)'
+          },
+          maxWidth: { 
+            'container-lg': '1200px',
+            'container-xl': '1400px'
           }
         }
       }
-    </script>
-    <style>
-      .menu-open .hamburger-line-1 { transform: translateY(6px) rotate(45deg); }
-      .menu-open .hamburger-line-2 { opacity: 0; }
-      .menu-open .hamburger-line-3 { transform: translateY(-6px) rotate(-45deg); }
-      /* Custom Toggle Switch */
-      .toggle-checkbox:checked {
-        right: 0;
-        border-color: #ff6a00;
-      }
-      .toggle-checkbox:checked + .toggle-label {
-        background-color: #ff6a00;
-      }
-      input:disabled, select:disabled, textarea:disabled {
-        background-color: #f8fafc !important;
-        cursor: not-allowed;
-      }
-    </style>
+    }
+  </script>
+  <style>
+    .menu-open .hamburger-line-1 { transform: translateY(6px) rotate(45deg); }
+    .menu-open .hamburger-line-2 { opacity: 0; }
+    .menu-open .hamburger-line-3 { transform: translateY(-6px) rotate(-45deg); }
+
+    /* Toggle Switch CSS */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 28px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 28px;
+    }
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .toggle-slider {
+      background-color: #ff6a00;
+    }
+    input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+    }
+    html.dark .toggle-slider {
+      background-color: #374151;
+    }
+    html.dark input:checked + .toggle-slider {
+      background-color: #ff6a00;
+    }
+
+    /* Custom styles for tag input */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      background-color: #ff6a00;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
-<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
-<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 transition-all duration-300">
+<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 font-sans">
+
+<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
     <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
       <div class="logo">
         <a href="../index.html"><h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1></a>
       </div>
 
       <!-- Hamburger Menu Button for Mobile -->
-      <button id="menu-toggle" class="md:hidden text-gray-800 focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+      <button id="menu-toggle" class="md:hidden text-gray-800 dark:text-dark-text focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
         <div class="w-7 h-7 relative">
           <span class="hamburger-line hamburger-line-1 absolute top-1.5 left-0 w-full h-0.5 bg-current transition-transform duration-300"></span>
           <span class="hamburger-line hamburger-line-2 absolute top-1/2 -translate-y-1/2 left-0 w-full h-0.5 bg-current transition-opacity duration-300"></span>
@@ -71,17 +121,17 @@
         </div>
       </button>
 
-      <nav id="main-nav" aria-label="Main navigation" class="hidden md:flex md:items-center absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none">
+      <nav id="main-nav" aria-label="Main navigation" class="hidden md:flex md:items-center absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none dark:bg-dark-card md:dark:bg-transparent">
         <ul class="flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-8 text-center md:text-left w-full p-6 md:p-0">
-          <li><a href="recipe_finder_for_account.html" class="font-semibold text-gray-800 hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Recipe Finder</a></li>
-          <li><a href="#" class="font-semibold text-gray-800 hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Gallery</a></li>
+          <li><a href="recipe_finder_for_account.html" class="font-semibold text-gray-800 hover:text-primary dark:text-dark-text dark:hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Recipe Finder</a></li>
+          <li><a href="#" class="font-semibold text-gray-800 hover:text-primary dark:text-dark-text dark:hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Gallery</a></li>
           <li class="login mt-4 md:mt-0">
             <a href="account_dashboard.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transform transition hover:-translate-y-0.5" aria-current="page">My Account</a>
           </li>
         </ul>
       </nav>
     </div>
-  </header>
+</header>
 
 <div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
   <div class="max-w-container-xl mx-auto px-6 py-12 md:py-16">
@@ -95,7 +145,7 @@
               <li><a href="account_dashboard.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="layout-grid" class="w-5 h-5"></i>Dashboard</a></li>
               <li><a href="account_profile.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="user" class="w-5 h-5"></i>Profile</a></li>
               <li><a href="account_notifications.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="bell" class="w-5 h-5"></i>Notifications</a></li>
-              <li><a href="account_help.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="help-circle" class="w-5 h-5"></i>Help Center</a></li>
+              <li><a href="account_help_center.html" class="flex items-center gap-3 font-semibold text-gray-600 hover:text-primary dark:text-dark-text-secondary dark:hover:text-primary px-3 py-2 rounded-lg transition-colors duration-300"><i data-lucide="help-circle" class="w-5 h-5"></i>Help Center</a></li>
               <li><a href="account_settings.html" class="flex items-center gap-3 font-bold text-primary bg-orange-50 dark:bg-primary/10 px-3 py-2 rounded-lg"><i data-lucide="settings" class="w-5 h-5"></i>Settings</a></li>
           </ul>
         </div>
@@ -103,177 +153,189 @@
 
       <!-- Main Content -->
       <main class="lg:col-span-9 space-y-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-dark-text transition-colors duration-300">Settings</h1>
+        <!-- Page Header -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-dark-text">Settings</h1>
+          <p class="mt-2 text-gray-600 dark:text-dark-text-secondary">Manage your account settings, preferences, and data.</p>
+        </div>
 
-        <!-- Account Information -->
-        <section class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
-          <h2 class="text-2xl font-bold text-gray-800 mb-6 dark:text-dark-text">Account Information</h2>
-          <div class="flex flex-col md:flex-row items-start gap-8">
-            <div class="flex-shrink-0 text-center">
-              <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User profile picture" class="w-28 h-28 rounded-full mx-auto border-4 border-white shadow-md">
-              <button class="form-element mt-4 text-sm font-semibold text-primary hover:underline" disabled>Upload New</button>
+        <!-- Security Settings -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3 dark:text-dark-text"><i data-lucide="shield" class="w-6 h-6 text-primary"></i>Security</h2>
+          <form id="password-form" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b dark:border-dark-border">
+              <div>
+                <label for="current-password" class="block text-sm font-medium text-gray-600 mb-1 dark:text-dark-text-secondary">Current Password</label>
+                <input id="current-password" type="password" placeholder="••••••••" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition dark:bg-dark-input dark:border-dark-border dark:text-dark-text">
+              </div>
             </div>
-            <form class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label for="username" class="block text-sm font-medium text-gray-600 mb-1 dark:text-dark-text-secondary">Username</label>
-                <input type="text" id="username" value="john.smith" class="form-element w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition dark:bg-dark-input dark:border-dark-border dark:text-dark-text dark:disabled:bg-dark-disabled" disabled>
-              </div>
-              <div>
-                <label for="email" class="block text-sm font-medium text-gray-600 mb-1 dark:text-dark-text-secondary">Email</label>
-                <input type="email" id="email" value="john.smith@example.com" class="form-element w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition dark:bg-dark-input dark:border-dark-border dark:text-dark-text dark:disabled:bg-dark-disabled" disabled>
-              </div>
-              <div>
-                <label for="language" class="block text-sm font-medium text-gray-600 mb-1 dark:text-dark-text-secondary">Language</label>
-                <select id="language" class="form-element w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition dark:bg-dark-input dark:border-dark-border dark:text-dark-text dark:disabled:bg-dark-disabled" disabled>
-                  <option selected>English</option>
-                  <option>Tagalog</option>
-                  <option>Spanish</option>
-                </select>
+                <label for="new-password" class="block text-sm font-medium text-gray-600 mb-1 dark:text-dark-text-secondary">New Password</label>
+                <input id="new-password" type="password" placeholder="New Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition dark:bg-dark-input dark:border-dark-border dark:text-dark-text">
               </div>
               <div>
-                <label for="password" class="block text-sm font-medium text-gray-600 mb-1 dark:text-dark-text-secondary">Change Password</label>
-                <input type="password" id="password" placeholder="Enter new password" class="form-element w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition dark:bg-dark-input dark:border-dark-border dark:text-dark-text dark:disabled:bg-dark-disabled" disabled>
+                <label for="confirm-password" class="block text-sm font-medium text-gray-600 mb-1 dark:text-dark-text-secondary">Confirm New Password</label>
+                <input id="confirm-password" type="password" placeholder="Confirm Password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition dark:bg-dark-input dark:border-dark-border dark:text-dark-text">
               </div>
-              <div class="md:col-span-2 flex justify-end gap-4">
-                <button type="button" id="edit-button" class="bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500">Edit Profile</button>
-                <button type="button" id="cancel-button" class="bg-gray-100 text-gray-700 font-bold py-2 px-6 rounded-lg hover:bg-gray-200 transition-colors hidden">Cancel</button>
-                <button type="submit" id="save-button" class="bg-gradient-to-r from-primary to-primary-2 text-white font-bold py-2 px-6 rounded-lg shadow-md-soft hover:-translate-y-0.5 transition-transform hidden">Save Changes</button>
-              </div>
-            </form>
-          </div>
-        </section>
+            </div>
+            <div class="text-right pt-2">
+              <button type="submit" class="bg-gradient-to-r from-primary to-primary-2 text-white font-bold py-2 px-6 rounded-lg shadow-md-soft hover:-translate-y-0.5 transition-transform">Update Password</button>
+            </div>
+          </form>
 
-        <!-- Personalization Section -->
-        <section class="space-y-8">
-          <h2 class="text-2xl font-bold text-gray-800 border-b pb-4 dark:text-dark-text dark:border-dark-border">Personalization</h2>
-          <!-- App Preferences -->
-          <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 dark:text-dark-text">App Preferences</h2>
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">Recipe Recommendations</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Get suggestions based on your cooking history.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle1" id="toggle1" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" checked disabled/>
-                  <label for="toggle1" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
+          <!-- Two-Factor Authentication -->
+          <div class="mt-8 pt-6 border-t dark:border-dark-border">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-dark-text mb-2">Two-Factor Authentication (2FA)</h3>
+            <p class="text-sm text-gray-500 dark:text-dark-text-secondary mb-4">Add an extra layer of security to your account by requiring a second verification step.</p>
+            <button id="setup-2fa-btn" class="bg-gray-100 dark:bg-dark-border text-gray-700 dark:text-dark-text font-bold py-2 px-5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-2">
+              <i data-lucide="smartphone" class="w-4 h-4"></i> Set Up 2FA
+            </button>
+          </div>
+
+          <!-- Login History -->
+          <div class="mt-8 pt-6 border-t dark:border-dark-border">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-dark-text mb-4">Login History</h3>
+            <div id="login-history-container" class="space-y-3">
+              <!-- Login history will be dynamically inserted here -->
+              <p class="text-sm text-gray-500 dark:text-dark-text-secondary">No login history found.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preferences Section -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3 dark:text-dark-text"><i data-lucide="sliders" class="w-6 h-6 text-primary"></i>Preferences</h2>
+          <div class="space-y-6">
+            <!-- Dietary Preferences -->
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-dark-text mb-2">Dietary Preferences</h3>
+              <div id="dietary-prefs" class="flex flex-wrap gap-4">
+                <label class="flex items-center gap-2"><input type="checkbox" class="rounded text-primary focus:ring-primary"> Vegan</label>
+                <label class="flex items-center gap-2"><input type="checkbox" class="rounded text-primary focus:ring-primary"> Vegetarian</label>
+                <label class="flex items-center gap-2"><input type="checkbox" class="rounded text-primary focus:ring-primary"> Gluten-Free</label>
               </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">Auto-save Recipes</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Automatically save recipes you view to your history.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle2" id="toggle2" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" checked disabled/>
-                  <label for="toggle2" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
+            </div>
+            <!-- Favorite Cuisines -->
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-dark-text mb-2">Favorite Cuisines</h3>
+              <div id="cuisine-tags" class="p-2 border rounded-lg dark:border-dark-border flex flex-wrap items-center">
+                <input id="cuisine-input" type="text" placeholder="Add a cuisine (e.g., Italian) and press Enter" class="flex-grow bg-transparent focus:outline-none p-2 dark:text-dark-text">
               </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">Dark Mode</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Switch to a darker, eye-friendly theme.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle3" id="toggle3" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" disabled/>
-                  <label for="toggle3" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
+            </div>
+            <!-- Measurement System -->
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-dark-text mb-2">Measurement System</h3>
+              <div id="measurement-system" class="flex items-center gap-4 p-1 bg-gray-100 dark:bg-dark-input rounded-full w-max">
+                <button data-value="imperial" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-colors">Imperial</button>
+                <button data-value="metric" class="px-4 py-1.5 rounded-full text-sm font-semibold transition-colors">Metric</button>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Dietary Preferences -->
-          <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 dark:text-dark-text">Dietary Preferences</h2>
-            <div class="grid grid-cols-2 gap-4">
-              <label class="flex items-center gap-2 text-gray-700 dark:text-dark-text"><input type="checkbox" class="form-element form-checkbox text-primary rounded focus:ring-primary" disabled> Vegetarian</label>
-              <label class="flex items-center gap-2 text-gray-700 dark:text-dark-text"><input type="checkbox" class="form-element form-checkbox text-primary rounded focus:ring-primary" disabled> Gluten-Free</label>
-              <label class="flex items-center gap-2 text-gray-700 dark:text-dark-text"><input type="checkbox" class="form-element form-checkbox text-primary rounded focus:ring-primary" disabled> Vegan</label>
-              <label class="flex items-center gap-2 text-gray-700 dark:text-dark-text"><input type="checkbox" class="form-element form-checkbox text-primary rounded focus:ring-primary" disabled> Nut-Free</label>
-              <label class="flex items-center gap-2 text-gray-700 dark:text-dark-text"><input type="checkbox" class="form-element form-checkbox text-primary rounded focus:ring-primary" disabled> Dairy-Free</label>
-              <label class="flex items-center gap-2 text-gray-700 dark:text-dark-text"><input type="checkbox" class="form-element form-checkbox text-primary rounded focus:ring-primary" disabled> Low-Carb</label>
+        <!-- Notification Settings -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3 dark:text-dark-text"><i data-lucide="bell" class="w-6 h-6 text-primary"></i>Notifications</h2>
+          <div id="notifications-form" class="space-y-5">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-semibold text-gray-800 dark:text-dark-text">New Recipe Alerts</h3>
+                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Get notified when new recipes matching your preferences are added.</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notif-new-recipes" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-semibold text-gray-800 dark:text-dark-text">Weekly Summary</h3>
+                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Receive a weekly email with top recipes and tips.</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notif-weekly-summary">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-semibold text-gray-800 dark:text-dark-text">Community Updates</h3>
+                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Updates on comments and ratings on your contributions.</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="notif-community-updates" checked>
+                <span class="toggle-slider"></span>
+              </label>
             </div>
           </div>
+        </div>
 
-          <!-- Notifications -->
-          <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 dark:text-dark-text">Notifications</h2>
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">Email Notifications</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Receive updates and notifications via email.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle7" id="toggle7" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" checked disabled/>
-                  <label for="toggle7" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
-              </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">News and Updates</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Get the latest news from the DishCovery team.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle8" id="toggle8" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" disabled/>
-                  <label for="toggle8" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
-              </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">Feedback Requests</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Participate in surveys to help us improve.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle9" id="toggle9" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" disabled/>
-                  <label for="toggle9" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
+        <!-- Data & Privacy Section -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3 dark:text-dark-text"><i data-lucide="database" class="w-6 h-6 text-primary"></i>Data & Privacy</h2>
+          <div class="space-y-4">
+            <button id="export-data-btn" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-gray-200 dark:hover:bg-dark-border transition-all duration-300">
+              <i data-lucide="download" class="w-5 h-5"></i> Export My Data (JSON)
+            </button>
+            <button id="export-pdf-btn" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-gray-200 dark:hover:bg-dark-border transition-all duration-300">
+              <i data-lucide="file-text" class="w-5 h-5"></i> Download Saved Recipes (PDF)
+            </button>
+            <button id="clear-history-btn" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-gray-200 dark:hover:bg-dark-border transition-all duration-300">
+              <i data-lucide="history" class="w-5 h-5"></i> Clear Search History
+            </button>
+          </div>
+        </div>
+
+        <!-- Social & Profile Visibility -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3 dark:text-dark-text"><i data-lucide="share-2" class="w-6 h-6 text-primary"></i>Social & Sharing</h2>
+          <div class="space-y-6">
+            <div>
+              <h3 class="font-semibold text-gray-800 dark:text-dark-text mb-2">Link Social Accounts</h3>
+              <div class="flex items-center gap-4">
+                <button id="connect-instagram" data-social="instagram" class="social-connect-btn flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-pink-500 dark:text-dark-text-secondary dark:hover:text-pink-500"><i data-lucide="instagram" class="w-5 h-5"></i> <span class="label">Connect Instagram</span></button>
+                <button id="connect-pinterest" data-social="pinterest" class="social-connect-btn flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-red-500 dark:text-dark-text-secondary dark:hover:text-red-500"><i data-lucide="pinterest" class="w-5 h-5"></i> <span class="label">Connect Pinterest</span></button>
               </div>
             </div>
-          </div>
-        </section>
-
-        <!-- Security & Privacy Section -->
-        <section class="space-y-8">
-          <h2 class="text-2xl font-bold text-gray-800 border-b pb-4 dark:text-dark-text dark:border-dark-border">Security & Privacy</h2>
-          <!-- Privacy -->
-          <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 dark:text-dark-text">Privacy</h2>
-            <div class="space-y-4">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">Third-Party Data Sharing</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Allow sharing data with our trusted partners.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle4" id="toggle4" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" disabled/>
-                  <label for="toggle4" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-semibold text-gray-800 dark:text-dark-text">Public Profile</h3>
+                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Allow others to see your profile and submitted recipes.</p>
               </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">Personalized Ads</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">See ads based on your activity.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle5" id="toggle5" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" checked disabled/>
-                  <label for="toggle5" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
-              </div>
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="font-medium text-gray-700 dark:text-dark-text">Show Online Status</h4>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Let others see when you are active.</p>
-                </div>
-                <div class="relative inline-block w-12 mr-2 align-middle select-none flex-shrink-0 transition-colors duration-300">
-                  <input type="checkbox" name="toggle6" id="toggle6" class="form-element toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer" checked disabled/>
-                  <label for="toggle6" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-300 cursor-pointer dark:bg-gray-600"></label>
-                </div>
-              </div>
+              <label class="toggle-switch"><input type="checkbox" id="profile-visibility" checked><span class="toggle-slider"></span></label>
             </div>
           </div>
-        </section>
+        </div>
+
+        <!-- Account Actions -->
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
+          <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3 dark:text-dark-text"><i data-lucide="sliders-horizontal" class="w-6 h-6 text-primary"></i>General</h2>
+          <div class="space-y-5">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-semibold text-gray-800 dark:text-dark-text">Dark Mode</h3>
+                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Toggle between light and dark themes for your comfort.</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="border-t dark:border-dark-border pt-5">
+              <button id="logout-btn" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-gray-200 dark:hover:bg-dark-border transition-all duration-300">
+                <i data-lucide="log-out" class="w-5 h-5"></i> Log Out
+              </button>
+            </div>
+            <div class="border-t border-red-200 dark:border-red-500/30 pt-5">
+              <h3 class="font-semibold text-red-600 dark:text-red-400">Danger Zone</h3>
+              <p class="text-sm text-gray-500 dark:text-dark-text-secondary mb-3">Once you delete your account, there is no going back. Please be certain.</p>
+              <button id="delete-account-btn" class="w-full flex items-center gap-3 text-left bg-red-50 dark:bg-red-500/10 p-4 rounded-lg font-semibold text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all duration-300">
+                <i data-lucide="trash-2" class="w-5 h-5"></i> Delete My Account
+              </button>
+            </div>
+          </div>
+        </div>
 
       </main>
     </div>
@@ -281,115 +343,340 @@
 </div>
     
 <footer class="bg-[#0f1b2c] text-gray-100 py-12">
-<div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-  <div class="footer_column text-gray-300">
-    <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
-  </div>
-
-  <div class="footer_contact">
-    <h3 class="text-white text-lg mb-3">Contact Info</h3>
-    <p class="text-gray-300">hello@dishcovery.com</p>
-    <p class="text-gray-300">+1 (555) 123-4567</p>
-    <p class="text-gray-300">123 Culinary Street, Food City</p>
-  </div>
-</div>
-
-<div class="border-t border-white/10 mt-12 pt-6 text-center">
-  <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
-  <div class="flex gap-6 justify-center mt-4">
-    <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
-    <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
-    <a href="#" class="text-gray-300 hover:text-primary">Website Builder</a>
-  </div>
-</div>
+    <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="footer_column text-gray-300">
+        <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+      </div>
+      <div class="footer_contact">
+        <h3 class="text-white text-lg mb-3">Contact Info</h3>
+        <p class="text-gray-300">hello@dishcovery.com</p>
+        <p class="text-gray-300">+1 (555) 123-4567</p>
+        <p class="text-gray-300">123 Culinary Street, Food City</p>
+      </div>
+    </div>
+    <div class="border-t border-white/10 mt-12 pt-6 text-center">
+      <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
+      <div class="flex gap-6 justify-center mt-4">
+        <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
+        <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
+      </div>
+    </div>
 </footer>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-      // Initialize Lucide Icons
-      lucide.createIcons();
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Lucide Icons
+    lucide.createIcons();
 
-      // Mobile menu toggle
-      const menuToggle = document.getElementById('menu-toggle');
-      const mainNav = document.getElementById('main-nav');
-      menuToggle.addEventListener('click', function() {
-          const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
-          this.classList.toggle('menu-open');
-          menuToggle.setAttribute('aria-expanded', !isExpanded);
-          mainNav.classList.toggle('hidden');
-      });
+    // --- LocalStorage Keys ---
+    const NOTIFICATIONS_KEY = 'dishcovery_notifications';
+    const PREFERENCES_KEY = 'dishcovery_preferences';
+    const CUISINES_KEY = 'dishcovery_cuisines';
+    const PROFILE_VISIBILITY_KEY = 'dishcovery_profile_visibility';
+    const LOGIN_HISTORY_KEY = 'dishcovery_login_history';
+    const SOCIAL_CONNECTIONS_KEY = 'dishcovery_social_connections';
 
-      // Settings form edit/save toggle
-      const editButton = document.getElementById('edit-button');
-      const saveButton = document.getElementById('save-button');
-      const cancelButton = document.getElementById('cancel-button');
-      const formElements = document.querySelectorAll('.form-element');
-      const darkModeToggle = document.getElementById('toggle3');
-      let originalFormValues = {};
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+    menuToggle.addEventListener('click', function() {
+        const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        this.classList.toggle('menu-open');
+        menuToggle.setAttribute('aria-expanded', !isExpanded);
+        mainNav.classList.toggle('hidden');
+    });
 
-      // --- Dark Mode ---
-      function applyTheme(theme) {
-        if (theme === 'dark') {
-          document.documentElement.classList.add('dark');
-          darkModeToggle.checked = true;
-        } else {
-          document.documentElement.classList.remove('dark');
-          darkModeToggle.checked = false;
+    // --- Dark Mode ---
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const html = document.documentElement;
+
+    // Set initial state
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      html.classList.add('dark');
+      darkModeToggle.checked = true;
+    } else {
+      html.classList.remove('dark');
+      darkModeToggle.checked = false;
+    }
+
+    // Handle toggle change
+    darkModeToggle.addEventListener('change', function() {
+      if (this.checked) {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // --- Password Form ---
+    document.getElementById('password-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (newPassword !== confirmPassword) {
+            alert("New passwords do not match.");
+            return;
         }
-      }
+        if (newPassword.length < 8) {
+            alert("New password must be at least 8 characters long.");
+            return;
+        }
 
-      darkModeToggle.addEventListener('change', () => {
-        const theme = darkModeToggle.checked ? 'dark' : 'light';
-        localStorage.setItem('theme', theme);
-        applyTheme(theme);
+        // In a real app, you would send this to a server for validation and update.
+        alert('Password updated successfully! (Simulation)');
+
+        // Clear fields for security
+        this.reset();
+    });
+
+    // --- 2FA Button ---
+    document.getElementById('setup-2fa-btn').addEventListener('click', function() {
+      alert('Two-Factor Authentication setup would start here. (Simulation)');
+    });
+
+    // --- Preferences ---
+    const dietaryPrefsContainer = document.getElementById('dietary-prefs');
+    const cuisineInput = document.getElementById('cuisine-input');
+    const cuisineTagsContainer = document.getElementById('cuisine-tags');
+    const measurementSystemContainer = document.getElementById('measurement-system');
+
+    function savePreferences() {
+      const diets = [...dietaryPrefsContainer.querySelectorAll('input:checked')].map(el => el.parentElement.textContent.trim());
+      const measurement = measurementSystemContainer.querySelector('.bg-primary')?.dataset.value || 'imperial';
+      const preferences = { diets, measurement };
+      localStorage.setItem(PREFERENCES_KEY, JSON.stringify(preferences));
+    }
+
+    function loadPreferences() {
+      const prefs = JSON.parse(localStorage.getItem(PREFERENCES_KEY)) || { diets: [], measurement: 'imperial' };
+      dietaryPrefsContainer.querySelectorAll('input').forEach(input => {
+        if (prefs.diets.includes(input.parentElement.textContent.trim())) {
+          input.checked = true;
+        }
       });
+      updateMeasurementUI(prefs.measurement);
+    }
 
-      // Apply saved theme on page load
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      applyTheme(savedTheme);
-
-      // --- Edit/Save/Cancel ---
-
-      function setFormState(isEditable) {
-        formElements.forEach(el => {
-          el.disabled = !isEditable;
-        });
-        editButton.classList.toggle('hidden', isEditable);
-        saveButton.classList.toggle('hidden', !isEditable);
-        cancelButton.classList.toggle('hidden', !isEditable);
-      }
-
-      editButton.addEventListener('click', () => {
-        // Store original values
-        formElements.forEach(el => {
-          if (el.type === 'checkbox') {
-            originalFormValues[el.id] = el.checked;
-          } else {
-            originalFormValues[el.id] = el.value;
-          }
-        });
-        setFormState(true);
+    function updateMeasurementUI(selectedValue) {
+      measurementSystemContainer.querySelectorAll('button').forEach(btn => {
+        btn.classList.toggle('bg-primary', btn.dataset.value === selectedValue);
+        btn.classList.toggle('text-white', btn.dataset.value === selectedValue);
+        btn.classList.toggle('bg-gray-100', btn.dataset.value !== selectedValue);
+        btn.classList.toggle('dark:bg-dark-input', btn.dataset.value !== selectedValue);
       });
+    }
 
-      cancelButton.addEventListener('click', () => {
-        // Restore original values
-        formElements.forEach(el => {
-          if (originalFormValues.hasOwnProperty(el.id)) {
-            if (el.type === 'checkbox') {
-              el.checked = originalFormValues[el.id];
+    dietaryPrefsContainer.addEventListener('change', savePreferences);
+    measurementSystemContainer.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+        updateMeasurementUI(e.target.dataset.value);
+        savePreferences();
+      }
+    });
+
+    function renderCuisineTags(cuisines) {
+      const tags = cuisineTagsContainer.querySelectorAll('.tag');
+      tags.forEach(tag => tag.remove());
+      cuisines.forEach(cuisine => {
+        const tagEl = document.createElement('span');
+        tagEl.className = 'tag';
+        tagEl.innerHTML = `${cuisine} <button data-cuisine="${cuisine}" class="ml-2 opacity-70 hover:opacity-100">&times;</button>`;
+        cuisineTagsContainer.insertBefore(tagEl, cuisineInput);
+      });
+    }
+
+    cuisineInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && cuisineInput.value.trim()) {
+        e.preventDefault();
+        let cuisines = JSON.parse(localStorage.getItem(CUISINES_KEY)) || [];
+        const newCuisine = cuisineInput.value.trim();
+        if (!cuisines.includes(newCuisine)) {
+          cuisines.push(newCuisine);
+          localStorage.setItem(CUISINES_KEY, JSON.stringify(cuisines));
+          renderCuisineTags(cuisines);
+        }
+        cuisineInput.value = '';
+      }
+    });
+
+    cuisineTagsContainer.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON' && e.target.dataset.cuisine) {
+        let cuisines = JSON.parse(localStorage.getItem(CUISINES_KEY)) || [];
+        cuisines = cuisines.filter(c => c !== e.target.dataset.cuisine);
+        localStorage.setItem(CUISINES_KEY, JSON.stringify(cuisines));
+        renderCuisineTags(cuisines);
+      }
+    });
+
+    // --- Notifications ---
+    document.getElementById('notifications-form').addEventListener('change', function(e) {
+        if (e.target.type === 'checkbox') {
+            const settings = {
+                'new-recipes': document.getElementById('notif-new-recipes').checked,
+                'weekly-summary': document.getElementById('notif-weekly-summary').checked,
+                'community-updates': document.getElementById('notif-community-updates').checked
+            };
+            localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(settings));
+        }
+    });
+
+    // --- Data & Privacy ---
+    document.getElementById('export-data-btn').addEventListener('click', () => {
+      const data = { profile: {}, preferences: {}, cuisines: [], saved_recipes: [] };
+      for (const key of Object.keys(localStorage)) {
+        if (key.startsWith('profile_')) data.profile[key] = JSON.parse(localStorage.getItem(key));
+        if (key === PREFERENCES_KEY) data.preferences = JSON.parse(localStorage.getItem(key));
+        if (key === CUISINES_KEY) data.cuisines = JSON.parse(localStorage.getItem(key));
+        if (key === 'dishcovery_saved') data.saved_recipes = JSON.parse(localStorage.getItem(key));
+      }
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'dishcovery_my_data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      alert('Your data has been exported.');
+    });
+
+    document.getElementById('export-pdf-btn').addEventListener('click', () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const savedRecipes = JSON.parse(localStorage.getItem('dishcovery_saved')) || [];
+
+        doc.setFontSize(18);
+        doc.text("My Saved Recipes", 14, 22);
+        doc.setFontSize(11);
+
+        if (savedRecipes.length === 0) {
+            doc.text("You have no saved recipes.", 14, 30);
+        } else {
+            savedRecipes.forEach((recipe, index) => {
+                doc.text(`${index + 1}. ${recipe}`, 14, 30 + (index * 10));
+            });
+        }
+
+        try {
+            doc.save("dishcovery_saved_recipes.pdf");
+            alert('Your saved recipes PDF has been downloaded.');
+        } catch (e) {
+            console.error("Error generating PDF:", e);
+            alert('Could not generate PDF. Please try again.');
+        }
+    });
+    document.getElementById('clear-history-btn').addEventListener('click', () => {
+      if(confirm('Are you sure you want to clear your search history?')) {
+        localStorage.removeItem('dishcovery_search_history'); // Assuming this key exists
+        alert('Search history cleared.');
+      }
+    });
+
+    // --- Account Actions ---
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        if (confirm('Are you sure you want to log out?')) {
+            alert('You have been logged out.');
+            // In a real app, you would redirect to the login page.
+            window.location.href = '../Log_In.html';
+        }
+    });
+
+    document.getElementById('delete-account-btn').addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete your account? This action is irreversible and will clear all your saved data.')) {
+            // Clear all known local storage keys for this app
+            Object.keys(localStorage).forEach(key => {
+              if (key.startsWith('dishcovery_') || key.startsWith('profile_') || key === 'theme') {
+                localStorage.removeItem(key);
+              }
+            });
+            alert('Your account and all associated data have been deleted.');
+            window.location.href = '../index.html'; // Redirect to home
+        }
+    });
+
+    // --- Social & Sharing ---
+    const visibilityToggle = document.getElementById('profile-visibility');
+    visibilityToggle.checked = (localStorage.getItem(PROFILE_VISIBILITY_KEY) || 'public') === 'public';
+    visibilityToggle.addEventListener('change', function() {
+      const isPublic = this.checked;
+      localStorage.setItem(PROFILE_VISIBILITY_KEY, isPublic ? 'public' : 'private');
+    });
+    
+    document.querySelectorAll('.social-connect-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const socialPlatform = this.dataset.social;
+            let connections = JSON.parse(localStorage.getItem(SOCIAL_CONNECTIONS_KEY)) || {};
+
+            if (connections[socialPlatform]) {
+                // Disconnect
+                delete connections[socialPlatform];
+                alert(`${socialPlatform.charAt(0).toUpperCase() + socialPlatform.slice(1)} disconnected.`);
             } else {
-              el.value = originalFormValues[el.id];
+                // Connect
+                connections[socialPlatform] = true;
+                alert(`${socialPlatform.charAt(0).toUpperCase() + socialPlatform.slice(1)} connected successfully! (Simulation)`);
             }
-          }
-        });
-        setFormState(false);
-      });
 
-      // Add a listener for the form submission if you want to handle saving
-      // document.querySelector('form').addEventListener('submit', (e) => { e.preventDefault(); setFormState(false); alert('Changes saved!'); });
-  });
+            localStorage.setItem(SOCIAL_CONNECTIONS_KEY, JSON.stringify(connections));
+            updateSocialButtons();
+        });
+    });
+
+    function updateSocialButtons() {
+        let connections = JSON.parse(localStorage.getItem(SOCIAL_CONNECTIONS_KEY)) || {};
+        document.querySelectorAll('.social-connect-btn').forEach(button => {
+            const socialPlatform = button.dataset.social;
+            const label = button.querySelector('.label');
+            if (connections[socialPlatform]) {
+                label.textContent = `Disconnect ${socialPlatform.charAt(0).toUpperCase() + socialPlatform.slice(1)}`;
+                button.classList.add('text-green-600', 'dark:text-green-400');
+            } else {
+                label.textContent = `Connect ${socialPlatform.charAt(0).toUpperCase() + socialPlatform.slice(1)}`;
+                button.classList.remove('text-green-600', 'dark:text-green-400');
+            }
+        });
+    }
+
+    function loadLoginHistory() {
+        const history = JSON.parse(localStorage.getItem(LOGIN_HISTORY_KEY)) || [];
+        const container = document.getElementById('login-history-container');
+        container.innerHTML = '';
+
+        if (history.length === 0) {
+            container.innerHTML = '<p class="text-sm text-gray-500 dark:text-dark-text-secondary">No login history found.</p>';
+            return;
+        }
+
+        history.slice(0, 5).forEach((entry, index) => { // Show latest 5
+            const isActive = index === 0 ? '· <span class="text-green-500 font-bold">Active now</span>' : '';
+            container.innerHTML += `<div class="flex items-center justify-between text-sm"><div class="flex items-center gap-3"><i data-lucide="monitor" class="w-5 h-5 text-gray-500 dark:text-dark-text-secondary"></i><div><p class="font-semibold text-gray-700 dark:text-dark-text">${entry.device}</p><p class="text-xs text-gray-500 dark:text-dark-text-secondary">${new Date(entry.date).toLocaleString()} ${isActive}</p></div></div></div>`;
+        });
+        lucide.createIcons();
+    }
+
+    // --- Initial Load for Settings ---
+    function loadNotifications() {
+        const settings = JSON.parse(localStorage.getItem(NOTIFICATIONS_KEY)) || {
+            'new-recipes': true,
+            'weekly-summary': false,
+            'community-updates': true
+        };
+        document.getElementById('notif-new-recipes').checked = settings['new-recipes'];
+        document.getElementById('notif-weekly-summary').checked = settings['weekly-summary'];
+        document.getElementById('notif-community-updates').checked = settings['community-updates'];
+    }
+
+    loadPreferences();
+    loadNotifications();
+    loadLoginHistory();
+    updateSocialButtons();
+    renderCuisineTags(JSON.parse(localStorage.getItem(CUISINES_KEY)) || []);
+});
 </script>
 
-</body>
 </body>
 </html>
