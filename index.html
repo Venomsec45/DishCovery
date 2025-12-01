@@ -117,31 +117,33 @@
   </style>
 </head>
 <body class="text-text-primary antialiased">
-<header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 transition-all duration-300">
-    <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100">
+    <div class="max-w-container-lg mx-auto flex items-center justify-between px-6 py-4 md:py-8">
       <div class="logo">
-        <h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1>
+        <h1 class="text-[clamp(20px,2.2vw,26px)] font-extrabold tracking-tight">
+          <a href="index.html" aria-label="DishCovery Home" class="text-primary no-underline hover:text-primary-dark inline-block">DishCovery</a>
+        </h1>
       </div>
 
       <!-- Hamburger Menu Button for Mobile -->
-      <button id="menu-toggle" class="md:hidden text-gray-800 focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+      <button id="menu-toggle" class="md:hidden text-text-primary focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
         <div class="w-6 h-6 relative">
-          <span class="hamburger-line hamburger-line-1 absolute top-1 left-0 w-full h-0.5 bg-current"></span>
-          <span class="hamburger-line hamburger-line-2 absolute top-1/2 -translate-y-1/2 left-0 w-full h-0.5 bg-current"></span>
-          <span class="hamburger-line hamburger-line-3 absolute bottom-1 left-0 w-full h-0.5 bg-current"></span>
+          <span class="hamburger-line hamburger-line1 absolute left-0 w-full h-0.5 bg-current"></span>
+          <span class="hamburger-line hamburger-line2 absolute left-0 w-full h-0.5 bg-current"></span>
+          <span class="hamburger-line hamburger-line3 absolute left-0 w-full h-0.5 bg-current"></span>
         </div>
       </button>
 
       <nav id="main-nav" aria-label="Main navigation" class="hidden md:flex md:items-center absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none">
         <ul class="flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-8 text-center md:text-left w-full p-6 md:p-0">
-          <li><a href="#" class="font-semibold text-primary px-2 py-1 rounded-md" aria-current="page">Home</a></li>
-          <li><a href="About_Us.html" class="font-semibold text-gray-800 hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">About Us</a></li>
-          <li><a href="recipe_finder.html" class="font-semibold text-gray-800 hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Recipe Finder</a></li>
-          <li><a href="Gallery.html" class="font-semibold text-gray-800 hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Gallery</a></li>
-          <li><a href="Contact.html" class="font-semibold text-gray-800 hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Contact</a></li>
-          <li><a href="Faq.html" class="font-semibold text-gray-800 hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">FAQ</a></li>
+          <li><a class="font-semibold text-text-primary text-opacity-90 px-2 py-1 rounded-md" href="index.html" aria-current="page">Home</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="About_Us.html">About Us</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="recipe_finder.html">Recipe Finder</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="Gallery.html">Gallery</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="Contact.html">Contact</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="Faq.html">FAQ</a></li>
           <li class="login mt-4 md:mt-0">
-            <a href="Log_In.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transform transition hover:-translate-y-0.5">Log In</a>
+            <a href="Log_In.html" class="inline-block bg-gradient-to-r from-[#ff7a2a] to-[#ff3b00] text-white font-extrabold px-4 py-2 rounded-full shadow-[0_6px_18px_rgba(255,106,0,0.15)] hover:translate-y-[-2px] transition-transform">Log In</a>
           </li>
         </ul>
       </nav>
@@ -155,15 +157,6 @@
       <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Background of delicious food spread" class="w-full h-full object-cover opacity-20">
       <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
     </div>
-
-    <!-- Floating Icons -->
-    <div class="floating-icon hidden md:block" style="top: 15%; left: 10%; animation-delay: 0s;"><img src="https://www.svgrepo.com/show/493060/avocado.svg" alt="Avocado icon"></div>
-    <div class="floating-icon hidden md:block" style="top: 25%; right: 12%; animation-delay: 1s;"><img src="https://www.svgrepo.com/show/493315/carrot.svg" alt="Carrot icon"></div>
-    <div class="floating-icon hidden md:block" style="bottom: 20%; left: 20%; animation-delay: 2s;"><img src="https://www.svgrepo.com/show/493216/broccoli.svg" alt="Broccoli icon"></div>
-    <div class="floating-icon hidden md:block" style="bottom: 15%; right: 25%; animation-delay: 3s;"><img src="https://www.svgrepo.com/show/495987/tomato.svg" alt="Tomato icon"></div>
-    <div class="floating-icon hidden md:block" style="top: 5%; left: 40%; animation-delay: 4s;"><img src="https://www.svgrepo.com/show/493068/apple.svg" alt="Apple icon"></div>
-    <div class="floating-icon hidden md:block" style="bottom: 5%; left: 45%; animation-delay: 5s;"><img src="https://www.svgrepo.com/show/493339/cheese.svg" alt="Cheese icon"></div>
-    <div class="floating-icon hidden md:block" style="top: 40%; right: 5%; animation-delay: 6s;"><img src="https://www.svgrepo.com/show/493354/chili.svg" alt="Chili icon"></div>
 
     <div class="relative z-10 reveal-on-scroll">
       <h1 class="text-[clamp(40px,8vw,80px)] font-extrabold leading-tight">
@@ -294,7 +287,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Recipe Card 1 -->
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
-        <img src="https://images.pexels.com/photos/5710253/pexels-photo-5710253.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/6525933/pexels-photo-6525933.jpeg" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Chicken Adobo</h3>
           <p class="text-gray-600 text-sm mb-4">Tender chicken marinated in vinegar, soy sauce, and garlic.</p>
@@ -306,7 +299,7 @@
       </a>
       <!-- Recipe Card 2 -->
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
-        <img src="https://images.pexels.com/photos/128408/pexels-photo-128408.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/19532174/pexels-photo-19532174.jpeg" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Spaghetti Carbonara</h3>
           <p class="text-gray-600 text-sm mb-4">Classic Italian pasta with eggs, cheese, and pancetta.</p>
@@ -318,7 +311,7 @@
       </a>
       <!-- Recipe Card 3 -->
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
-        <img src="https://images.pexels.com/photos/8968457/pexels-photo-8968457.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop" alt="Kimchi Fried Rice" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/15681166/pexels-photo-15681166.jpeg" alt="Kimchi Fried Rice" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-800 mb-2">Kimchi Fried Rice</h3>
           <p class="text-gray-600 text-sm mb-4">Spicy and savory Korean fried rice with kimchi and a fried egg.</p>
@@ -345,7 +338,7 @@
 
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.pexels.com/photos/14831333/pexels-photo-14831333.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop" alt="Filipino Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/8625452/pexels-photo-8625452.jpeg" alt="Filipino Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Filipino</h3>
         </div>
@@ -363,7 +356,7 @@
         </div>
       </a>
       <a href="#" class="relative aspect-square rounded-2xl overflow-hidden group">
-        <img src="https://images.pexels.com/photos/60619/bibimbap-rice-food-korean-60619.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop" alt="Korean Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="https://images.pexels.com/photos/262897/pexels-photo-262897.jpeg" alt="Korean Food" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
           <h3 class="font-bold text-white text-xl">Korean</h3>
         </div>
@@ -394,7 +387,7 @@
   <div class="max-w-container-lg mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
     <a href="#" class="bg-white p-8 rounded-2xl shadow-lg-soft transform hover:-translate-y-2 transition-all duration-300 backdrop-blur-sm border border-gray-100 cursor-pointer block text-center">
       <div class="w-16 h-16 bg-gradient-to-br from-red-100 to-red-200 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
-        <i data-lucide="knife" class="w-8 h-8"></i>
+        <i data-lucide="Knife" class="w-8 h-8"></i>
       </div>
       <h3 class="text-lg font-semibold text-primary mb-3">Knife Skills Mastery</h3>
       <p class="text-gray-600 leading-relaxed">Learn proper cutting techniques for faster, safer, and more professional cooking results.</p>
@@ -506,7 +499,7 @@
     <div class="absolute bottom-20 right-20 w-20 h-20 bg-black/20 rounded-full blur-xl animate-bounce" style="animation-delay: 0.5s;"></div>
 
     <div class="max-w-4xl mx-auto text-center relative z-10">
-      <h2 class="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">Ready to start your culinary journey?</h2>
+      <h2 class="text-4xl md:text-6xl font-bold mb-10 bg-gradient-to-r from-white via-yellow-200 to-white bg-clip-text text-transparent">Ready to start your culinary journey?</h2>
       <p class="text-xl md:text-2xl text-orange-100 mb-12 leading-relaxed">Join thousands of home cooks discovering amazing recipes every day</p>
       <a href="Sign_Up.html" class="inline-block bg-white text-orange-600 hover:text-orange-700 rounded-full px-12 py-5 font-bold text-xl shadow-2xl hover:shadow-white/30 transform hover:scale-105 transition-all duration-300">Get Started Today</a>
     </div>
