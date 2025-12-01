@@ -4,6 +4,8 @@ The following above is the source code of the website, others may contribute on 
 
 Date started: October 17, 2025
 
+Estimated date: December 4, 2025
+
 Tools used:
 
 - Html
@@ -26,13 +28,6 @@ Features:
 - Recipe finder
 - Friendly interface
 
-INstallation instructions:
-
-1. Install XAMPP from official sources.
-2. Open terminal or command prompt if you are using a Windows computer
-3. Go to the XAMPP Folder, then, go to the htdocs folder, run this command "git clone https://github.com/Venomsec45/DishCovery.git".
-4. Open XAMPP app
-
 Reminder:
-The following website is in a test and features functionality may vary different. It is not yet released to the public. Improvements will be applied in the website as we are open on suggestions and feedback. A collaboration can be made.
+The following source only shows the functionality and interactivity of the website and functionality of the features may vary different. A database file is added and it is optional to run the source code with the following database file using XAMPP and you have freedom to modify the source code to make it interact with the database. The website is not launched to the public. Improvements will be applied in the website as we are open on suggestions and feedback. For collaboration, kindly send me an email on my email "dayshaunmarnin@gmail.com".
 
