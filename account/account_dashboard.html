@@ -45,7 +45,7 @@
       }
     </style>
 </head>
-<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
+<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 flex flex-col min-h-screen">
 <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
     <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
       <div class="logo">
@@ -68,16 +68,13 @@
           <li class="login mt-4 md:mt-0">
             <a href="account_dashboard.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transform transition hover:-translate-y-0.5" aria-current="page">My Account</a>
           </li>
-          <!-- Dark Mode Toggle -->
-          <li class="md:ml-4 mt-4 md:mt-0">
-            <button id="theme-toggle" aria-label="Toggle dark mode" class="p-2 rounded-full bg-gray-100 dark:bg-dark-border text-gray-700 dark:text-dark-text hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"><i data-lucide="moon" class="w-5 h-5 dark:hidden"></i><i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i></button>
-          </li>
+
         </ul>
       </nav>
     </div>
   </header>
 
-<div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300">
+<div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 flex-grow">
   <div class="max-w-container-xl mx-auto px-6 py-12 md:py-16">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       
@@ -104,17 +101,17 @@
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-white p-6 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border flex items-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg-soft">
+          <div id="saved-recipes-stat" class="bg-white p-6 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border flex items-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg-soft">
             <div class="w-12 h-12 bg-orange-100 text-primary rounded-full flex items-center justify-center flex-shrink-0 dark:bg-primary/20"><i data-lucide="bookmark" class="w-6 h-6"></i></div>
             <div>
-              <p class="text-2xl font-bold text-gray-800 dark:text-dark-text">42</p>
+              <p id="saved-recipes-count" class="text-2xl font-bold text-gray-800 dark:text-dark-text">42</p>
               <p class="text-sm font-medium text-gray-500 dark:text-dark-text-secondary">Saved Recipes</p>
             </div>
           </div>
-          <div class="bg-white p-6 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border flex items-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg-soft">
+          <div id="submitted-recipes-stat" class="bg-white p-6 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border flex items-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg-soft">
             <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center flex-shrink-0 dark:bg-green-500/20"><i data-lucide="upload-cloud" class="w-6 h-6"></i></div>
             <div>
-              <p class="text-2xl font-bold text-gray-800 dark:text-dark-text">8</p>
+              <p id="submitted-recipes-count" class="text-2xl font-bold text-gray-800 dark:text-dark-text">8</p>
               <p class="text-sm font-medium text-gray-500 dark:text-dark-text-secondary">Recipes Submitted</p>
             </div>
           </div>
@@ -131,33 +128,17 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div class="lg:col-span-2 bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 dark:text-dark-text">Recently Viewed Recipes</h2>
-            <div class="space-y-4">
-              <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-dark-border/50 transition-colors duration-200">
-                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop" alt="Vegetable Stir Fry" class="w-16 h-16 rounded-lg object-cover">
-                <div class="flex-grow">
-                  <p class="font-semibold text-gray-800 dark:text-dark-text">Vegetable Stir Fry</p>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Viewed 2 hours ago</p>
-                </div>
-                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
-              </a>
-              <a href="#" class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-dark-border/50 transition-colors duration-200">
-                <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=100&h=100&fit=crop" alt="Chocolate Chip Cookies" class="w-16 h-16 rounded-lg object-cover">
-                <div class="flex-grow">
-                  <p class="font-semibold text-gray-800 dark:text-dark-text">Chocolate Chip Cookies</p>
-                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Viewed yesterday</p>
-                </div>
-                <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
-              </a>
+            <div id="recently-viewed-recipes" class="space-y-4">
             </div>
           </div>
 
           <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 dark:text-dark-text">Quick Actions</h2>
             <div class="space-y-4">
-              <a href="recipe_finder_for_account.html" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
+              <a id="find-recipe-action" href="recipe_finder_for_account.html" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
                 <i data-lucide="search" class="w-5 h-5"></i> Find a New Recipe
               </a>
-              <a href="#" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
+              <a id="submit-recipe-action" href="#" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
                 <i data-lucide="plus-circle" class="w-5 h-5"></i> Submit Your Own
               </a>
               <a href="account_profile.html" class="w-full flex items-center gap-3 text-left bg-gray-100 dark:bg-dark-border/50 p-4 rounded-lg font-semibold text-gray-700 dark:text-dark-text hover:bg-primary hover:text-white dark:hover:bg-primary transition-all duration-300">
@@ -171,27 +152,6 @@
     </div>
   </div>
 </div>
-    
-<footer class="bg-[#0f1b2c] text-gray-100 py-12">
-  <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-    <div class="footer_column text-gray-300">
-      <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
-    </div>
-    <div class="footer_contact">
-      <h3 class="text-white text-lg mb-3">Contact Info</h3>
-      <p class="text-gray-300">hello@dishcovery.com</p>
-      <p class="text-gray-300">+1 (555) 123-4567</p>
-      <p class="text-gray-300">123 Culinary Street, Food City</p>
-    </div>
-  </div>
-  <div class="border-t border-white/10 mt-12 pt-6 text-center">
-    <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
-    <div class="flex gap-6 justify-center mt-4">
-      <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
-      <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
-    </div>
-  </div>
-</footer>
 
 <!-- Reusable Modal Structure -->
 <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[9999] hidden opacity-0 transition-opacity duration-300">
@@ -207,6 +167,41 @@
     </div>
   </div>
 </div>
+
+<!-- Footer - NOT sticky, appears at the end normally -->
+<footer class="bg-[#0f1b2c] text-gray-100 py-12">
+  <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="footer_column text-gray-300">
+      <h2 class="text-2xl font-extrabold text-primary mb-4">DishCovery</h2>
+      <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform.</p>
+    </div>
+
+    <div class="footer_contact">
+      <h3 class="text-white text-lg font-semibold mb-3">Contact Info</h3>
+      <p class="text-gray-300">hello@dishcovery.com</p>
+      <p class="text-gray-300">+1 (555) 123-4567</p>
+      <p class="text-gray-300">123 Culinary Street, Food City</p>
+    </div>
+
+    <div>
+      <h3 class="text-white text-lg font-semibold mb-3">Quick Links</h3>
+      <ul class="space-y-2">
+        <li><a href="About_Us.html" class="text-gray-300 hover:text-primary transition-colors">About Us</a></li>
+        <li><a href="recipe_finder.html" class="text-gray-300 hover:text-primary transition-colors">Recipe Finder</a></li>
+        <li><a href="Faq.html" class="text-gray-300 hover:text-primary transition-colors">FAQ</a></li>
+        <li><a href="Contact.html" class="text-gray-300 hover:text-primary transition-colors">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10 mt-12 pt-6 text-center">
+    <p class="text-gray-400">&copy; 2024 DishCovery. All rights reserved.</p>
+    <div class="flex gap-6 justify-center mt-4">
+      <a href="#" class="text-gray-400 hover:text-primary text-sm">Privacy Policy</a>
+      <a href="#" class="text-gray-400 hover:text-primary text-sm">Terms of Service</a>
+    </div>
+  </div>
+</footer>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -317,8 +312,10 @@
       ]
 
       // Update stat counts
-      document.getElementById('saved-recipes-count').textContent = savedRecipesData.length
-      document.getElementById('submitted-recipes-count').textContent = submittedRecipesData.length
+      const savedCountEl = document.getElementById('saved-recipes-count')
+      const submittedCountEl = document.getElementById('submitted-recipes-count')
+      if (savedCountEl) savedCountEl.textContent = savedRecipesData.length
+      if (submittedCountEl) submittedCountEl.textContent = submittedRecipesData.length
 
       // Populate Recently Viewed Recipes
       const recentlyViewedContainer = document.getElementById('recently-viewed-recipes')
@@ -376,41 +373,47 @@
       }
 
       // --- Event Listeners for Modal Triggers ---
-      document.getElementById('saved-recipes-stat').addEventListener('click', () => {
-        let content = '<ul class="space-y-3">'
-        savedRecipesData.forEach(recipe => {
-          content += `
-            <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-border/50 transition-colors duration-200">
-              <img src="${recipe.image}" alt="${recipe.name}" class="w-12 h-12 rounded-md object-cover">
-              <div class="flex-grow">
-                <p class="font-semibold text-gray-800 dark:text-dark-text">${recipe.name}</p>
-                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">${recipe.date}</p>
-              </div>
-              <a href="#" class="text-primary hover:text-primary-2"><i data-lucide="external-link" class="w-5 h-5"></i></a>
-            </li>
-          `
+      const savedStatBtn = document.getElementById('saved-recipes-stat')
+      if (savedStatBtn) {
+        savedStatBtn.addEventListener('click', () => {
+          let content = '<ul class="space-y-3">'
+          savedRecipesData.forEach(recipe => {
+            content += `
+              <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-border/50 transition-colors duration-200">
+                <img src="${recipe.image}" alt="${recipe.name}" class="w-12 h-12 rounded-md object-cover">
+                <div class="flex-grow">
+                  <p class="font-semibold text-gray-800 dark:text-dark-text">${recipe.name}</p>
+                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">${recipe.date}</p>
+                </div>
+                <a href="#" class="text-primary hover:text-primary-2"><i data-lucide="external-link" class="w-5 h-5"></i></a>
+              </li>
+            `
+          })
+          content += '</ul>'
+          openModal('Saved Recipes', content)
         })
-        content += '</ul>'
-        openModal('Saved Recipes', content)
-      })
+      }
 
-      document.getElementById('submitted-recipes-stat').addEventListener('click', () => {
-        let content = '<ul class="space-y-3">'
-        submittedRecipesData.forEach(recipe => {
-          content += `
-            <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-border/50 transition-colors duration-200">
-              <img src="${recipe.image}" alt="${recipe.name}" class="w-12 h-12 rounded-md object-cover">
-              <div class="flex-grow">
-                <p class="font-semibold text-gray-800 dark:text-dark-text">${recipe.name}</p>
-                <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Status: ${recipe.status} - ${recipe.date}</p>
-              </div>
-              <a href="#" class="text-primary hover:text-primary-2"><i data-lucide="external-link" class="w-5 h-5"></i></a>
-            </li>
-          `
+      const submittedStatBtn = document.getElementById('submitted-recipes-stat')
+      if (submittedStatBtn) {
+        submittedStatBtn.addEventListener('click', () => {
+          let content = '<ul class="space-y-3">'
+          submittedRecipesData.forEach(recipe => {
+            content += `
+              <li class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-dark-border/50 transition-colors duration-200">
+                <img src="${recipe.image}" alt="${recipe.name}" class="w-12 h-12 rounded-md object-cover">
+                <div class="flex-grow">
+                  <p class="font-semibold text-gray-800 dark:text-dark-text">${recipe.name}</p>
+                  <p class="text-sm text-gray-500 dark:text-dark-text-secondary">Status: ${recipe.status} - ${recipe.date}</p>
+                </div>
+                <a href="#" class="text-primary hover:text-primary-2"><i data-lucide="external-link" class="w-5 h-5"></i></a>
+              </li>
+            `
+          })
+          content += '</ul>'
+          openModal('Submitted Recipes', content)
         })
-        content += '</ul>'
-        openModal('Submitted Recipes', content)
-      })
+      }
 
       document.querySelectorAll('.recently-viewed-item').forEach(item => {
         item.addEventListener('click', (e) => {
@@ -433,11 +436,14 @@
       })
 
       // Quick Action: Submit Your Own (example alert)
-      document.getElementById('submit-recipe-action').addEventListener('click', (e) => {
-        e.preventDefault()
-        alert('Redirecting to recipe submission form!')
-        // In a real app, you'd navigate to the submission page
-      })
+      const submitAction = document.getElementById('submit-recipe-action')
+      if (submitAction) {
+        submitAction.addEventListener('click', (e) => {
+          e.preventDefault()
+          alert('Redirecting to recipe submission form!')
+          // In a real app, you'd navigate to the submission page
+        })
+      }
   });
 </script>
 
