@@ -1,0 +1,168 @@
+<?php
+  include("database.php");
+  session_start();
+  $login_error = '';
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email_address'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if (!$email || !$password) {
+      $login_error = 'Email and password are required.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $login_error = 'Please enter a valid email address.';
+    } else {
+      $stmt = mysqli_prepare($conn, "SELECT id, password FROM users WHERE email = ?");
+      if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_store_result($stmt);
+        if (mysqli_stmt_num_rows($stmt) === 1) {
+          mysqli_stmt_bind_result($stmt, $id, $hash);
+          mysqli_stmt_fetch($stmt);
+          if (password_verify($password, $hash)) {
+            mysqli_stmt_close($stmt);
+            $_SESSION['user_id'] = $id;
+            $_SESSION['user_email'] = $email;
+            header("Location: account/account_dashboard.html");
+            exit;
+          } else {
+            $login_error = 'Incorrect password.';
+          }
+        } else {
+          $login_error = 'No account found with that email.';
+        }
+        mysqli_stmt_close($stmt);
+      } else {
+        $login_error = 'Database error. Please try again later.';
+      }
+    }
+  }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DishCovery Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="design/log_in.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+</head>
+
+<body class="flex flex-col min-h-screen font-['Outfit'] bg-gray-50 text-gray-800">
+
+  <header class="flex items-center justify-between px-[6vw] py-10 bg-white border-b border-gray-200 sticky top-0 z-50">
+    <h1 class="text-2xl font-bold text-[#333] tracking-tight text-[35px]">DishCovery</h1>
+  </header>
+
+  <main class="flex-grow flex items-center justify-center px-6 py-12">
+    <form action="Log_In.php" method="post" class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-md space-y-5 transform transition duration-500 hover:scale-[1.02]">
+      
+      <div class="text-center">
+        <h2 class="text-2xl font-semibold">Welcome Back!</h2>
+        <p class="text-gray-500">Log in to access your saved recipes and meal plans</p>
+        <?php if (!empty($login_error)): ?>
+          <div class="text-red-600 text-sm mt-2"><?php echo htmlspecialchars($login_error); ?></div>
+        <?php endif; ?>
+      </div>
+
+      <div class="flex flex-col space-y-3">
+        <button type="button" class="flex items-center justify-center border border-gray-300 rounded-lg py-2 hover:bg-gray-100 transition">
+          <svg class="w-5 h-5 mr-2 text-gray-700" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          Log in with Google
+        </button>
+        <button type="button" class="flex items-center justify-center border border-gray-300 rounded-lg py-2 hover:bg-gray-100 transition">
+          <svg class="w-5 h-5 mr-2 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          Log in with Facebook
+        </button>
+      </div>
+
+      <div class="flex items-center my-3">
+        <hr class="flex-grow border-gray-300" />
+        <span class="mx-3 text-gray-500 text-sm">or continue with email</span>
+        <hr class="flex-grow border-gray-300" />
+      </div>
+      
+      <div>
+        <label for="email_address" class="block text-sm font-medium text-gray-700">Email address</label>
+        <input type="email" id="email_address" name="email_address" required
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input type="password" id="password" name="password" required
+          class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400">
+      </div>
+
+      <div class="flex items-center justify-between">
+        <label class="flex items-center space-x-2 text-sm text-gray-600">
+          <input type="checkbox" class="rounded text-orange-500 focus:ring-orange-400">
+          <span class="mx-1">Remember me</span>
+        </label>
+        <a href="forget_password/forget_password_page.html" class="text-sm text-orange-500 hover:underline align-middle">Forgot password?</a>
+      </div>
+
+      <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-2 rounded-lg font-medium hover:opacity-90 transition">
+        Log In
+      </button>
+
+      <div class="text-center text-sm text-gray-600">
+        Don’t have an account?
+        <a href="Sign_Up.php" class="text-orange-500 hover:underline">Sign up here</a>
+      </div>
+
+      <div class="mt-3 text-center">
+        <a href="index.html" class="text-sm text-gray-500 hover:underline">Back</a>
+      </div>
+    </form>
+  </main>
+
+<footer class="bg-gray-800 text-white py-12 mt-auto">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-8 text-sm">
+    <div class="md:w-1/2">
+      <p>
+        Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
+      </p>
+    </div>
+
+    <div class="md:w-1/2 flex flex-col md:flex-row justify-between">
+      <div>
+        <h3 class="font-semibold mb-2 text-orange-400">Contact Info</h3>
+        <p>hello@dishcovery.com</p>
+        <p>+1 (555) 123-4567</p>
+        <p>123 Culinary Street, Food City</p>
+      </div>
+
+      <div class="text-left">
+        <h3 class="font-semibold mb-2 text-orange-400">Follow Us</h3>
+        <div class="space-x-3">
+          <a href="#" class="hover:underline">Facebook</a>
+          <a href="#" class="hover:underline">Twitter</a>
+          <a href="#" class="hover:underline">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-700 mt-8 pt-4 text-sm flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto px-6">
+    <p class="mb-2 md:mb-0">© 2025 DishCovery. All rights reserved.</p>
+    <div class="space-x-4">
+      <a href="#" class="hover:underline">Privacy Policy</a>
+      <a href="#" class="hover:underline">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Client-side login interception removed so server-side PHP handles authentication. If you want to keep client-side login tracking, re-add a non-blocking script that does not call e.preventDefault(). -->
+</body>
+</html>
