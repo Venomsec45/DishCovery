@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DishCovery Website</title>
+    <title>Dishcovery - Recipe finder</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="design/recipe_finder.css">
-    <link rel="stylesheet" href="design/index_style.css">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <style>
@@ -20,8 +18,10 @@
       }
       /* Premium White Background */
       body {
-        background-color: #fafbfc; /* A clean, premium off-white, consistent with Gallery page */
+        background: linear-gradient(135deg, #fafbfc 0%, #f5f9ff 100%);
+        min-height: 100vh;
       }
+      
       /* Hamburger Icon Transitions from index.html */
       .hamburger-line { transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; }
       .menu-open .hamburger-line-1 { transform: translateY(7px) rotate(45deg); }
@@ -38,20 +38,121 @@
         opacity: 1;
         transform: translateY(0);
       }
+      .menu-open .hamburger-line-1 { transform: translateY(6px) rotate(45deg); }
+      .menu-open .hamburger-line-2 { opacity: 0; }
+      .menu-open .hamburger-line-3 { transform: translateY(-6px) rotate(-45deg); }
+      .notification-card:hover .delete-icon {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* Enhanced Recipe Card Styling */
+      .recipe-card {
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .recipe-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(242,52,11,0.08), transparent);
+        transition: left 0.5s ease;
+      }
+
+      .recipe-card:hover::before {
+        left: 100%;
+      }
+
+      /* Orange Accent Styling */
+      .orange-accent {
+        color: #F2340B;
+      }
+
+      /* Dishcovery Title Enhancement */
+      .dishcovery-title {
+        background: linear-gradient(135deg, #F2340B 0%, #F2663B 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Button Hover Effects */
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(242, 52, 11, 0.3);
+      }
+
+      /* Modal Enhancement */
+      .modal-enter {
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Ingredients and Instructions Section */
+      .recipe-section {
+        background: linear-gradient(135deg, #FFF5F2 0%, #FFF9F7 100%);
+        border-left: 4px solid #F2340B;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1rem 0;
+      }
+
+      .recipe-section h4 {
+        color: #F2340B;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .recipe-section ul, .recipe-section ol {
+        margin-left: 1rem;
+        gap: 0.75rem;
+      }
+
+      .recipe-section li {
+        color: #1e293b;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+      }
     </style>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        'dish-primary': '#FF7B5A',
-                        'dish-green': '#4CAF50',
-                        'dish-dark': '#1e293b',
-                        'dish-accent-blue': '#4A90E2',
-                        'dish-accent-pink': '#E94E77',
-                    },
+          colors: {
+            'dish-primary': '#F2340B',
+            'dish-green': '#4CAF50',
+            'dish-dark': '#1e293b',
+            'dish-accent-blue': '#F2340B',
+            'dish-accent-pink': '#F2340B',
+          },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
+                    },
+                    boxShadow: {
+                      'md-soft': '0 6px 18px rgba(0,0,0,0.06)',
+                      'lg-soft': '0 12px 30px rgba(0,0,0,0.08)'
+                    },
+                    maxWidth: {
+                      'container-lg': '1200px',
+                      'container-xl': '1400px'
                     },
                 }
             }
@@ -127,7 +228,31 @@
                     const card = this.closest('.recipe-card');
                     const title = card.dataset.title;
                     const description = card.dataset.description;
-                    alert(`Recipe: ${title}\n\n${description}\n\nFull recipe details would be shown here.`);
+                    const image = card.querySelector('img').src;
+                    const ratingText = card.querySelector('.absolute').textContent;
+                    const rating = ratingText.split(' ')[0];
+                    const timeElement = card.querySelector('[data-lucide="clock"]').nextElementSibling;
+                    const time = timeElement ? timeElement.textContent : "N/A";
+                    const diffElement = card.querySelector('[data-lucide="chef-hat"]').nextElementSibling;
+                    const difficulty = diffElement ? diffElement.textContent : "N/A";
+                    const reviewsText = card.querySelector('[data-lucide="star"]').parentElement.textContent;
+                    const reviews = reviewsText.split(' ')[0];
+
+                    // Generate sample ingredients and instructions based on title
+                    const recipeData = generateRecipeData(title);
+
+                    // Open modal with recipe data
+                    openRecipeModal({
+                        title: title,
+                        description: description,
+                        image: image,
+                        rating: rating,
+                        time: time,
+                        difficulty: difficulty,
+                        reviews: reviews,
+                        ingredients: recipeData.ingredients,
+                        instructions: recipeData.instructions
+                    });
                 });
             });
 
@@ -143,36 +268,36 @@
 
             // Recipe data for randomization
             const allRecipes = [
-                { title: "Grilled Chicken Salad", description: "Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.", image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop", rating: "4.8", time: "25 mins", difficulty: "Easy", reviews: "128" },
-                { title: "Vegetable Stir Fry", description: "Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.", image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop", rating: "4.6", time: "15 mins", difficulty: "Easy", reviews: "95" },
-                { title: "Beef Tacos", description: "Spicy ground beef with fresh toppings in soft corn tortillas.", image: "https://www.thecookingtwins.com/wp-content/uploads/2025/09/authentic-mexican-ground-beef-taco-recipe-featured.webp", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "156" },
-                { title: "Pasta Carbonara", description: "Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUsjlvUNdAnlL1qyxjCZFunw0ku6InQG9AA&s", rating: "4.7", time: "20 mins", difficulty: "Medium", reviews: "203" },
-                { title: "Thai Green Curry", description: "Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.", image: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=300&fit=crop", rating: "4.8", time: "35 mins", difficulty: "Medium", reviews: "178" },
-                { title: "Chocolate Chip Cookies", description: "Classic homemade cookies with gooey chocolate chips and perfect texture.", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Easy", reviews: "312" },
-                { title: "Mediterranean Quinoa Bowl", description: "Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop", rating: "4.6", time: "30 mins", difficulty: "Easy", reviews: "142" },
-                { title: "Classic Margherita Pizza", description: "Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop", rating: "4.7", time: "60 mins", difficulty: "Medium", reviews: "267" },
-                { title: "Chicken Adobo", description: "Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.", image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop", rating: "4.8", time: "45 mins", difficulty: "Easy", reviews: "150" },
-                { title: "Scrambled Eggs", description: "Fluffy scrambled eggs with butter and milk for perfect texture.", image: "https://images.unsplash.com/photo-1551782450-17144efb5723?w=400&h=300&fit=crop", rating: "4.5", time: "5 mins", difficulty: "Easy", reviews: "200" },
-                { title: "Pepperoni Pizza", description: "Crispy crust topped with tomato sauce, cheese, and pepperoni slices.", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "300" },
-                { title: "Classic Burger", description: "Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Easy", reviews: "250" },
-                { title: "Bibimbap", description: "Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.", image: "https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400&h=300&fit=crop", rating: "4.8", time: "35 mins", difficulty: "Medium", reviews: "180" },
-                { title: "Sushi Rolls", description: "Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.", image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Medium", reviews: "220" },
-                { title: "Yang Chow Fried Rice", description: "Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.", image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop", rating: "4.7", time: "25 mins", difficulty: "Medium", reviews: "195" },
-                { title: "Crispy Fried Chicken", description: "Golden, crispy fried chicken with seasoned coating and juicy interior.", image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop", rating: "4.8", time: "40 mins", difficulty: "Medium", reviews: "275" },
-                { title: "Spaghetti Carbonara", description: "Classic Italian pasta with eggs, cheese, pancetta, and black pepper.", image: "https://images.unsplash.com/photo-1551892376-c73ba8b86727?w=400&h=300&fit=crop", rating: "4.9", time: "20 mins", difficulty: "Medium", reviews: "320" },
-                { title: "Pad Thai", description: "Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.", image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=300&fit=crop", rating: "4.7", time: "25 mins", difficulty: "Medium", reviews: "245" },
-                { title: "French Toast", description: "Golden, crispy bread soaked in egg mixture and cooked to perfection.", image: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=300&fit=crop", rating: "4.6", time: "15 mins", difficulty: "Easy", reviews: "198" },
-                { title: "Ramen", description: "Japanese noodle soup with rich broth, tender noodles, and various toppings.", image: "https://images.unsplash.com/photo-1557872943-16a5ac2386cd?w=400&h=300&fit=crop", rating: "4.8", time: "30 mins", difficulty: "Medium", reviews: "267" },
-                { title: "Chicken Parmesan", description: "Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.", image: "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Medium", reviews: "340" },
-                { title: "Beef Stroganoff", description: "Tender beef strips in a creamy mushroom sauce served over egg noodles.", image: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop", rating: "4.7", time: "35 mins", difficulty: "Medium", reviews: "280" },
-                { title: "Lasagna", description: "Layered pasta with ground meat, ricotta cheese, and marinara sauce.", image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=300&fit=crop", rating: "4.8", time: "90 mins", difficulty: "Medium", reviews: "420" },
-                { title: "Tacos al Pastor", description: "Mexican tacos with marinated pork, pineapple, and fresh toppings.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop", rating: "4.9", time: "40 mins", difficulty: "Medium", reviews: "310" },
-                { title: "Chicken Shawarma", description: "Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.", image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop", rating: "4.8", time: "50 mins", difficulty: "Medium", reviews: "290" },
-                { title: "Vegetable Curry", description: "Aromatic Indian curry with mixed vegetables and coconut milk.", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop", rating: "4.6", time: "35 mins", difficulty: "Easy", reviews: "240" },
-                { title: "Pancakes", description: "Fluffy homemade pancakes served with maple syrup and butter.", image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Easy", reviews: "380" },
-                { title: "Waffles", description: "Crispy Belgian waffles with whipped cream and fresh berries.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop", rating: "4.8", time: "25 mins", difficulty: "Easy", reviews: "320" },
-                { title: "Grilled Salmon", description: "Fresh salmon fillet grilled to perfection with lemon and herbs.", image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop", rating: "4.9", time: "20 mins", difficulty: "Easy", reviews: "350" },
-                { title: "Beef Stew", description: "Hearty beef stew with vegetables and rich gravy.", image: "https://images.unsplash.com/photo-1534938665420-4193effeacc4?w=400&h=300&fit=crop", rating: "4.7", time: "120 mins", difficulty: "Medium", reviews: "290" }
+                { title: "Grilled Chicken Salad", description: "Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.", image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop", rating: "4.8", time: "25 mins", difficulty: "Easy", reviews: "128", category: "Main", cuisine: "American", diet: "Gluten-Free" },
+                { title: "Vegetable Stir Fry", description: "Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.", image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop", rating: "4.6", time: "15 mins", difficulty: "Easy", reviews: "95", category: "Main", cuisine: "Asian", diet: "Vegan" },
+                { title: "Beef Tacos", description: "Spicy ground beef with fresh toppings in soft corn tortillas.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "156", category: "Main", cuisine: "Mexican", diet: "Gluten-Free" },
+                { title: "Pasta Carbonara", description: "Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.", image: "https://images.unsplash.com/photo-1612874742237-6526221fcf4f?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Medium", reviews: "203", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
+                { title: "Thai Green Curry", description: "Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.", image: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=300&fit=crop", rating: "4.8", time: "35 mins", difficulty: "Medium", reviews: "178", category: "Main", cuisine: "Thai", diet: "Vegan" },
+                { title: "Chocolate Chip Cookies", description: "Classic homemade cookies with gooey chocolate chips and perfect texture.", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Easy", reviews: "312", category: "Dessert", cuisine: "American", diet: "Vegetarian" },
+                { title: "Mediterranean Quinoa Bowl", description: "Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop", rating: "4.6", time: "30 mins", difficulty: "Easy", reviews: "142", category: "Main", cuisine: "Mediterranean", diet: "Vegetarian" },
+                { title: "Classic Margherita Pizza", description: "Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop", rating: "4.7", time: "60 mins", difficulty: "Medium", reviews: "267", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
+                { title: "Chicken Adobo", description: "Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.", image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop", rating: "4.8", time: "45 mins", difficulty: "Easy", reviews: "150", category: "Main", cuisine: "Filipino", diet: "Gluten-Free" },
+                { title: "Scrambled Eggs", description: "Fluffy scrambled eggs with butter and milk for perfect texture.", image: "https://images.unsplash.com/photo-1551782450-17144efb5723?w=400&h=300&fit=crop", rating: "4.5", time: "5 mins", difficulty: "Easy", reviews: "200", category: "Breakfast", cuisine: "American", diet: "Vegetarian" },
+                { title: "Pepperoni Pizza", description: "Crispy crust topped with tomato sauce, cheese, and pepperoni slices.", image: "https://images.unsplash.com/photo-1628840042765-356cda07f423?w=400&h=300&fit=crop", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "300", category: "Main", cuisine: "Italian", diet: "Regular" },
+                { title: "Classic Burger", description: "Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Easy", reviews: "250", category: "Main", cuisine: "American", diet: "Regular" },
+                { title: "Bibimbap", description: "Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.", image: "https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400&h=300&fit=crop", rating: "4.8", time: "35 mins", difficulty: "Medium", reviews: "180", category: "Main", cuisine: "Korean", diet: "Regular" },
+                { title: "Sushi Rolls", description: "Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.", image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Medium", reviews: "220", category: "Main", cuisine: "Japanese", diet: "Gluten-Free" },
+                { title: "Yang Chow Fried Rice", description: "Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.", image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop", rating: "4.7", time: "25 mins", difficulty: "Medium", reviews: "195", category: "Main", cuisine: "Chinese", diet: "Regular" },
+                { title: "Crispy Fried Chicken", description: "Golden, crispy fried chicken with seasoned coating and juicy interior.", image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop", rating: "4.8", time: "40 mins", difficulty: "Medium", reviews: "275", category: "Main", cuisine: "American", diet: "Gluten-Free" },
+                { title: "Spaghetti Carbonara", description: "Classic Italian pasta with eggs, cheese, pancetta, and black pepper.", image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop", rating: "4.9", time: "20 mins", difficulty: "Medium", reviews: "320", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
+                { title: "Pad Thai", description: "Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.", image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=300&fit=crop", rating: "4.7", time: "25 mins", difficulty: "Medium", reviews: "245", category: "Main", cuisine: "Thai", diet: "Regular" },
+                { title: "French Toast", description: "Golden, crispy bread soaked in egg mixture and cooked to perfection.", image: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=300&fit=crop", rating: "4.6", time: "15 mins", difficulty: "Easy", reviews: "198", category: "Breakfast", cuisine: "French", diet: "Vegetarian" },
+                { title: "Ramen", description: "Japanese noodle soup with rich broth, tender noodles, and various toppings.", image: "https://images.unsplash.com/photo-1557872943-16a5ac2386cd?w=400&h=300&fit=crop", rating: "4.8", time: "30 mins", difficulty: "Medium", reviews: "267", category: "Main", cuisine: "Japanese", diet: "Regular" },
+                { title: "Chicken Parmesan", description: "Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.", image: "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Medium", reviews: "340", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
+                { title: "Beef Stroganoff", description: "Tender beef strips in a creamy mushroom sauce served over egg noodles.", image: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop", rating: "4.7", time: "35 mins", difficulty: "Medium", reviews: "280", category: "Main", cuisine: "Russian", diet: "Regular" },
+                { title: "Lasagna", description: "Layered pasta with ground meat, ricotta cheese, and marinara sauce.", image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=300&fit=crop", rating: "4.8", time: "90 mins", difficulty: "Medium", reviews: "420", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
+                { title: "Tacos al Pastor", description: "Mexican tacos with marinated pork, pineapple, and fresh toppings.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop", rating: "4.9", time: "40 mins", difficulty: "Medium", reviews: "310", category: "Main", cuisine: "Mexican", diet: "Regular" },
+                { title: "Chicken Shawarma", description: "Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.", image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop", rating: "4.8", time: "50 mins", difficulty: "Medium", reviews: "290", category: "Main", cuisine: "Middle Eastern", diet: "Gluten-Free" },
+                { title: "Vegetable Curry", description: "Aromatic Indian curry with mixed vegetables and coconut milk.", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop", rating: "4.6", time: "35 mins", difficulty: "Easy", reviews: "240", category: "Main", cuisine: "Indian", diet: "Vegan" },
+                { title: "Pancakes", description: "Fluffy homemade pancakes served with maple syrup and butter.", image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Easy", reviews: "380", category: "Breakfast", cuisine: "American", diet: "Vegetarian" },
+                { title: "Waffles", description: "Crispy Belgian waffles with whipped cream and fresh berries.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop", rating: "4.8", time: "25 mins", difficulty: "Easy", reviews: "320", category: "Breakfast", cuisine: "Belgian", diet: "Vegetarian" },
+                { title: "Grilled Salmon", description: "Fresh salmon fillet grilled to perfection with lemon and herbs.", image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&h=300&fit=crop", rating: "4.9", time: "20 mins", difficulty: "Easy", reviews: "350", category: "Main", cuisine: "American", diet: "Gluten-Free" },
+                { title: "Beef Stew", description: "Hearty beef stew with vegetables and rich gravy.", image: "https://images.unsplash.com/photo-1534938665420-4193effeacc4?w=400&h=300&fit=crop", rating: "4.7", time: "120 mins", difficulty: "Medium", reviews: "290", category: "Main", cuisine: "American", diet: "Gluten-Free" }
             ];
 
             let currentRecipes = [...allRecipes];
@@ -213,14 +338,14 @@
                                 </div>
                                 <div class="mt-auto pt-4">
                                     <div class="flex items-center justify-between">
-                                        <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                    <button class="view-recipe-btn flex-grow bg-dish-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                                             View Recipe
                                         </button>
                                         <div class="flex space-x-2 ml-3">
-                                            <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                      <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-dish-primary/10 text-dish-primary rounded-full hover:bg-dish-primary hover:text-white transition-all duration-300">
                                                 <i data-lucide="timer" class="w-5 h-5"></i>
                                             </button>
-                                            <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                      <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-dish-primary/10 text-dish-primary rounded-full hover:bg-dish-primary hover:text-white transition-all duration-300">
                                                 <i data-lucide="star" class="w-5 h-5"></i>
                                             </button>
                                         </div>
@@ -236,6 +361,292 @@
                 attachEventListeners();
                 lucide.createIcons();
             }
+
+            // Function to generate sample recipe data based on recipe title
+            function generateRecipeData(title) {
+                const recipeDatabase = {
+                    "Grilled Chicken Salad": {
+                        ingredients: ["2 boneless chicken breasts", "Mixed fresh greens", "Cherry tomatoes (halved)", "Cucumber (sliced)", "Red onion (thinly sliced)", "Feta cheese", "Balsamic vinaigrette", "Salt and pepper to taste"],
+                        instructions: ["Season chicken breasts with salt and pepper.", "Grill chicken over medium-high heat for 6-7 minutes per side until fully cooked.", "Let chicken rest for 5 minutes, then slice into strips.", "Combine mixed greens, cherry tomatoes, cucumber, and red onion in a large bowl.", "Toss salad with balsamic vinaigrette.", "Top with grilled chicken and crumbled feta cheese.", "Serve immediately and enjoy!"]
+                    },
+                    "Vegetable Stir Fry": {
+                        ingredients: ["3 cups mixed vegetables (broccoli, bell peppers, carrots, snap peas)", "3 cloves garlic, minced", "1 tbsp fresh ginger, minced", "3 tbsp soy sauce", "2 tbsp sesame oil", "1 tbsp rice vinegar", "Cooked rice for serving", "Sesame seeds for garnish"],
+                        instructions: ["Heat sesame oil in a large wok or skillet over high heat.", "Add garlic and ginger, stir-fry for 30 seconds until fragrant.", "Add harder vegetables first (carrots, broccoli), stir-fry for 2-3 minutes.", "Add remaining vegetables and cook for another 2-3 minutes.", "Pour soy sauce and rice vinegar over vegetables and toss well.", "Serve over cooked rice and garnish with sesame seeds."]
+                    },
+                    "Beef Tacos": {
+                        ingredients: ["1 lb ground beef", "Taco seasoning packet", "Corn tortillas", "Shredded cheddar cheese", "Diced tomatoes", "Shredded lettuce", "Sour cream", "Salsa", "Cilantro (optional)"],
+                        instructions: ["Heat 1 tablespoon oil in a large skillet over medium-high heat.", "Add ground beef and cook, breaking it up with a spoon, until browned (about 5-7 minutes).", "Drain excess fat and add taco seasoning with ¾ cup water.", "Simmer for 2-3 minutes until the mixture is well combined.", "Warm tortillas in a skillet or over an open flame.", "Fill tortillas with seasoned beef and your favorite toppings.", "Serve with salsa, sour cream, and fresh cilantro."]
+                    },
+                    "Pasta Carbonara": {
+                        ingredients: ["1 lb spaghetti", "6 oz pancetta, diced", "4 egg yolks", "1 cup grated Parmesan cheese", "Black pepper", "Salt for pasta water"],
+                        instructions: ["Bring a large pot of salted water to a boil and cook spaghetti according to package directions.", "While pasta cooks, fry pancetta in a large pan until crispy.", "In a bowl, whisk together egg yolks and grated Parmesan cheese.", "Reserve 1 cup of pasta cooking water, then drain the pasta.", "Add hot drained pasta to the pan with pancetta (off heat).", "Pour egg mixture over pasta and toss quickly, adding pasta water as needed for creaminess.", "Season with black pepper and serve immediately."]
+                    },
+                    "Thai Green Curry": {
+                        ingredients: ["2 tbsp coconut oil", "3 tbsp Thai green curry paste", "1 can (14 oz) coconut milk", "2 cups chicken or vegetable broth", "2 cups mixed vegetables", "1 tbsp fish sauce", "1 tbsp lime juice", "Fresh basil leaves", "Jasmine rice for serving"],
+                        instructions: ["Heat coconut oil in a large pot or wok over medium heat.", "Add curry paste and cook for 1 minute until fragrant.", "Pour in half the coconut milk and stir until well combined.", "Add broth and bring to a gentle simmer.", "Add vegetables and simmer for 5-7 minutes until tender-crisp.", "Stir in remaining coconut milk, fish sauce, and lime juice.", "Taste and adjust seasoning as needed.", "Serve over jasmine rice, topped with fresh basil."]
+                    },
+                    "Chocolate Chip Cookies": {
+                        ingredients: ["2¼ cups all-purpose flour", "1 tsp baking soda", "1 tsp salt", "1 cup butter, softened", "¾ cup granulated sugar", "¾ cup packed brown sugar", "2 large eggs", "2 tsp vanilla extract", "2 cups chocolate chips"],
+                        instructions: ["Preheat oven to 375°F (190°C).", "In a small bowl, combine flour, baking soda, and salt.", "In a large bowl, beat butter and both sugars until creamy.", "Add eggs and vanilla extract to the butter mixture and beat well.", "Gradually stir in the flour mixture.", "Fold in chocolate chips.", "Drop rounded tablespoons onto ungreased cookie sheets.", "Bake for 9-11 minutes or until golden brown.", "Cool on baking sheets for 2 minutes, then transfer to wire racks."]
+                    },
+                    "Mediterranean Quinoa Bowl": {
+                        ingredients: ["1 cup quinoa", "2 cups vegetable broth", "1 cucumber, diced", "1 cup cherry tomatoes, halved", "1 cup roasted vegetables", "½ cup feta cheese", "¼ cup olives", "3 tbsp olive oil", "2 tbsp lemon juice", "Salt and pepper to taste"],
+                        instructions: ["Rinse quinoa under cold water.", "In a pot, bring vegetable broth to a boil and add quinoa.", "Reduce heat and simmer for 15 minutes until quinoa is cooked.", "Let cool slightly.", "In a large bowl, combine cooled quinoa, cucumber, tomatoes, roasted vegetables, feta, and olives.", "Whisk together olive oil and lemon juice for dressing.", "Pour dressing over bowl and toss well.", "Season with salt and pepper and serve."]
+                    },
+                    "Classic Margherita Pizza": {
+                        ingredients: ["1 lb pizza dough", "½ cup tomato sauce", "8 oz fresh mozzarella", "Fresh basil leaves", "2 tbsp olive oil", "Salt and pepper to taste", "Cornmeal for dusting"],
+                        instructions: ["Preheat oven to 475°F (245°C).", "Dust pizza stone or baking sheet with cornmeal.", "Stretch pizza dough to desired thickness and place on prepared surface.", "Spread tomato sauce evenly over dough, leaving a border for crust.", "Tear fresh mozzarella and distribute over sauce.", "Drizzle with olive oil and season with salt and pepper.", "Bake for 12-15 minutes until crust is golden.", "Top with fresh basil leaves and serve immediately."]
+                    },
+                    "Chicken Adobo": {
+                        ingredients: ["3 lbs chicken, cut into pieces", "½ cup soy sauce", "½ cup white vinegar", "6 cloves garlic, minced", "2 tsp black pepper", "3 bay leaves", "1 tbsp cooking oil", "1 cup water"],
+                        instructions: ["Heat oil in a large pot over medium-high heat.", "Brown chicken pieces on all sides, then remove and set aside.", "In the same pot, sauté garlic until fragrant.", "Add soy sauce, vinegar, black pepper, bay leaves, and water.", "Return chicken to pot and bring to a boil.", "Reduce heat and simmer for 30-40 minutes until chicken is tender.", "Taste and adjust seasonings as needed.", "Serve hot with steamed rice."]
+                    },
+                    "Scrambled Eggs": {
+                        ingredients: ["4 large eggs", "2 tbsp butter", "¼ cup milk or cream", "Salt and pepper to taste", "Fresh herbs (chives or parsley)"],
+                        instructions: ["Crack eggs into a bowl and whisk together with milk, salt, and pepper.", "Melt butter in a non-stick skillet over medium heat.", "Pour in egg mixture and let sit for 20 seconds.", "Using a spatula, gently push eggs from edges to center, tilting pan to let uncooked egg flow to edges.", "Repeat until eggs are mostly cooked but still slightly soft.", "Remove from heat while eggs are still slightly undercooked as they'll continue cooking.", "Garnish with fresh herbs and serve immediately."]
+                    },
+                    "Pepperoni Pizza": {
+                        ingredients: ["1 lb pizza dough", "¾ cup tomato sauce", "2 cups mozzarella cheese", "1 cup pepperoni slices", "2 tbsp olive oil", "1 tsp dried oregano", "Cornmeal for dusting", "Salt and pepper to taste"],
+                        instructions: ["Preheat oven to 475°F (245°C).", "Dust pizza stone with cornmeal and stretch dough to desired size.", "Spread tomato sauce evenly over dough.", "Sprinkle mozzarella cheese over sauce.", "Arrange pepperoni slices over cheese.", "Drizzle with olive oil and sprinkle oregano, salt, and pepper.", "Bake for 12-15 minutes until crust is golden and cheese is bubbly.", "Let cool for 1-2 minutes before slicing and serving."]
+                    },
+                    "Classic Burger": {
+                        ingredients: ["1 lb ground beef", "4 hamburger buns", "Lettuce leaves", "Tomato slices", "Cheese slices", "Onion slices", "Pickles", "Ketchup", "Mustard", "Mayonnaise", "Salt and pepper to taste"],
+                        instructions: ["Divide ground beef into 4 equal portions and form into patties.", "Make a slight indentation in the center of each patty with your thumb.", "Season both sides with salt and pepper.", "Heat a skillet or grill over medium-high heat and cook burgers for 3-4 minutes per side for medium.", "During last minute of cooking, place cheese on burger if desired.", "Toast hamburger buns lightly.", "Assemble burgers with bun, mayo, lettuce, patty, tomato, cheese, pickles, onion, and condiments.", "Serve immediately with your favorite sides."]
+                    },
+                    "Bibimbap": {
+                        ingredients: ["2 cups cooked rice", "1 cup beef, thinly sliced", "2 cups mixed vegetables (spinach, carrots, zucchini, mushrooms)", "2 eggs", "3 tbsp gochujang (Korean red chili paste)", "2 tbsp sesame oil", "Sesame seeds for garnish", "Vegetable oil for cooking"],
+                        instructions: ["Cook rice and set aside.", "Marinate and cook beef separately, set aside.", "Blanch and season spinach with sesame oil and garlic.", "Sauté other vegetables separately, season each with salt.", "Divide rice into bowls.", "Arrange beef and vegetables on top of rice in sections.", "Make a well in center and add a fried egg.", "Mix gochujang with sesame oil to make sauce.", "Drizzle sauce over top and garnish with sesame seeds.", "Mix everything together before eating."]
+                    },
+                    "Sushi Rolls": {
+                        ingredients: ["2 cups cooked sushi rice", "4 sheets nori (seaweed)", "Cucumber, julienned", "Carrot, julienned", "Avocado, sliced", "Cooked crab or imitation crab", "Soy sauce for serving", "Wasabi for serving", "Pickled ginger for serving"],
+                        instructions: ["Place nori on a bamboo sushi mat, shiny side down.", "Spread thin layer of sushi rice over nori, leaving ½ inch at top.", "Arrange your choice of fillings in a line across center of rice.", "Using mat, roll tightly from bottom to top, sealing edge with water.", "Slice roll into 6-8 pieces using a sharp, wet knife.", "Serve with soy sauce, wasabi, and pickled ginger.", "Enjoy fresh rolls immediately."]
+                    },
+                    "Yang Chow Fried Rice": {
+                        ingredients: ["3 cups cooked rice (day-old, chilled)", "3 eggs, beaten", "½ cup shrimp, diced", "¼ cup ham, diced", "1 cup mixed vegetables (peas, carrots, corn)", "3 cloves garlic, minced", "3 tbsp soy sauce", "2 tbsp sesame oil", "2 green onions, chopped", "White pepper to taste"],
+                        instructions: ["Heat sesame oil in a wok or large skillet over high heat.", "Add garlic and cook for 30 seconds.", "Push rice to sides and pour beaten eggs into center, scramble until cooked.", "Mix in rice with eggs and break up any clumps.", "Add shrimp, ham, and mixed vegetables, stir-fry for 2-3 minutes.", "Pour soy sauce over rice and mix well.", "Season with white pepper and top with green onions.", "Serve immediately while hot."]
+                    },
+                    "Crispy Fried Chicken": {
+                        ingredients: ["3 lbs chicken pieces", "2 cups all-purpose flour", "1 tbsp garlic powder", "1 tbsp paprika", "2 tsp cayenne pepper", "Salt and black pepper to taste", "2 eggs", "½ cup milk", "Oil for frying"],
+                        instructions: ["In a bowl, mix flour with garlic powder, paprika, cayenne, salt, and pepper.", "In another bowl, whisk together eggs and milk.", "Dip chicken pieces in egg mixture, then coat thoroughly in flour mixture.", "Heat oil to 350°F (175°C) in a deep pot or fryer.", "Carefully place chicken in hot oil and fry for 12-15 minutes until golden and cooked through.", "Remove with slotted spoon and drain on paper towels.", "Serve hot and crispy."]
+                    },
+                    "Spaghetti Carbonara": {
+                        ingredients: ["1 lb spaghetti", "6 oz pancetta or bacon, diced", "4 egg yolks", "1 cup Pecorino Romano cheese, grated", "Black pepper", "Salt for pasta water"],
+                        instructions: ["Bring large pot of salted water to boil and cook spaghetti al dente.", "While pasta cooks, fry pancetta in a skillet until crispy.", "In a bowl, whisk egg yolks with grated cheese and plenty of black pepper.", "Reserve 1 cup pasta water, then drain pasta.", "Add hot pasta to pancetta skillet (off heat to prevent scrambling eggs).", "Pour egg mixture over pasta and toss continuously, adding pasta water as needed for creamy sauce.", "Season with more black pepper and serve immediately."]
+                    },
+                    "Pad Thai": {
+                        ingredients: ["8 oz dried rice noodles", "3 tbsp tamarind paste", "3 tbsp fish sauce", "2 tbsp palm sugar", "3 cloves garlic, minced", "8 oz shrimp or tofu", "2 eggs", "2 cups bean sprouts", "3 green onions, cut into 2-inch pieces", "Peanuts, crushed", "Lime wedges"],
+                        instructions: ["Soak rice noodles in warm water for 30 minutes until softened, then drain.", "In a small bowl, mix tamarind paste, fish sauce, and palm sugar.", "Heat oil in a wok over high heat and stir-fry garlic for 30 seconds.", "Add shrimp or tofu and cook until done.", "Push ingredients to side, crack eggs into wok and scramble.", "Add noodles and sauce, toss everything together for 2-3 minutes.", "Add bean sprouts and green onions, toss for another minute.", "Serve topped with crushed peanuts and lime wedges."]
+                    },
+                    "French Toast": {
+                        ingredients: ["8 slices bread", "3 eggs", "¼ cup milk", "1 tsp vanilla extract", "1 tsp cinnamon", "2 tbsp butter", "Maple syrup for serving", "Powdered sugar for dusting"],
+                        instructions: ["In a shallow bowl, whisk together eggs, milk, vanilla, and cinnamon.", "Heat butter in a skillet or griddle over medium heat.", "Dip each bread slice into egg mixture, coating both sides well.", "Place coated bread on hot skillet and cook 3-4 minutes per side until golden.", "Transfer to plate and repeat with remaining bread.", "Serve warm topped with maple syrup and powdered sugar."]
+                    },
+                    "Ramen": {
+                        ingredients: ["4 cups ramen or chicken broth", "2 packages ramen noodles", "2 eggs", "2 cups cooked chicken, sliced", "1 cup fresh vegetables (spinach, bok choy, carrots)", "2 green onions, chopped", "Nori (seaweed), sliced", "Sesame seeds", "Soy sauce to taste"],
+                        instructions: ["Bring broth to boil in a large pot.", "Add ramen noodles and cook according to package directions.", "While noodles cook, bring a separate pot of water to boil and soft-boil eggs for 6-7 minutes.", "Add vegetables to broth in last 2 minutes of cooking.", "Divide noodles and broth into bowls.", "Top each bowl with sliced chicken, halved soft-boiled egg, nori, and green onions.", "Sprinkle with sesame seeds and serve immediately with extra soy sauce."]
+                    },
+                    "Chicken Parmesan": {
+                        ingredients: ["4 chicken breasts", "2 cups all-purpose flour", "2 eggs, beaten", "1 cup panko breadcrumbs", "2 cups marinara sauce", "2 cups mozzarella cheese, shredded", "½ cup Parmesan cheese, grated", "Oil for frying", "Salt and pepper to taste", "Fresh basil for garnish"],
+                        instructions: ["Pound chicken breasts to even thickness.", "Set up three bowls: flour, beaten eggs, and breadcrumbs.", "Coat each chicken breast in flour, then egg, then breadcrumbs.", "Heat oil in a skillet over medium-high heat and fry chicken 6-7 minutes per side until golden.", "Place fried chicken in a baking dish.", "Pour marinara sauce over chicken.", "Top with mozzarella and Parmesan cheese.", "Bake at 400°F (200°C) for 15-20 minutes until cheese is melted and bubbly.", "Garnish with fresh basil and serve."]
+                    },
+                    "Beef Stroganoff": {
+                        ingredients: ["2 lbs beef sirloin, cut into strips", "1 large onion, sliced", "8 oz mushrooms, sliced", "2 cloves garlic, minced", "2 cups beef broth", "1 cup sour cream", "2 tbsp tomato paste", "2 tbsp Worcestershire sauce", "Egg noodles for serving", "Salt and pepper to taste"],
+                        instructions: ["Heat oil in a large skillet over high heat and brown beef strips, then remove.", "In same skillet, sauté onions and mushrooms until golden.", "Add garlic and cook for 1 minute.", "Stir in tomato paste and cook for 1 minute.", "Pour in beef broth and Worcestershire sauce, scraping up browned bits.", "Return beef to skillet and simmer for 15-20 minutes.", "Stir in sour cream and heat through without boiling.", "Serve over cooked egg noodles and garnish with fresh parsley."]
+                    },
+                    "Lasagna": {
+                        ingredients: ["1 box lasagna noodles", "1 lb ground beef", "1 large onion, diced", "4 cloves garlic, minced", "28 oz canned tomatoes", "6 oz tomato paste", "15 oz ricotta cheese", "2 cups mozzarella cheese, shredded", "½ cup Parmesan cheese", "1 egg", "Salt, pepper, and Italian seasoning to taste"],
+                        instructions: ["Cook lasagna noodles according to package directions, drain and set aside.", "Brown ground beef with onion and garlic in a large pot.", "Stir in canned tomatoes and tomato paste, simmer for 15 minutes.", "In a bowl, mix ricotta, 1 cup mozzarella, Parmesan, egg, salt, pepper, and Italian seasoning.", "Preheat oven to 375°F (190°C).", "In a baking dish, layer: sauce, noodles, cheese mixture. Repeat layers.", "Top with remaining mozzarella.", "Cover with foil and bake for 25 minutes, then uncover and bake another 15 minutes.", "Let rest for 10 minutes before serving."]
+                    },
+                    "Tacos al Pastor": {
+                        ingredients: ["2 lbs pork shoulder, thinly sliced", "¼ cup dried chilies", "1 clove garlic", "1 tbsp cumin", "1 tbsp oregano", "3 tbsp vinegar", "2 tbsp olive oil", "Corn tortillas", "Fresh pineapple, grilled and chopped", "Onion, diced", "Cilantro", "Lime wedges"],
+                        instructions: ["Soak dried chilies in hot water for 10 minutes, then blend with garlic, cumin, oregano, and vinegar.", "Marinate pork slices in this mixture for at least 2 hours.", "Heat oil in a skillet over high heat and cook pork until crispy on edges.", "Grill pineapple and chop into small pieces.", "Warm tortillas on a hot skillet.", "Fill tortillas with cooked pork, grilled pineapple, onion, and cilantro.", "Serve with lime wedges."]
+                    },
+                    "Chicken Shawarma": {
+                        ingredients: ["2 lbs chicken breast, sliced thin", "¼ cup lemon juice", "3 tbsp olive oil", "4 cloves garlic, minced", "1 tbsp paprika", "1 tbsp cumin", "1 tsp turmeric", "Pita bread", "Tahini sauce", "Tomato and cucumber salad", "Red onion"],
+                        instructions: ["Mix lemon juice, olive oil, garlic, paprika, cumin, and turmeric to make marinade.", "Marinate chicken for at least 2 hours or overnight.", "Heat oil in a skillet and cook chicken until golden and cooked through.", "Warm pita bread.", "Assemble shawarmas by filling pita with chicken, tahini sauce, tomato-cucumber salad, and red onion.", "Serve immediately."]
+                    },
+                    "Vegetable Curry": {
+                        ingredients: ["3 tbsp coconut oil", "1 large onion, diced", "3 cloves garlic, minced", "1 tbsp fresh ginger, minced", "2 tbsp curry powder", "1 can (14 oz) coconut milk", "1 cup vegetable broth", "3 cups mixed vegetables (carrots, peas, potatoes, bell peppers)", "1 tbsp lime juice", "Salt to taste", "Cooked rice for serving"],
+                        instructions: ["Heat coconut oil in a large pot over medium heat.", "Sauté onion, garlic, and ginger until fragrant.", "Stir in curry powder and cook for 1 minute.", "Pour in coconut milk and vegetable broth.", "Add vegetables and bring to a simmer.", "Cook for 15-20 minutes until vegetables are tender.", "Stir in lime juice and season with salt.", "Serve over cooked rice."]
+                    },
+                    "Pancakes": {
+                        ingredients: ["2 cups all-purpose flour", "2 tbsp sugar", "2 tsp baking powder", "½ tsp salt", "2 eggs", "1¾ cups milk", "3 tbsp butter, melted", "Maple syrup for serving", "Butter for griddle"],
+                        instructions: ["In a bowl, whisk together flour, sugar, baking powder, and salt.", "In another bowl, beat eggs and mix with milk and melted butter.", "Combine wet and dry ingredients, stirring until just combined (lumps are okay).", "Heat a griddle or skillet over medium heat and lightly butter it.", "Pour ¼ cup batter per pancake onto griddle.", "Cook 2-3 minutes per side until golden brown.", "Stack on a plate and serve warm with maple syrup and butter."]
+                    },
+                    "Waffles": {
+                        ingredients: ["2 cups all-purpose flour", "2 tbsp sugar", "2 tsp baking powder", "½ tsp salt", "2 eggs", "1¾ cups milk", "4 tbsp butter, melted", "Whipped cream for serving", "Fresh berries for serving", "Maple syrup for serving"],
+                        instructions: ["Preheat waffle iron.", "In a bowl, whisk together flour, sugar, baking powder, and salt.", "In another bowl, beat eggs and mix with milk and melted butter.", "Combine wet and dry ingredients, stirring until just combined.", "Pour batter into preheated waffle iron and cook until golden and crispy.", "Carefully remove waffle from iron.", "Serve warm topped with whipped cream, fresh berries, and maple syrup."]
+                    },
+                    "Grilled Salmon": {
+                        ingredients: ["4 salmon fillets (6 oz each)", "3 tbsp olive oil", "2 tbsp lemon juice", "4 cloves garlic, minced", "1 tsp dried dill", "Salt and pepper to taste", "Lemon slices for serving", "Fresh herbs for garnish"],
+                        instructions: ["Preheat grill to medium-high heat (400°F).", "Mix olive oil, lemon juice, garlic, dill, salt, and pepper to make marinade.", "Place salmon on a large piece of foil or in a grilling basket.", "Brush marinade over salmon.", "Grill for 12-15 minutes (depending on thickness) until salmon flakes easily with a fork.", "Top with lemon slices and fresh herbs.", "Serve immediately."]
+                    },
+                    "Beef Stew": {
+                        ingredients: ["3 lbs beef chuck, cut into cubes", "4 tbsp flour", "3 tbsp oil", "1 large onion, diced", "4 cloves garlic, minced", "4 carrots, chunked", "4 potatoes, chunked", "4 cups beef broth", "1 cup red wine", "2 bay leaves", "2 tsp dried thyme", "Salt and pepper to taste"],
+                        instructions: ["Toss beef in flour seasoned with salt and pepper.", "Heat oil in a large pot and brown beef in batches, set aside.", "In same pot, sauté onion and garlic until soft.", "Add carrots and potatoes, cook for 3-4 minutes.", "Pour in beef broth and red wine, scraping up browned bits.", "Return beef to pot and add bay leaves and thyme.", "Bring to boil, then reduce heat and simmer covered for 2-3 hours until beef is tender.", "Season with salt and pepper to taste.", "Serve hot."]
+                    }
+                };
+
+                // Return recipe data or a default if not found
+                return recipeDatabase[title] || {
+                    ingredients: [
+                        "Ingredient 1",
+                        "Ingredient 2",
+                        "Ingredient 3",
+                        "Ingredient 4",
+                        "Ingredient 5"
+                    ],
+                    instructions: [
+                        "Prepare all ingredients.",
+                        "Start cooking according to recipe.",
+                        "Season to taste.",
+                        "Plate and serve.",
+                        "Enjoy your meal!"
+                    ]
+                };
+            }
+
+            // Function to open recipe modal
+            function openRecipeModal(recipeData) {
+                const modal = document.getElementById('recipe-modal');
+                
+                document.getElementById('modal-recipe-title').textContent = recipeData.title;
+                document.getElementById('modal-recipe-image').src = recipeData.image;
+                document.getElementById('modal-recipe-time').textContent = recipeData.time;
+                document.getElementById('modal-recipe-difficulty').textContent = recipeData.difficulty;
+                document.getElementById('modal-recipe-rating').textContent = recipeData.rating + ' ★';
+                document.getElementById('modal-recipe-reviews').textContent = recipeData.reviews;
+
+                // Populate ingredients
+                const ingredientsList = document.getElementById('modal-ingredients');
+                ingredientsList.innerHTML = recipeData.ingredients
+                    .map(ingredient => `<li style="color: #555; font-size: 14px; line-height: 1.5;">✓ ${ingredient}</li>`)
+                    .join('');
+
+                // Populate instructions
+                const instructionsList = document.getElementById('modal-instructions');
+                instructionsList.innerHTML = recipeData.instructions
+                    .map((instruction, index) => `<li style="color: #555; font-size: 14px; line-height: 1.6;">${instruction}</li>`)
+                    .join('');
+
+                // Show modal - use display flex
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+
+                // Close button handler
+                document.getElementById('close-recipe-modal').onclick = closeRecipeModal;
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeRecipeModal();
+                    }
+                });
+
+                // Modal Timer Button Handler
+                document.getElementById('modal-timer-btn').onclick = function() {
+                    alert(`⏱️ Timer started for ${recipeData.title}! Set your cooking time.`);
+                };
+
+                // Modal Save Button Handler (persistent)
+                const modalSaveBtn = document.getElementById('modal-save-btn');
+                function updateModalSaveButtonState() {
+                    if (isRecipeSaved(recipeData.title)) {
+                        modalSaveBtn.innerHTML = '✅ Saved';
+                        modalSaveBtn.style.opacity = '0.95';
+                    } else {
+                        modalSaveBtn.innerHTML = '❤️ Save Recipe';
+                        modalSaveBtn.style.opacity = '1';
+                    }
+                }
+
+                updateModalSaveButtonState();
+
+                modalSaveBtn.onclick = function() {
+                    const wasSaved = toggleSaveRecipe(recipeData.title);
+                    updateModalSaveButtonState();
+                    updateCardSavedBadge(recipeData.title);
+                    alert(wasSaved ? `❤️ Recipe saved! "${recipeData.title}" has been added to your favorites.` : `Removed "${recipeData.title}" from saved recipes.`);
+                };
+            }
+
+            // Function to close recipe modal
+            function closeRecipeModal() {
+                const modal = document.getElementById('recipe-modal');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+
+      // --- LocalStorage Helpers for Saved Recipes and Ratings
+      const STORAGE_SAVED_KEY = 'dishcovery_saved';
+      const STORAGE_RATINGS_KEY = 'dishcovery_ratings';
+
+      function getSavedRecipes() {
+        try {
+          const s = localStorage.getItem(STORAGE_SAVED_KEY);
+          return s ? JSON.parse(s) : [];
+        } catch (e) { return []; }
+      }
+
+      function saveSavedRecipes(arr) {
+        try { localStorage.setItem(STORAGE_SAVED_KEY, JSON.stringify(arr)); } catch (e) {}
+      }
+
+      function isRecipeSaved(title) {
+        return getSavedRecipes().includes(title);
+      }
+
+      function toggleSaveRecipe(title) {
+        const arr = getSavedRecipes();
+        const exists = arr.includes(title);
+        if (exists) {
+          const next = arr.filter(t => t !== title);
+          saveSavedRecipes(next);
+          return false;
+        } else {
+          arr.push(title);
+          saveSavedRecipes(arr);
+          return true;
+        }
+      }
+
+      function getRatings() {
+        try {
+          const s = localStorage.getItem(STORAGE_RATINGS_KEY);
+          return s ? JSON.parse(s) : {};
+        } catch (e) { return {}; }
+      }
+
+      function saveRatings(obj) {
+        try { localStorage.setItem(STORAGE_RATINGS_KEY, JSON.stringify(obj)); } catch (e) {}
+      }
+
+      function saveRating(title, rating) {
+        const r = getRatings();
+        r[title] = Number(rating);
+        saveRatings(r);
+      }
+
+      function getRating(title) {
+        const r = getRatings();
+        return r[title] || null;
+      }
+
+      function updateCardSavedBadge(title) {
+        document.querySelectorAll('.recipe-card').forEach(card => {
+          if (card.dataset.title === title) {
+            let badge = card.querySelector('.saved-badge');
+            if (isRecipeSaved(title)) {
+              if (!badge) {
+                badge = document.createElement('div');
+                badge.className = 'saved-badge absolute top-3 left-3 bg-[#F2340B] text-white px-2 py-1 rounded-full text-xs font-semibold';
+                badge.textContent = 'Saved';
+                card.appendChild(badge);
+              }
+            } else {
+              if (badge) badge.remove();
+            }
+          }
+        });
+      }
 
             // Function to attach event listeners to buttons
             function attachEventListeners() {
@@ -253,7 +664,17 @@
                         const title = card.dataset.title;
                         const rating = prompt(`Rate ${title} (1-5 stars):`);
                         if (rating && rating >= 1 && rating <= 5) {
-                            alert(`Thank you for rating ${title} ${rating} stars!`);
+                          // persist rating
+                          saveRating(title, rating);
+                          alert(`Thank you for rating ${title} ${rating} stars!`);
+                          // update card badge
+                          const badge = card.querySelector('.absolute');
+                          if (badge) badge.textContent = `${rating} ★`;
+                          // if modal open for same recipe, update modal rating
+                          const modalTitle = document.getElementById('modal-recipe-title').textContent;
+                          if (modalTitle === title) {
+                            document.getElementById('modal-recipe-rating').textContent = `${rating} ★`;
+                          }
                         }
                     });
                 });
@@ -263,9 +684,42 @@
                         const card = this.closest('.recipe-card');
                         const title = card.dataset.title;
                         const description = card.dataset.description;
-                        alert(`Recipe: ${title}\n\n${description}\n\nFull recipe details would be shown here.`);
+                        const image = card.querySelector('img').src;
+                        const ratingText = card.querySelector('.absolute').textContent;
+                        const rating = ratingText.split(' ')[0];
+                        const timeElement = card.querySelector('[data-lucide="clock"]').nextElementSibling;
+                        const time = timeElement ? timeElement.textContent : "N/A";
+                        const diffElement = card.querySelector('[data-lucide="chef-hat"]').nextElementSibling;
+                        const difficulty = diffElement ? diffElement.textContent : "N/A";
+                        const reviewsText = card.querySelector('[data-lucide="star"]').parentElement.textContent;
+                        const reviews = reviewsText.split(' ')[0];
+
+                        // Generate sample ingredients and instructions based on title
+                        const recipeData = generateRecipeData(title);
+
+                        // Open modal with recipe data
+                        openRecipeModal({
+                            title: title,
+                            description: description,
+                            image: image,
+                            rating: rating,
+                            time: time,
+                            difficulty: difficulty,
+                            reviews: reviews,
+                            ingredients: recipeData.ingredients,
+                            instructions: recipeData.instructions
+                        });
                     });
                 });
+
+        // Reflect saved and rating state on cards after attaching handlers
+        document.querySelectorAll('.recipe-card').forEach(card => {
+          const title = card.dataset.title;
+          const storedRating = getRating(title);
+          const ratingBadge = card.querySelector('.absolute');
+          if (storedRating && ratingBadge) ratingBadge.textContent = `${storedRating} ★`;
+          if (isRecipeSaved(title)) updateCardSavedBadge(title);
+        });
 
                 // Add hover effects to recipe cards
                 document.querySelectorAll('.recipe-card').forEach(card => {
@@ -282,39 +736,56 @@
             let searchTimeout;
             const searchBtn = document.getElementById('search-btn');
 
-            function performSearch() {
-                const searchTerm = searchInput.value.toLowerCase().trim();
-                const recipeGrid = document.querySelector('.grid');
+      function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
 
-                // Add fade-out animation
-                recipeGrid.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+        // Instant search: no fade animation (real-time as you type)
+        if (searchTerm === '') {
+          // reset to initial set when search cleared
+          currentRecipes = [...allRecipes];
+          displayedRecipes = 20; // default initial
+        } else {
+          // filter by title, description, or ingredients (if available)
+          currentRecipes = allRecipes.filter(recipe => {
+            const title = (recipe.title || '').toLowerCase();
+            const desc = (recipe.description || '').toLowerCase();
+            if (title.includes(searchTerm) || desc.includes(searchTerm)) return true;
 
-                setTimeout(() => {
-                    if (searchTerm === '') {
-                        currentRecipes = [...allRecipes];
-                    } else {
-                        currentRecipes = allRecipes.filter(recipe =>
-                            recipe.title.toLowerCase().includes(searchTerm) ||
-                            recipe.description.toLowerCase().includes(searchTerm)
-                        );
-                    }
-                    displayedRecipes = currentRecipes.length; // Show all filtered results
-                    renderRecipes(currentRecipes);
-                    recipeGrid.classList.remove('opacity-0'); // Fade back in
-                }, 300); // Wait for fade-out to complete
+            // try to match ingredients by generating recipe data (if present)
+            try {
+              const data = (typeof generateRecipeData === 'function') ? generateRecipeData(recipe.title) : null;
+              const ingredientsText = data && data.ingredients ? data.ingredients.join(' ').toLowerCase() : '';
+              if (ingredientsText.includes(searchTerm)) return true;
+            } catch (e) {
+              // ignore if generateRecipeData not available
             }
 
-            searchInput.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    performSearch();
-                }, 300); // Debounce delay
-            });
+            return false;
+          });
 
-            searchBtn.addEventListener('click', function() {
-                clearTimeout(searchTimeout); // Clear any pending live search
-                performSearch();
-            });
+          // Show all filtered results
+          displayedRecipes = currentRecipes.length;
+        }
+
+        renderRecipes(currentRecipes);
+      }
+
+      searchInput.addEventListener('input', function() {
+        // Instant search: trigger immediately on every keystroke
+        performSearch();
+      });
+
+      // Support pressing Enter in the search input
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          performSearch();
+        }
+      });
+
+      searchBtn.addEventListener('click', function() {
+        performSearch();
+      });
 
             // Initial render
             renderRecipes(currentRecipes);
@@ -339,6 +810,124 @@
             });
         });
 
+        // --- Filter Functionality ---
+        let activeFilters = {
+            category: '',
+            cuisine: '',
+            diet: '',
+            rating: '',
+            difficulty: '',
+            time: ''
+        };
+
+        // Helper function to parse time filters
+        function parseTime(timeStr) {
+            const match = timeStr.match(/(\d+)/);
+            return match ? parseInt(match[0]) : 0;
+        }
+
+        // Function to apply all active filters
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            currentRecipes = allRecipes.filter(recipe => {
+                // Apply search filter first
+                if (searchTerm !== '') {
+                    const title = (recipe.title || '').toLowerCase();
+                    const desc = (recipe.description || '').toLowerCase();
+                    let matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
+                    
+                    if (!matchesSearch) {
+                        try {
+                            const data = generateRecipeData(recipe.title);
+                            const ingredientsText = data && data.ingredients ? data.ingredients.join(' ').toLowerCase() : '';
+                            matchesSearch = ingredientsText.includes(searchTerm);
+                        } catch (e) {}
+                    }
+                    
+                    if (!matchesSearch) return false;
+                }
+
+                // Apply category filter
+                if (activeFilters.category && recipe.category !== activeFilters.category) return false;
+
+                // Apply cuisine filter
+                if (activeFilters.cuisine && recipe.cuisine !== activeFilters.cuisine) return false;
+
+                // Apply diet filter
+                if (activeFilters.diet && recipe.diet !== activeFilters.diet) return false;
+
+                // Apply rating filter
+                if (activeFilters.rating) {
+                    const minRating = parseFloat(activeFilters.rating);
+                    if (parseFloat(recipe.rating) < minRating) return false;
+                }
+
+                // Apply difficulty filter
+                if (activeFilters.difficulty && recipe.difficulty !== activeFilters.difficulty) return false;
+
+                // Apply time filter
+                if (activeFilters.time) {
+                    const recipeTime = parseTime(recipe.time);
+                    if (activeFilters.time === 'quick' && recipeTime > 15) return false;
+                    if (activeFilters.time === 'medium' && (recipeTime < 15 || recipeTime > 30)) return false;
+                    if (activeFilters.time === 'long' && recipeTime <= 30) return false;
+                }
+
+                return true;
+            });
+
+            displayedRecipes = currentRecipes.length;
+            renderRecipes(currentRecipes);
+        }
+
+        // Setup filter dropdown buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.nextElementSibling;
+                
+                // Close other dropdowns
+                document.querySelectorAll('.filter-dropdown').forEach(d => {
+                    if (d !== dropdown) d.classList.add('hidden');
+                });
+                
+                // Toggle current dropdown
+                dropdown.classList.toggle('hidden');
+            });
+        });
+
+        // Setup filter options
+        document.querySelectorAll('.filter-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const filterType = this.parentElement.previousElementSibling.dataset.filter;
+                const filterValue = this.getAttribute(`data-${filterType}`);
+                
+                // Update active filters
+                activeFilters[filterType] = filterValue;
+                
+                // Update button text
+                const btn = this.parentElement.previousElementSibling;
+                btn.textContent = this.textContent;
+                btn.innerHTML += ' <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>';
+                lucide.createIcons();
+                
+                // Close dropdown
+                this.parentElement.classList.add('hidden');
+                
+                // Apply filters
+                applyFilters();
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.filter-dropdown').forEach(d => {
+                d.classList.add('hidden');
+            });
+        });
+
         // Add fadeIn animation
         const style = document.createElement('style');
         style.textContent = `
@@ -352,37 +941,43 @@
   </head>
 
 <body>
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100">
+    <div class="max-w-container-lg mx-auto flex items-center justify-between px-6 py-4 md:py-8">
+      <div class="logo">
+        <h1 class="text-[clamp(20px,2.2vw,26px)] font-extrabold tracking-tight">
+          <a href="index.html" aria-label="DishCovery Home" class="text-dish-primary no-underline hover:opacity-90 inline-block">DishCovery</a>
+        </h1>
+      </div>
 
-  <header>
-    <div class="logo">
-      <h1 class="text-[2rem] font-semibold text-[#333]">DishCovery</h1>
+      <!-- Hamburger Menu Button for Mobile -->
+      <button id="menu-toggle" class="md:hidden text-text-primary focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
+        <div class="w-6 h-6 relative">
+          <span class="hamburger-line hamburger-line1 absolute left-0 w-full h-0.5 bg-current"></span>
+          <span class="hamburger-line hamburger-line2 absolute left-0 w-full h-0.5 bg-current"></span>
+          <span class="hamburger-line hamburger-line3 absolute left-0 w-full h-0.5 bg-current"></span>
+        </div>
+      </button>
+
+      <nav id="main-nav" aria-label="Main navigation" class="hidden md:flex md:items-center absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none">
+        <ul class="flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-8 text-center md:text-left w-full p-6 md:p-0">
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="index.html">Home</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="About_Us.html">About Us</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="recipe_finder.html">Recipe Finder</a></li>
+          <li><a class="font-semibold text-text-primary text-opacity-90 px-2 py-1 rounded-md" href="Gallery.html" aria-current="page">Gallery</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="Contact.html">Contact</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="Faq.html">FAQ</a></li>
+          <li class="login mt-4 md:mt-0">
+            <a href="Log_In.html" class="inline-block bg-gradient-to-r from-[#ff7a2a] to-[#ff3b00] text-white font-extrabold px-4 py-2 rounded-full shadow-[0_6px_18px_rgba(255,106,0,0.15)] hover:translate-y-[-2px] transition-transform">Log In</a>
+          </li>
+        </ul>
+      </nav>
     </div>
-
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="About_Us.html">About Us</a></li>
-        <li><a href="#">Recipe Finder</a></li>
-        <li><a href="Gallery.html">Gallery</a></li>
-        <li><a href="Contact.html">Contact</a></li>
-        <li><a href="Faq.html">FAQ</a></li>
-        <li class="login">
-          <a href="Log_In.html">Log In</a>
-        </li>
-      </ul>
-    </nav>
   </header>
-            
-        <button class="lg:hidden text-gray-600 hover:text-dish-primary p-2 rounded-lg transition-colors">
-            <i data-lucide="menu" class="w-6 h-6"></i>
-        </button>
-    </div>
-</header>
 
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
   <section class="text-center py-16 md:py-24">
-      <h1 class="text-4xl md:text-6xl font-extrabold text-dish-dark mb-4">
-          Smart Recipe Finder
+      <h1 class="text-4xl md:text-6xl font-extrabold mb-4">
+          <span class="text-dish-dark">Smart Recipe Finder</span>
       </h1>
       <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10">
           Discover the perfect recipe based on your available ingredients. Reduce food waste and explore international cuisines with our intelligent matching system.
@@ -390,15 +985,15 @@
 
       <!-- Action Buttons -->
       <div class="flex flex-wrap justify-center gap-4 mb-12">
-          <button class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-green">
+          <button class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-all hover:scale-[1.05] hover:shadow-orange-400/50 bg-gradient-to-r from-dish-primary to-orange-500">
               <i data-lucide="leaf" class="w-5 h-5"></i>
               <span>Ingredient Matcher</span>
           </button>
-          <button id="leftover-saver-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-accent-blue">
+          <button id="leftover-saver-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-all hover:scale-[1.05] hover:shadow-orange-400/50 bg-gradient-to-r from-dish-primary to-orange-500">
               <i data-lucide="save" class="w-5 h-5"></i>
               <span>Leftover Saver</span>
           </button>
-          <button id="cook-with-friends-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-transform hover:scale-[1.02] bg-dish-accent-pink">
+          <button id="cook-with-friends-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-all hover:scale-[1.05] hover:shadow-orange-400/50 bg-gradient-to-r from-dish-primary to-orange-500">
               <i data-lucide="users" class="w-5 h-5"></i>
               <span>Cook with Friends</span>
           </button>
@@ -430,42 +1025,95 @@
   <!-- Filters -->
   <section class="py-6 border-b border-gray-200/80 mb-12 reveal-on-scroll">
       <div class="flex flex-wrap justify-center gap-3 text-sm">
-          <!-- Dropdown Button Template -->
+          <!-- Categories Dropdown -->
           <div class="relative inline-block">
-              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+              <button class="filter-btn flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors" data-filter="category">
                   All Categories
                   <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
               </button>
+              <div class="filter-dropdown hidden absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-40">
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-category="">All Categories</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-category="Main">Main</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-category="Breakfast">Breakfast</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-category="Dessert">Dessert</button>
+              </div>
           </div>
+          <!-- Cuisines Dropdown -->
           <div class="relative inline-block">
-              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+              <button class="filter-btn flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors" data-filter="cuisine">
                   All Cuisines
                   <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
               </button>
+              <div class="filter-dropdown hidden absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-40">
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="">All Cuisines</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="American">American</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Italian">Italian</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Asian">Asian</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Thai">Thai</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Mexican">Mexican</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Japanese">Japanese</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Mediterranean">Mediterranean</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="French">French</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Indian">Indian</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Korean">Korean</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Chinese">Chinese</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Filipino">Filipino</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Russian">Russian</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Middle Eastern">Middle Eastern</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-cuisine="Belgian">Belgian</button>
+              </div>
           </div>
+          <!-- Diets Dropdown -->
           <div class="relative inline-block">
-              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+              <button class="filter-btn flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors" data-filter="diet">
                   All Diets
                   <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
               </button>
+              <div class="filter-dropdown hidden absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-40">
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-diet="">All Diets</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-diet="Vegetarian">Vegetarian</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-diet="Vegan">Vegan</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-diet="Gluten-Free">Gluten-Free</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-diet="Regular">Regular</button>
+              </div>
           </div>
+          <!-- Ratings Dropdown -->
           <div class="relative inline-block">
-              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+              <button class="filter-btn flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors" data-filter="rating">
                   All Ratings
                   <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
               </button>
+              <div class="filter-dropdown hidden absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-40">
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-rating="">All Ratings</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-rating="4.9">4.9+</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-rating="4.7">4.7+</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-rating="4.5">4.5+</button>
+              </div>
           </div>
+          <!-- Difficulty Levels Dropdown -->
           <div class="relative inline-block">
-              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+              <button class="filter-btn flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors" data-filter="difficulty">
                   All Levels
                   <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
               </button>
+              <div class="filter-dropdown hidden absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-40">
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-difficulty="">All Levels</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-difficulty="Easy">Easy</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-difficulty="Medium">Medium</button>
+              </div>
           </div>
+          <!-- Cooking Time Dropdown -->
           <div class="relative inline-block">
-              <button class="flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors">
+              <button class="filter-btn flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-gray-700 hover:bg-gray-100 transition-colors" data-filter="time">
                   Any Time
                   <i data-lucide="chevron-down" class="w-4 h-4 ml-2"></i>
               </button>
+              <div class="filter-dropdown hidden absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-40">
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-time="">Any Time</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-time="quick">Under 15 mins</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-time="medium">15-30 mins</button>
+                  <button class="filter-option w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-700" data-time="long">30+ mins</button>
+              </div>
           </div>
       </div>
       <script>
@@ -474,14 +1122,86 @@
   </section>
 </main>
 
+<!-- Recipe Details Modal -->
+<div id="recipe-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px;">
+  <div style="position: relative; background: white; width: 95%; max-width: 1000px; max-height: 90vh; border-radius: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); overflow-y: auto; display: flex; flex-direction: column;">
+    
+    <!-- Close Button -->
+    <div style="position: sticky; top: 0; background: linear-gradient(135deg, #F2340B 0%, #FF8C42 100%); padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-radius: 24px 24px 0 0; z-index: 100;">
+      <h2 id="modal-recipe-title" style="font-size: 28px; font-weight: bold; color: white; margin: 0;"></h2>
+      <button id="close-recipe-modal" style="background: rgba(255,255,255,0.3); border: none; color: white; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 28px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+    </div>
+
+    <!-- Modal Content -->
+    <div style="padding: 32px; flex: 1; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+      
+      <!-- Left Column: Image and Info -->
+      <div>
+        <img id="modal-recipe-image" src="" alt="Recipe" style="width: 100%; height: 320px; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); margin-bottom: 24px; display: block;">
+        
+        <!-- Recipe Info Cards -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+          <div style="background: linear-gradient(135deg, #FFE5D9 0%, #FFD4B8 100%); padding: 14px; border-radius: 12px; border: 2px solid #F2340B; text-align: center;">
+            <p style="color: #666; font-size: 11px; font-weight: bold; margin: 0 0 6px 0; letter-spacing: 0.5px;">⏱️ TIME</p>
+            <p id="modal-recipe-time" style="font-size: 18px; font-weight: bold; color: #F2340B; margin: 0;"></p>
+          </div>
+          <div style="background: linear-gradient(135deg, #FFE5D9 0%, #FFD4B8 100%); padding: 14px; border-radius: 12px; border: 2px solid #F2340B; text-align: center;">
+            <p style="color: #666; font-size: 11px; font-weight: bold; margin: 0 0 6px 0; letter-spacing: 0.5px;">👨‍🍳 DIFFICULTY</p>
+            <p id="modal-recipe-difficulty" style="font-size: 18px; font-weight: bold; color: #F2340B; margin: 0;"></p>
+          </div>
+          <div style="background: linear-gradient(135deg, #FFE5D9 0%, #FFD4B8 100%); padding: 14px; border-radius: 12px; border: 2px solid #F2340B; text-align: center;">
+            <p style="color: #666; font-size: 11px; font-weight: bold; margin: 0 0 6px 0; letter-spacing: 0.5px;">⭐ RATING</p>
+            <p id="modal-recipe-rating" style="font-size: 18px; font-weight: bold; color: #F2340B; margin: 0;"></p>
+          </div>
+          <div style="background: linear-gradient(135deg, #FFE5D9 0%, #FFD4B8 100%); padding: 14px; border-radius: 12px; border: 2px solid #F2340B; text-align: center;">
+            <p style="color: #666; font-size: 11px; font-weight: bold; margin: 0 0 6px 0; letter-spacing: 0.5px;">💬 REVIEWS</p>
+            <p id="modal-recipe-reviews" style="font-size: 18px; font-weight: bold; color: #F2340B; margin: 0;"></p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px;">
+          <button id="modal-timer-btn" style="background: linear-gradient(135deg, #F2340B 0%, #FF8C42 100%); color: white; font-weight: bold; padding: 14px 16px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(242, 52, 11, 0.2);">⏱️ Start Timer</button>
+          <button id="modal-save-btn" style="background: linear-gradient(135deg, #FFE5D9 0%, #FFD4B8 100%); color: #F2340B; font-weight: bold; padding: 14px 16px; border-radius: 10px; border: 2px solid #F2340B; cursor: pointer; font-size: 14px; transition: all 0.2s;">❤️ Save Recipe</button>
+        </div>
+      </div>
+
+      <!-- Right Column: Ingredients and Instructions -->
+      <div style="display: flex; flex-direction: column; gap: 28px; max-height: 600px; overflow-y: auto;">
+        
+        <!-- Ingredients Section -->
+        <div>
+          <h3 style="font-size: 18px; font-weight: bold; margin: 0 0 16px 0; display: flex; align-items: center; color: #333;">
+            <span style="width: 32px; height: 32px; background: #F2340B; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 16px; flex-shrink: 0;">🧂</span>
+            <span>Ingredients</span>
+          </h3>
+          <ul id="modal-ingredients" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px;"></ul>
+        </div>
+
+        <!-- Instructions Section -->
+        <div>
+          <h3 style="font-size: 18px; font-weight: bold; margin: 0 0 16px 0; display: flex; align-items: center; color: #333;">
+            <span style="width: 32px; height: 32px; background: #F2340B; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 16px; flex-shrink: 0;">👨‍🍳</span>
+            <span>How to Cook</span>
+          </h3>
+          <ol id="modal-instructions" style="padding-left: 20px; margin: 0; display: flex; flex-direction: column; gap: 12px; color: #555; line-height: 1.6;"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Recipes Section -->
 <section class="py-16 bg-transparent reveal-on-scroll">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold text-dish-dark mb-4 md:mb-0">Recipes for you</h2>
-      <div class="flex items-center space-x-2">
+      <h2 class="text-3xl md:text-4xl font-bold">
+        <span class="dishcovery-title">DishCovery</span> 
+        <span class="text-dish-dark">Recipes for you</span>
+      </h2>
+      <div class="flex items-center space-x-2 mt-4 md:mt-0">
         <label class="text-gray-700 font-medium">Sort by:</label>
-        <select class="px-4 py-2 border border-gray-300 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-dish-primary focus:border-transparent">
+        <select class="px-4 py-2 border-2 border-dish-primary rounded-lg bg-white shadow-md focus:outline-none focus:ring-2 focus:ring-dish-primary focus:border-transparent text-dish-primary font-semibold hover:shadow-lg transition-all">
           <option>Most Popular</option>
           <option>Newest</option>
           <option>Highest Rated</option>
@@ -508,17 +1228,17 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-dish-primary to-dish-accent-pink text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+        <button class="view-recipe-btn flex-grow bg-dish-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
-                <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
-                        <i data-lucide="timer" class="w-5 h-5"></i>
-                    </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
-                        <i data-lucide="star" class="w-5 h-5"></i>
-                    </button>
-                </div>
+        <div class="flex space-x-2 ml-3">
+          <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-dish-primary/10 text-dish-primary rounded-full hover:bg-dish-primary hover:text-white transition-all duration-300">
+                                                <i data-lucide="timer" class="w-5 h-5"></i>
+                                            </button>
+          <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-dish-primary/10 text-dish-primary rounded-full hover:bg-dish-primary hover:text-white transition-all duration-300">
+                                                <i data-lucide="star" class="w-5 h-5"></i>
+                                            </button>
+        </div>
             </div>
           </div>
         </div>
@@ -559,7 +1279,7 @@
       <!-- Recipe Card 3 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Beef Tacos" data-description="Spicy ground beef with fresh toppings in soft corn tortillas.">
         <div class="relative">
-          <img src="https://www.thecookingtwins.com/wp-content/uploads/2025/09/authentic-mexican-ground-beef-taco-recipe-featured.webp" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.pexels.com/photos/7904958/pexels-photo-7904958.jpeg" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -591,7 +1311,7 @@
       <!-- Recipe Card 4 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pasta Carbonara" data-description="Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.">
         <div class="relative">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjUsjlvUNdAnlL1qyxjCZFunw0ku6InQG9AA&s" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.pexels.com/photos/2703468/pexels-photo-2703468.jpeg" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -815,7 +1535,7 @@
       <!-- Recipe Card 11 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pepperoni Pizza" data-description="Crispy crust topped with tomato sauce, cheese, and pepperoni slices.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop" alt="Pepperoni Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.pexels.com/photos/4109083/pexels-photo-4109083.jpeg" alt="Pepperoni Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-dish-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1510,28 +2230,59 @@
   </div>
 </section>
 
-<footer class="bg-[#0f1b2c] text-gray-100 py-12">
-    <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="footer_column text-gray-300">
-        Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.
-      </div>
+<footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
+        <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="footer_column">
+                <p class="text-slate-400 leading-relaxed">Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+            </div>
 
-      <div class="footer_contact">
-        <h3 class="text-white text-lg mb-3">Contact Info</h3>
-        <p class="text-gray-300">hello@dishcovery.com</p>
-        <p class="text-gray-300">+1 (555) 123-4567</p>
-        <p class="text-gray-300">123 Culinary Street, Food City</p>
-      </div>
-    </div>
+            <div class="footer_contact">
+                <h3 class="text-white text-lg mb-3">Contact Info</h3>
+                <address class="not-italic">
+                    <p class="text-slate-400 mb-1"><a href="mailto:hello@dishcovery.com" class="text-slate-300 hover:text-primary transition-colors duration-300">hello@dishcovery.com</a></p>
+                    <p class="text-slate-400 mb-1"><a href="tel:+15551234567" class="text-slate-300 hover:text-primary transition-colors duration-300">+1 (555) 123-4567</a></p>
+                    <p class="text-slate-400">123 Culinary Street, Food City</p>
+                </address>
+            </div>
 
-    <div class="border-t border-white/10 mt-12 pt-6 text-center">
-      <p class="text-gray-300">&copy; 2024 DishCovery. All rights reserved.</p>
-      <div class="flex gap-6 justify-center mt-4">
-        <a href="#" class="text-gray-300 hover:text-primary">Privacy Policy</a>
-        <a href="#" class="text-gray-300 hover:text-primary">Terms of Service</a>
-        <a href="#" class="text-gray-300 hover:text-primary">Website Builder</a>
-      </div>
-    </div>
+            <nav class="footer_social" aria-label="Social media links">
+                <h3 class="text-white text-lg mb-3">Follow Us</h3>
+                <ul class="flex gap-4">
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Facebook">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Instagram">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <defs>
+                                <mask id="instagram-mask">
+                                    <rect width="24" height="24" fill="white"/>
+                                    <circle cx="12" cy="12" r="5.5" fill="black"/>
+                                </mask>
+                            </defs>
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z" mask="url(#instagram-mask)"/>
+                            <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+                        </svg>
+                    </a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on X (Twitter)">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="footer_bottom border-t border-white/10 mt-12 pt-6">
+            <div class="max-w-container-lg mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-slate-400 text-center md:text-left">
+                    &copy; 2024 DishCovery. All rights reserved.
+                </p>
+
+                <nav class="footer_bottom_links flex gap-6 text-center md:text-right">
+                    <a href="privacy.html" class="text-slate-400 hover:text-primary transition-colors duration-300">Privacy Policy</a>
+                    <a href="terms.html" class="text-slate-400 hover:text-primary transition-colors duration-300">Terms of Service</a>
+                </nav>
+            </div>
+        </div>
 </footer>
 
 <script>
