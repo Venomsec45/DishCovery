@@ -1,3 +1,48 @@
+/* Modal Styles */
+.modal-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+.modal-open #modal-content,
+.modal-open #modal-content-leftover {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Premium White Background */
+body {
+    background-color: #fafbfc; /* A clean, premium off-white, consistent with Gallery page */
+}
+
+/* Hamburger Icon Transitions */
+.hamburger-line { 
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; 
+}
+.menu-open .hamburger-line-1 { 
+    transform: translateY(7px) rotate(45deg); 
+}
+.menu-open .hamburger-line-2 { 
+    opacity: 0; 
+}
+.menu-open .hamburger-line-3 { 
+    transform: translateY(-7px) rotate(-45deg); 
+}
+
+/* Scroll-driven animations */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Filter Dropdown Styles */
+.filter-dropdown:hover .dropdown-menu {
+    display: block;
+}
 /* General Responsive Typography & Layout */
 @media (max-width: 768px) {
     .main-hero-h1 {
