@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DishCovery Website</title>
 
-  <!-- Google font -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CDN + small config for brand color & shadows -->
   <script>
     tailwind = window.tailwind || {};
   </script>
@@ -136,10 +134,10 @@
 
       <nav id="main-nav" aria-label="Main navigation" class="hidden md:flex md:items-center absolute md:static top-full left-0 w-full md:w-auto bg-white md:bg-transparent shadow-lg md:shadow-none">
         <ul class="flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-8 text-center md:text-left w-full p-6 md:p-0">
-          <li><a class="font-semibold text-text-primary text-opacity-90 px-2 py-1 rounded-md" href="index.html" aria-current="page">Home</a></li>
+          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="index.html">Home</a></li>
           <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="About_Us.html">About Us</a></li>
           <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="recipe_finder.html">Recipe Finder</a></li>
-          <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="Gallery.html">Gallery</a></li>
+          <li><a class="font-semibold text-text-primary text-opacity-90 px-2 py-1 rounded-md" href="Gallery.html" aria-current="page">Gallery</a></li>
           <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="Contact.html">Contact</a></li>
           <li><a class="font-semibold text-text-primary hover:text-primary px-2 py-1 rounded-md transition-colors duration-300" href="Faq.html">FAQ</a></li>
           <li class="login mt-4 md:mt-0">
@@ -150,9 +148,7 @@
     </div>
   </header>
 
-  <!-- Intro -->
   <section class="py-16 md:py-24 min-h-screen flex flex-col justify-center items-center text-center px-4 md:px-6 bg-white relative overflow-hidden">
-    <!-- Background Image with Gradient Overlay -->
     <div class="absolute inset-0 z-0">
       <img src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Background of delicious food spread" class="w-full h-full object-cover opacity-20">
       <div class="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
@@ -174,10 +170,8 @@
     </div>
   </section>
 
-  <!-- Features -->
+
   <section class="py-16 md:py-24 flex flex-col justify-center items-center bg-transparent px-4 md:px-6 relative overflow-hidden reveal-on-scroll">
-  <!-- Add decorative background elements -->
-  
   <div class="max-w-container-lg mx-auto text-center relative z-10">
     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Why Choose DishCovery?</h2>
     <p class="text-gray-600 mb-12">We make cooking accessible, enjoyable, and rewarding for everyone.</p>
@@ -218,18 +212,15 @@
   </div>
 </section>
 
-  <!-- How it works -->
  <section class="py-16 md:py-24 flex flex-col justify-center items-center bg-transparent px-4 md:px-6 relative reveal-on-scroll">
   <div class="max-w-container-lg mx-auto text-center relative z-10">
     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">How DishCovery Works</h2>
     <p class="text-gray-600 mb-12">From ingredients to amazing meals in just a few simple steps.</p>
 
     <div class="relative">
-        <!-- Vertical line -->
         <div class="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-gray-200 hidden md:block"></div>
 
         <div class="space-y-16">
-            <!-- Step 1 -->
             <div class="md:grid md:grid-cols-2 md:gap-12 items-center relative">
                 <div class="text-center md:text-left md:col-start-2 p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-md-soft">
                     <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
@@ -240,7 +231,7 @@
                 </div>
                 <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg flex-shrink-0 mx-auto md:mx-0 my-4 md:my-0 md:col-start-1 md:row-start-1 md:ml-auto md:mr-[-3rem] relative z-10">1</div>
             </div>
-            <!-- Step 2 -->
+            
             <div class="md:grid md:grid-cols-2 md:gap-12 items-center relative">
                 <div class="text-center md:text-right p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-md-soft">
                     <div class="flex items-center justify-center md:justify-end gap-3 mb-2">
@@ -251,8 +242,8 @@
                 </div>
                 <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white bg-gradient-to-r from-green-500 to-green-600 shadow-lg flex-shrink-0 mx-auto md:mx-0 my-4 md:my-0 md:mr-auto md:ml-[-3rem] relative z-10">2</div>
             </div>
-            <!-- Step 3 -->
-            <div class="md:grid md-grid-cols-2 md:gap-12 items-center relative">
+            
+            <div class="md:grid md:grid-cols-2 md:gap-12 items-center relative">
                 <div class="text-center md:text-left md:col-start-2 p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-md-soft">
                     <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
                       <i data-lucide="sparkles" class="w-6 h-6 text-primary"></i>
@@ -262,7 +253,7 @@
                 </div>
                 <div class="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white bg-gradient-to-r from-purple-500 to-purple-600 shadow-lg flex-shrink-0 mx-auto md:mx-0 my-4 md:my-0 md:col-start-1 md:row-start-1 md:ml-auto md:mr-[-3rem] relative z-10">3</div>
             </div>
-            <!-- Step 4 -->
+            
             <div class="md:grid md:grid-cols-2 md:gap-12 items-center relative">
                 <div class="text-center md:text-right p-6 bg-white/50 backdrop-blur-sm rounded-2xl border border-gray-100 shadow-md-soft">
                     <div class="flex items-center justify-center md:justify-end gap-3 mb-2">
@@ -278,14 +269,12 @@
   </div>
 </section>
 
-  <!-- Popular Recipes -->
   <section class="py-16 md:py-24 bg-transparent relative overflow-hidden reveal-on-scroll">
   <div class="max-w-container-lg mx-auto px-4 md:px-6 text-center relative z-10">
     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Popular Recipes</h2>
     <p class="text-gray-600 mb-12">Discover what's trending in the kitchen right now.</p>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Recipe Card 1 -->
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
         <img src="https://images.pexels.com/photos/6525933/pexels-photo-6525933.jpeg" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
@@ -297,7 +286,7 @@
           </div>
         </div>
       </a>
-      <!-- Recipe Card 2 -->
+
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
         <img src="https://images.pexels.com/photos/19532174/pexels-photo-19532174.jpeg" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
@@ -309,7 +298,7 @@
           </div>
         </div>
       </a>
-      <!-- Recipe Card 3 -->
+
       <a href="recipe_finder.html" class="bg-white rounded-2xl shadow-lg-soft overflow-hidden group text-left transition-all duration-300 hover:shadow-primary/20 hover:-translate-y-2 cursor-pointer block">
         <img src="https://images.pexels.com/photos/15681166/pexels-photo-15681166.jpeg" alt="Kimchi Fried Rice" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="p-6">
@@ -330,7 +319,6 @@
   </div>
 </section>
 
-<!-- World Cuisines section -->
 <section class="py-16 md:py-24 flex flex-col justify-center items-center bg-transparent px-4 md:px-6 relative reveal-on-scroll">
   <div class="max-w-container-lg mx-auto text-center relative z-10">
     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Explore World Cuisines</h2>
@@ -377,7 +365,6 @@
   </div>
 </section>
 
-  <!-- Master Your Kitchen -->
   <section class="py-16 md:py-24 relative bg-transparent reveal-on-scroll">
   <div class="max-w-container-lg mx-auto px-4 md:px-6 text-center">
     <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Master Your Kitchen</h2>
@@ -435,7 +422,6 @@
   </div>
 </section>
 
-  <!-- Sustainable Cooking -->
   <section class="py-16 md:py-24 bg-transparent px-4 md:px-6 relative reveal-on-scroll">
     <div class="max-w-container-lg mx-auto text-center relative z-10">
       <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Sustainable Cooking</h2>
@@ -466,14 +452,10 @@
     </div>
   </section>
 
-
-  <!-- Stay Updated -->
   <section class="py-20 md:py-32 flex flex-col justify-center items-center bg-gray-800 text-white px-6 relative overflow-hidden reveal-on-scroll">
-    <!-- Premium background elements -->
     <div class="absolute inset-0 bg-gradient-to-br from-orange-900/20 via-transparent to-blue-900/20"></div>
     <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_30%,rgba(255,106,0,0.15),transparent_60%)]"></div>
     <div class="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_70%,rgba(59,130,246,0.15),transparent_60%)]"></div>
-    <!-- Floating elements -->
     <div class="absolute top-16 left-16 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl animate-pulse"></div>
     <div class="absolute bottom-16 right-16 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl animate-pulse" style="animation-delay: 1s;"></div>
 
@@ -488,13 +470,10 @@
     </div>
   </section>
 
-  <!-- Journey CTA -->
   <section class="py-20 md:py-32 flex flex-col justify-center items-center bg-gradient-to-br from-primary to-primary-2 text-white px-6 relative overflow-hidden reveal-on-scroll">
-    <!-- Premium background elements -->
     <div class="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/10"></div>
     <div class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.1),transparent_50%)]"></div>
     <div class="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_75%_75%,rgba(0,0,0,0.1),transparent_50%)]"></div>
-    <!-- Animated elements -->
     <div class="absolute top-20 left-20 w-16 h-16 bg-white/20 rounded-full blur-xl animate-bounce"></div>
     <div class="absolute bottom-20 right-20 w-20 h-20 bg-black/20 rounded-full blur-xl animate-bounce" style="animation-delay: 0.5s;"></div>
 
@@ -505,47 +484,65 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-[#0f1b2c] text-gray-100 py-12">
-    <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-      <div class="footer_column text-gray-300">
-        <h2 class="text-2xl font-extrabold text-primary mb-4">DishCovery</h2>
-        <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform.</p>
-      </div>
+  <footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
+        <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="footer_column">
+                <p class="text-slate-400 leading-relaxed">Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+            </div>
 
-      <div class="footer_contact">
-        <h3 class="text-white text-lg font-semibold mb-3">Contact Info</h3>
-        <p class="text-gray-300">hello@dishcovery.com</p>
-        <p class="text-gray-300">+1 (555) 123-4567</p>
-        <p class="text-gray-300">123 Culinary Street, Food City</p>
-      </div>
+            <div class="footer_contact">
+                <h3 class="text-white text-lg mb-3">Contact Info</h3>
+                <address class="not-italic">
+                    <p class="text-slate-400 mb-1"><a href="mailto:hello@dishcovery.com" class="text-slate-300 hover:text-primary transition-colors duration-300">hello@dishcovery.com</a></p>
+                    <p class="text-slate-400 mb-1"><a href="tel:+15551234567" class="text-slate-300 hover:text-primary transition-colors duration-300">+1 (555) 123-4567</a></p>
+                    <p class="text-slate-400">123 Culinary Street, Food City</p>
+                </address>
+            </div>
 
-      <div>
-        <h3 class="text-white text-lg font-semibold mb-3">Quick Links</h3>
-        <ul class="space-y-2">
-          <li><a href="About_Us.html" class="text-gray-300 hover:text-primary transition-colors">About Us</a></li>
-          <li><a href="recipe_finder.html" class="text-gray-300 hover:text-primary transition-colors">Recipe Finder</a></li>
-          <li><a href="Faq.html" class="text-gray-300 hover:text-primary transition-colors">FAQ</a></li>
-          <li><a href="Contact.html" class="text-gray-300 hover:text-primary transition-colors">Contact</a></li>
-        </ul>
-      </div>
-    </div>
+            <nav class="footer_social" aria-label="Social media links">
+                <h3 class="text-white text-lg mb-3">Follow Us</h3>
+                <ul class="flex gap-4">
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Facebook">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Instagram">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <defs>
+                                <mask id="instagram-mask">
+                                    <rect width="24" height="24" fill="white"/>
+                                    <circle cx="12" cy="12" r="5.5" fill="black"/>
+                                </mask>
+                            </defs>
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z" mask="url(#instagram-mask)"/>
+                            <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+                        </svg>
+                    </a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on X (Twitter)">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
 
-    <div class="border-t border-white/10 mt-12 pt-6 text-center">
-      <p class="text-gray-400">&copy; 2024 DishCovery. All rights reserved.</p>
-      <div class="flex gap-6 justify-center mt-4">
-        <a href="#" class="text-gray-400 hover:text-primary text-sm">Privacy Policy</a>
-        <a href="#" class="text-gray-400 hover:text-primary text-sm">Terms of Service</a>
-      </div>
-    </div>
-  </footer>
+        <div class="footer_bottom border-t border-white/10 mt-12 pt-6">
+            <div class="max-w-container-lg mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-slate-400 text-center md:text-left">
+                    &copy; 2024 DishCovery. All rights reserved.
+                </p>
+
+                <nav class="footer_bottom_links flex gap-6 text-center md:text-right">
+                    <a href="privacy.html" class="text-slate-400 hover:text-primary transition-colors duration-300">Privacy Policy</a>
+                    <a href="terms.html" class="text-slate-400 hover:text-primary transition-colors duration-300">Terms of Service</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Mobile menu toggle
         const menuToggle = document.getElementById('menu-toggle');
         const mainNav = document.getElementById('main-nav');
         menuToggle.addEventListener('click', function() {
@@ -555,7 +552,6 @@
             mainNav.classList.toggle('hidden');
         });
 
-        // Scroll animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -568,23 +564,19 @@
             observer.observe(el);
         });
 
-        // Text animation logic
         const textContainer = document.getElementById('animated-text-container');
         const words = ["Dish", "Meal", "Drink", "Snack"];
         let currentIndex = 0;
 
         function changeWord() {
-            // Animate out the current word
             const currentWordSpan = textContainer.querySelector('.text-slider');
             if (currentWordSpan) {
                 currentWordSpan.classList.add('exit');
-                // Remove the element after the animation is complete
                 currentWordSpan.addEventListener('animationend', () => {
                     currentWordSpan.remove();
                 }, { once: true });
             }
 
-            // Prepare and animate in the next word
             currentIndex = (currentIndex + 1) % words.length;
             const newWordSpan = document.createElement('span');
             newWordSpan.className = 'text-slider';
@@ -592,14 +584,13 @@
             textContainer.appendChild(newWordSpan);
         }
 
-        // Initial word
         const initialWord = document.createElement('span');
         initialWord.className = 'text-slider';
         initialWord.textContent = words[0];
         initialWord.style.transform = 'translateY(0)';
         textContainer.appendChild(initialWord);
 
-        setInterval(changeWord, 2500); // Change word every 2.5 seconds
+        setInterval(changeWord, 2500);
     });
   </script>
 </body>
