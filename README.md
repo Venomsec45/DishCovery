@@ -29,5 +29,6 @@ Features:
 - Friendly interface
 
 Reminder:
-The following source only shows the functionality and interactivity of the website and functionality of the features may vary different. A database file is added and it is optional to run the source code with the following database file using XAMPP and you have freedom to modify the source code to make it interact with the database. The website is not launched to the public. Improvements will be applied in the website as we are open on suggestions and feedback. For collaboration, kindly send me an email on my email "dayshaunmarnin@gmail.com".
+The following source only shows the functionality and interactivity of the website and functionality of the features may vary different. A database file is added and it is optional to run the source code with the following database file using XAMPP and you have freedom to modify the source code to make it interact with the database. Responsiveness may not work properly as the website's layout is mostly suitable for desktops. The photos used on the gallery and recipe finder pages in the website does not represent the actual product and only used to fill up the content. Also, we respected the original sources of the photos. The website is not launched to the public. Improvements will be applied in the website as we are open on suggestions and feedback. 
 
+For collaboration, kindly send me an email on my email "dayshaunmarnin@gmail.com".
