@@ -216,7 +216,7 @@
 
       <!-- Action Buttons -->
       <div class="flex flex-wrap justify-center gap-4 mb-12">
-          <button class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-all hover:scale-[1.05] hover:shadow-orange-400/50 bg-gradient-to-r from-primary to-orange-500">
+          <button id="ingredient-matcher-btn" class="flex items-center space-x-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-all hover:scale-[1.05] hover:shadow-orange-400/50 bg-gradient-to-r from-primary to-orange-500">
               <i data-lucide="leaf" class="w-5 h-5"></i>
               <span>Ingredient Matcher</span>
           </button>
@@ -465,28 +465,28 @@
             const allRecipes = [
                 { title: "Grilled Chicken Salad", description: "Fresh greens with grilled chicken, cherry tomatoes, and balsamic vinaigrette.", image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop", rating: "4.8", time: "25 mins", difficulty: "Easy", reviews: "128", category: "Main", cuisine: "American", diet: "Gluten-Free" },
                 { title: "Vegetable Stir Fry", description: "Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.", image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop", rating: "4.6", time: "15 mins", difficulty: "Easy", reviews: "95", category: "Main", cuisine: "Asian", diet: "Vegan" },
-                { title: "Beef Tacos", description: "Spicy ground beef with fresh toppings in soft corn tortillas.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "156", category: "Main", cuisine: "Mexican", diet: "Gluten-Free" },
-                { title: "Pasta Carbonara", description: "Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.", image: "https://images.unsplash.com/photo-1612874742237-6526221fcf4f?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Medium", reviews: "203", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
+                { title: "Beef Tacos", description: "Spicy ground beef with fresh toppings in soft corn tortillas.", image: "https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=1194&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "156", category: "Main", cuisine: "Mexican", diet: "Gluten-Free" },
+                { title: "Pasta Carbonara", description: "Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.", image: "https://images.pexels.com/photos/6223191/pexels-photo-6223191.jpeg", rating: "4.7", time: "20 mins", difficulty: "Medium", reviews: "203", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
                 { title: "Thai Green Curry", description: "Aromatic Thai curry with coconut milk, vegetables, and fresh herbs.", image: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=300&fit=crop", rating: "4.8", time: "35 mins", difficulty: "Medium", reviews: "178", category: "Main", cuisine: "Thai", diet: "Vegan" },
                 { title: "Chocolate Chip Cookies", description: "Classic homemade cookies with gooey chocolate chips and perfect texture.", image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Easy", reviews: "312", category: "Dessert", cuisine: "American", diet: "Vegetarian" },
                 { title: "Mediterranean Quinoa Bowl", description: "Nutritious bowl with quinoa, roasted vegetables, feta cheese, and olive oil dressing.", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop", rating: "4.6", time: "30 mins", difficulty: "Easy", reviews: "142", category: "Main", cuisine: "Mediterranean", diet: "Vegetarian" },
                 { title: "Classic Margherita Pizza", description: "Traditional Italian pizza with fresh mozzarella, tomatoes, and basil.", image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=300&fit=crop", rating: "4.7", time: "60 mins", difficulty: "Medium", reviews: "267", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
-                { title: "Chicken Adobo", description: "Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.", image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop", rating: "4.8", time: "45 mins", difficulty: "Easy", reviews: "150", category: "Main", cuisine: "Filipino", diet: "Gluten-Free" },
-                { title: "Scrambled Eggs", description: "Fluffy scrambled eggs with butter and milk for perfect texture.", image: "https://images.unsplash.com/photo-1551782450-17144efb5723?w=400&h=300&fit=crop", rating: "4.5", time: "5 mins", difficulty: "Easy", reviews: "200", category: "Breakfast", cuisine: "American", diet: "Vegetarian" },
-                { title: "Pepperoni Pizza", description: "Crispy crust topped with tomato sauce, cheese, and pepperoni slices.", image: "https://images.unsplash.com/photo-1628840042765-356cda07f423?w=400&h=300&fit=crop", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "300", category: "Main", cuisine: "Italian", diet: "Regular" },
+                { title: "Chicken Adobo", description: "Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.", image: "https://t4.ftcdn.net/jpg/17/11/30/97/240_F_1711309714_DOoDbJqjP9da6uTtjHpCj1zk7CbKcy4T.jpg", rating: "4.8", time: "45 mins", difficulty: "Easy", reviews: "150", category: "Main", cuisine: "Filipino", diet: "Gluten-Free" },
+                { title: "Scrambled Eggs", description: "Fluffy scrambled eggs with butter and milk for perfect texture.", image: "https://images.unsplash.com/photo-1687630433648-294f1c78b070?q=80&w=764&auto=format&fit=crop", rating: "4.5", time: "5 mins", difficulty: "Easy", reviews: "200", category: "Breakfast", cuisine: "American", diet: "Vegetarian" },
+                { title: "Pepperoni Pizza", description: "Crispy crust topped with tomato sauce, cheese, and pepperoni slices.", image: "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg", rating: "4.9", time: "30 mins", difficulty: "Medium", reviews: "300", category: "Main", cuisine: "Italian", diet: "Regular" },
                 { title: "Classic Burger", description: "Juicy beef patty with lettuce, tomato, cheese, and special sauce on a bun.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Easy", reviews: "250", category: "Main", cuisine: "American", diet: "Regular" },
                 { title: "Bibimbap", description: "Korean mixed rice bowl with vegetables, beef, fried egg, and gochujang sauce.", image: "https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400&h=300&fit=crop", rating: "4.8", time: "35 mins", difficulty: "Medium", reviews: "180", category: "Main", cuisine: "Korean", diet: "Regular" },
                 { title: "Sushi Rolls", description: "Fresh sushi rolls with vinegared rice, nori seaweed, and various fillings like tuna, salmon, and avocado.", image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Medium", reviews: "220", category: "Main", cuisine: "Japanese", diet: "Gluten-Free" },
                 { title: "Yang Chow Fried Rice", description: "Chinese fried rice with shrimp, ham, eggs, vegetables, and savory seasonings.", image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop", rating: "4.7", time: "25 mins", difficulty: "Medium", reviews: "195", category: "Main", cuisine: "Chinese", diet: "Regular" },
                 { title: "Crispy Fried Chicken", description: "Golden, crispy fried chicken with seasoned coating and juicy interior.", image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=400&h=300&fit=crop", rating: "4.8", time: "40 mins", difficulty: "Medium", reviews: "275", category: "Main", cuisine: "American", diet: "Gluten-Free" },
-                { title: "Spaghetti Carbonara", description: "Classic Italian pasta with eggs, cheese, pancetta, and black pepper.", image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop", rating: "4.9", time: "20 mins", difficulty: "Medium", reviews: "320", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
+                { title: "Spaghetti Carbonara", description: "Classic Italian pasta with eggs, cheese, pancetta, and black pepper.", image: "https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?q=80&w=687&auto=format&fit=crop", rating: "4.9", time: "20 mins", difficulty: "Medium", reviews: "320", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
                 { title: "Pad Thai", description: "Thai stir-fried noodles with shrimp, tofu, bean sprouts, and tamarind sauce.", image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400&h=300&fit=crop", rating: "4.7", time: "25 mins", difficulty: "Medium", reviews: "245", category: "Main", cuisine: "Thai", diet: "Regular" },
                 { title: "French Toast", description: "Golden, crispy bread soaked in egg mixture and cooked to perfection.", image: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=300&fit=crop", rating: "4.6", time: "15 mins", difficulty: "Easy", reviews: "198", category: "Breakfast", cuisine: "French", diet: "Vegetarian" },
-                { title: "Ramen", description: "Japanese noodle soup with rich broth, tender noodles, and various toppings.", image: "https://images.unsplash.com/photo-1557872943-16a5ac2386cd?w=400&h=300&fit=crop", rating: "4.8", time: "30 mins", difficulty: "Medium", reviews: "267", category: "Main", cuisine: "Japanese", diet: "Regular" },
+                { title: "Ramen", description: "Japanese noodle soup with rich broth, tender noodles, and various toppings.", image: "https://images.pexels.com/photos/884600/pexels-photo-884600.jpeg", rating: "4.8", time: "30 mins", difficulty: "Medium", reviews: "267", category: "Main", cuisine: "Japanese", diet: "Regular" },
                 { title: "Chicken Parmesan", description: "Breaded chicken cutlets topped with marinara sauce and melted mozzarella cheese.", image: "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=400&h=300&fit=crop", rating: "4.9", time: "45 mins", difficulty: "Medium", reviews: "340", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
                 { title: "Beef Stroganoff", description: "Tender beef strips in a creamy mushroom sauce served over egg noodles.", image: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&h=300&fit=crop", rating: "4.7", time: "35 mins", difficulty: "Medium", reviews: "280", category: "Main", cuisine: "Russian", diet: "Regular" },
                 { title: "Lasagna", description: "Layered pasta with ground meat, ricotta cheese, and marinara sauce.", image: "https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=400&h=300&fit=crop", rating: "4.8", time: "90 mins", difficulty: "Medium", reviews: "420", category: "Main", cuisine: "Italian", diet: "Vegetarian" },
-                { title: "Tacos al Pastor", description: "Mexican tacos with marinated pork, pineapple, and fresh toppings.", image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop", rating: "4.9", time: "40 mins", difficulty: "Medium", reviews: "310", category: "Main", cuisine: "Mexican", diet: "Regular" },
+                { title: "Tacos al Pastor", description: "Mexican tacos with marinated pork, pineapple, and fresh toppings.", image: "https://plus.unsplash.com/premium_photo-1681406994498-e2f24136108c?q=80&w=687&auto=format&fit=crop", rating: "4.9", time: "40 mins", difficulty: "Medium", reviews: "310", category: "Main", cuisine: "Mexican", diet: "Regular" },
                 { title: "Chicken Shawarma", description: "Middle Eastern spiced chicken with yogurt sauce and fresh vegetables.", image: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop", rating: "4.8", time: "50 mins", difficulty: "Medium", reviews: "290", category: "Main", cuisine: "Middle Eastern", diet: "Gluten-Free" },
                 { title: "Vegetable Curry", description: "Aromatic Indian curry with mixed vegetables and coconut milk.", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop", rating: "4.6", time: "35 mins", difficulty: "Easy", reviews: "240", category: "Main", cuisine: "Indian", diet: "Vegan" },
                 { title: "Pancakes", description: "Fluffy homemade pancakes served with maple syrup and butter.", image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&h=300&fit=crop", rating: "4.7", time: "20 mins", difficulty: "Easy", reviews: "380", category: "Breakfast", cuisine: "American", diet: "Vegetarian" },
@@ -572,7 +572,7 @@
                         ingredients: ["1 lb ground beef", "Taco seasoning packet", "Corn tortillas", "Shredded cheddar cheese", "Diced tomatoes", "Shredded lettuce", "Sour cream", "Salsa", "Cilantro (optional)"],
                         instructions: ["Heat 1 tablespoon oil in a large skillet over medium-high heat.", "Add ground beef and cook, breaking it up with a spoon, until browned (about 5-7 minutes).", "Drain excess fat and add taco seasoning with ¾ cup water.", "Simmer for 2-3 minutes until the mixture is well combined.", "Warm tortillas in a skillet or over an open flame.", "Fill tortillas with seasoned beef and your favorite toppings.", "Serve with salsa, sour cream, and fresh cilantro."]
                     },
-                    "Pasta Carbonara": {
+                    "Carbonara": {
                         ingredients: ["1 lb spaghetti", "6 oz pancetta, diced", "4 egg yolks", "1 cup grated Parmesan cheese", "Black pepper", "Salt for pasta water"],
                         instructions: ["Bring a large pot of salted water to a boil and cook spaghetti according to package directions.", "While pasta cooks, fry pancetta in a large pan until crispy.", "In a bowl, whisk together egg yolks and grated Parmesan cheese.", "Reserve 1 cup of pasta cooking water, then drain the pasta.", "Add hot drained pasta to the pan with pancetta (off heat).", "Pour egg mixture over pasta and toss quickly, adding pasta water as needed for creaminess.", "Season with black pepper and serve immediately."]
                     },
@@ -759,7 +759,7 @@
                     const wasSaved = toggleSaveRecipe(recipeData.title);
                     updateModalSaveButtonState();
                     updateCardSavedBadge(recipeData.title);
-                    alert(wasSaved ? `❤️ Recipe saved! "${recipeData.title}" has been added to your favorites.` : `Removed "${recipeData.title}" from saved recipes.`);
+                    alert(wasSaved ? `Recipe saved! "${recipeData.title}" has been added to your favorites.` : `Removed "${recipeData.title}" from saved recipes.`);
                 };
             }
 
@@ -1256,7 +1256,6 @@
       <!-- Recipe Card 2 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Vegetable Stir Fry" data-description="Colorful mix of fresh vegetables stir-fried with soy sauce and ginger.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Vegetable Stir Fry" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.6 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1269,14 +1268,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1288,7 +1287,7 @@
       <!-- Recipe Card 3 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Beef Tacos" data-description="Spicy ground beef with fresh toppings in soft corn tortillas.">
         <div class="relative">
-          <img src="https://images.pexels.com/photos/5836436/pexels-photo-5836436.jpeg" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?q=80&w=1194&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Beef Tacos" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1301,14 +1300,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1320,11 +1319,11 @@
       <!-- Recipe Card 4 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pasta Carbonara" data-description="Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.">
         <div class="relative">
-          <img src="https://images.pexels.com/photos/998246/pexels-photo-998246.jpeg" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.pexels.com/photos/6223191/pexels-photo-6223191.jpeg" alt="Pasta Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.7 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
-          <h3 class="text-xl font-bold text-text-primary mb-2">Pasta Carbonara</h3>
+          <h3 class="text-xl font-bold text-text-primary mb-2">Carbonarra</h3>
           <p class="text-gray-600 text-sm mb-4">Creamy Italian pasta with pancetta, eggs, and Parmesan cheese.</p>
           <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
             <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1"></i>20 mins</span>
@@ -1333,14 +1332,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1365,14 +1364,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1397,14 +1396,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1429,14 +1428,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1461,14 +1460,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1480,7 +1479,7 @@
       <!-- Recipe Card 9 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Chicken Adobo" data-description="Tender chicken marinated in vinegar, soy sauce, garlic, and bay leaves.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=400&h=300&fit=crop" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://cdn.pixabay.com/photo/2023/06/10/10/44/chicken-adobo-8053775_1280.png" alt="Chicken Adobo" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1493,14 +1492,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1512,7 +1511,7 @@
       <!-- Recipe Card 10 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Scrambled Eggs" data-description="Fluffy scrambled eggs with butter and milk for perfect texture.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1687630433648-294f1c78b070?q=80&w=1364&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Scrambled Eggs" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.unsplash.com/photo-1687630433648-294f1c78b070?q=80&w=764&auto=format&fit=crop" alt="Scrambled Eggs" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.5 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1525,14 +1524,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1544,7 +1543,7 @@
       <!-- Recipe Card 11 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Pepperoni Pizza" data-description="Crispy crust topped with tomato sauce, cheese, and pepperoni slices.">
         <div class="relative">
-          <img src="https://images.pexels.com/photos/4109083/pexels-photo-4109083.jpeg" alt="Pepperoni Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg" alt="Pepperoni Pizza" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1557,14 +1556,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1589,14 +1588,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1621,14 +1620,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1653,14 +1652,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1685,14 +1684,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1717,14 +1716,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1736,7 +1735,7 @@
       <!-- Recipe Card 17 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Spaghetti Carbonara" data-description="Classic Italian pasta with eggs, cheese, pancetta, and black pepper.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1551892376-c73ba8b86727?w=400&h=300&fit=crop" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9?q=80&w=687&auto=format&fit=crop" alt="Spaghetti Carbonara" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1749,14 +1748,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1781,14 +1780,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1813,14 +1812,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1832,7 +1831,7 @@
       <!-- Recipe Card 20 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Ramen" data-description="Japanese noodle soup with rich broth, tender noodles, and various toppings.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1557872943-16a5ac2386cd?w=400&h=300&fit=crop" alt="Ramen" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://images.pexels.com/photos/884600/pexels-photo-884600.jpeg" alt="Ramen" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.8 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1845,14 +1844,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1877,14 +1876,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1909,14 +1908,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1941,14 +1940,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -1960,7 +1959,7 @@
       <!-- Recipe Card 24 -->
       <div class="recipe-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col" data-title="Tacos al Pastor" data-description="Mexican tacos with marinated pork, pineapple, and fresh toppings.">
         <div class="relative">
-          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=300&fit=crop" alt="Tacos al Pastor" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="https://plus.unsplash.com/premium_photo-1681406994498-e2f24136108c?q=80&w=687&auto=format&fit=crop" alt="Tacos al Pastor" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute top-3 right-3 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">4.9 ★</div>
         </div>
         <div class="p-6 flex flex-col flex-grow">
@@ -1973,14 +1972,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -2005,14 +2004,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -2037,14 +2036,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -2069,14 +2068,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -2101,14 +2100,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -2133,14 +2132,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -2165,14 +2164,14 @@
           </div>
           <div class="mt-auto pt-4">
             <div class="flex items-center justify-between">
-                <button class="view-recipe-btn flex-grow bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
+                <button class="view-recipe-btn flex-grow bg-primary text-white py-3 px-4 rounded-lg hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-300 font-semibold transform hover:-translate-y-0.5">
                     View Recipe
                 </button>
                 <div class="flex space-x-2 ml-3">
-                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-blue hover:text-white transition-all duration-300">
+                    <button class="timer-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="timer" class="w-5 h-5"></i>
                     </button>
-                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full hover:bg-dish-accent-pink hover:text-white transition-all duration-300">
+                    <button class="rate-btn group relative w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -2184,7 +2183,7 @@
 
     <!-- Load More Button -->
     <div class="text-center mt-12">
-      <button class="bg-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+      <button id="load-more-recipes-btn" class="bg-primary text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
         Load More Recipes
       </button>
     </div>
@@ -2296,45 +2295,46 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // --- Cook with Friends Modal Functionality ---
+    // --- Generic Login Modal Functionality ---
+    const ingredientMatcherBtn = document.getElementById('ingredient-matcher-btn');
     const cookWithFriendsBtn = document.getElementById('cook-with-friends-btn');
+    const leftoverSaverBtn = document.getElementById('leftover-saver-btn');
+    const loadMoreRecipesBtn = document.getElementById('load-more-recipes-btn');
     const loginModal = document.getElementById('login-modal');
     const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalTitle = loginModal.querySelector('h2');
+    const modalText = loginModal.querySelector('p');
  
-    function toggleModal(show) {
-      if (loginModal) {
-        loginModal.classList.toggle('hidden', !show);
-        loginModal.classList.toggle('modal-open', show);
+    function showLoginModal(title, text) {
+      if (loginModal) { // The title and text are now part of the modal HTML, so we don't need to set them dynamically.
+        modalTitle.textContent = title;
+        modalText.textContent = text;
+        loginModal.classList.remove('hidden');
+        loginModal.classList.add('flex'); // Use flex to center the modal, matching Gallery.html
       }
     }
- 
-    if (cookWithFriendsBtn) cookWithFriendsBtn.addEventListener('click', () => toggleModal(true));
-    if (closeModalBtn) closeModalBtn.addEventListener('click', () => toggleModal(false));
+
+    function hideLoginModal() {
+        if (loginModal) {
+            loginModal.classList.add('hidden');
+            loginModal.classList.remove('flex');
+        }
+    }
+
+    if (ingredientMatcherBtn) ingredientMatcherBtn.addEventListener('click', () => showLoginModal('Log in to Match Ingredients', 'This feature is for members only. Please log in to use the Ingredient Matcher!'));
+    if (cookWithFriendsBtn) cookWithFriendsBtn.addEventListener('click', () => showLoginModal('Log in to Cook with Friends', 'This feature is for members only. Please log in to cook with friends!'));
+    if (leftoverSaverBtn) leftoverSaverBtn.addEventListener('click', () => showLoginModal('Log in to Save Leftovers', 'This feature is for members only. Please log in to use the Leftover Saver!'));
+    if (loadMoreRecipesBtn) loadMoreRecipesBtn.addEventListener('click', () => showLoginModal('Log in to See More Recipes', 'Want to see more? Please log in to browse our entire collection of recipes!'));
+
+    if (closeModalBtn) closeModalBtn.addEventListener('click', hideLoginModal);
     if (loginModal) loginModal.addEventListener('click', (e) => {
-        if (e.target === loginModal) toggleModal(false);
+        if (e.target === loginModal) hideLoginModal();
     });
-
-    // --- Leftover Saver Modal Functionality ---
-    const leftoverSaverBtn = document.getElementById('leftover-saver-btn');
-    const leftoverModal = document.getElementById('leftover-modal');
-    const closeLeftoverModalBtn = document.getElementById('close-leftover-modal-btn');
-
-    function toggleLeftoverModal(show) {
-      if (leftoverModal) {
-        leftoverModal.classList.toggle('hidden', !show);
-        leftoverModal.classList.toggle('modal-open', show);
-      }
-    }
-
-    if (leftoverSaverBtn) leftoverSaverBtn.addEventListener('click', () => toggleLeftoverModal(true));
-    if (closeLeftoverModalBtn) closeLeftoverModalBtn.addEventListener('click', () => toggleLeftoverModal(false));
-    if (leftoverModal) leftoverModal.addEventListener('click', (e) => { if (e.target === leftoverModal) toggleLeftoverModal(false); });
 
     // --- Global Keydown Listener for Modals ---
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        if (loginModal && !loginModal.classList.contains('hidden')) toggleModal(false);
-        if (leftoverModal && !leftoverModal.classList.contains('hidden')) toggleLeftoverModal(false);
+        if (loginModal && !loginModal.classList.contains('hidden')) hideLoginModal();
       }
     });
 
@@ -2364,37 +2364,22 @@
 </script>
 
 <!-- Login Modal -->
-<div id="login-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 opacity-0 pointer-events-none">
-  <div id="modal-content" class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center relative transform transition-all duration-300 scale-95 opacity-0">
-      <button id="close-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 transition-colors">
-          <i data-lucide="x" class="w-7 h-7"></i>
-      </button>
-      <div class="w-20 h-20 bg-gradient-to-br from-orange-100 to-orange-200 text-primary rounded-full flex items-center justify-center mx-auto mb-6">
-        <i data-lucide="lock" class="w-10 h-10"></i>
-      </div>
-      <h2 class="text-2xl font-bold text-text-primary mb-4">Oops! You need to log in.</h2>
-      <p class="text-gray-600 mb-8">This feature is for members only. Please log in to cook with friends!</p>
-      <a href="Log_In.html" class="inline-block w-full bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:from-orange-500 hover:to-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-        Go to Log In
-      </a>
-  </div>
-</div>
-
-<!-- Leftover Saver Modal -->
-<div id="leftover-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden transition-opacity duration-300 opacity-0 pointer-events-none">
-  <div id="modal-content-leftover" class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center relative transform transition-all duration-300 scale-95 opacity-0">
-      <button id="close-leftover-modal-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-800 transition-colors">
-          <i data-lucide="x" class="w-7 h-7"></i>
-      </button>
-      <div class="w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-        <i data-lucide="save" class="w-10 h-10"></i>
-      </div>
-      <h2 class="text-2xl font-bold text-text-primary mb-4">Oops, you must log in to save your leftover</h2>
-      <p class="text-gray-600 mb-8">This feature is for members only. Please log in to use the Leftover Saver!</p>
-      <a href="Log_In.html" class="inline-block w-full bg-gradient-to-r from-primary to-orange-500 text-white py-3 px-4 rounded-lg hover:from-orange-500 hover:to-primary transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105">
-        Go to Log In
-      </a>
-  </div>
+<div id="login-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm" aria-labelledby="login-prompt-title" role="dialog" aria-modal="true">
+    <div class="bg-white rounded-2xl shadow-lgx max-w-md w-full m-4 p-8 text-center transform transition-all" role="document">
+        <h2 id="login-prompt-title" class="text-2xl font-bold text-text-primary mb-4">Oops! You need to log in.</h2>
+        <p class="text-text-secondary mb-6">This feature is for members only. Please log in or create an account to continue.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="Log_In.html" class="inline-block bg-gradient-to-r from-[#ff7a2a] to-[#ff3b00] text-white font-extrabold px-6 py-3 rounded-full shadow-[0_6px_18px_rgba(255,106,0,0.15)] hover:translate-y-[-2px] transition-transform">
+                Log In
+            </a>
+            <a href="Sign_Up.html" class="inline-block bg-slate-100 text-text-primary font-bold px-6 py-3 rounded-full hover:bg-slate-200 transition-colors">
+                Sign Up
+            </a>
+        </div>
+        <button id="close-modal-btn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors" aria-label="Close login prompt">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    </div>
 </div>
 
 </body>
