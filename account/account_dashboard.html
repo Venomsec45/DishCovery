@@ -12,6 +12,9 @@
         darkMode: 'class', // Enable dark mode
         theme: {
           extend: {
+            fontFamily: {
+              sans: ['Outfit', 'sans-serif'],
+            },
             colors: {
               primary: '#ff6a00',
               'primary-2': '#ff3300',
@@ -45,14 +48,13 @@
       }
     </style>
 </head>
-<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 flex flex-col min-h-screen">
+<body class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 flex flex-col min-h-screen font-sans">
 <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
     <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
       <div class="logo">
         <a href="#"><h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1></a>
       </div>
 
-      <!-- Hamburger Menu Button for Mobile -->
       <button id="menu-toggle" class="md:hidden text-gray-800 dark:text-dark-text focus:outline-none" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-nav">
         <div class="w-7 h-7 relative">
           <span class="hamburger-line hamburger-line-1 absolute top-1.5 left-0 w-full h-0.5 bg-current transition-transform duration-300"></span>
@@ -78,7 +80,6 @@
   <div class="max-w-container-xl mx-auto px-6 py-12 md:py-16">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       
-      <!-- Sidebar -->
       <aside class="lg:col-span-3">
         <div class="bg-white p-6 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
           <h2 class="text-xl font-bold text-gray-800 mb-6 dark:text-dark-text">Account</h2>
@@ -92,14 +93,12 @@
         </div>
       </aside>
 
-      <!-- Main Content -->
       <main class="lg:col-span-9 space-y-8">
         <div class="bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
           <h1 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-dark-text">Welcome back, John!</h1>
           <p class="mt-2 text-gray-600 dark:text-dark-text-secondary">Here's a snapshot of your culinary journey. What will you cook today?</p>
         </div>
 
-        <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div id="saved-recipes-stat" class="bg-white p-6 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border flex items-center gap-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg-soft">
             <div class="w-12 h-12 bg-orange-100 text-primary rounded-full flex items-center justify-center flex-shrink-0 dark:bg-primary/20"><i data-lucide="bookmark" class="w-6 h-6"></i></div>
@@ -124,7 +123,6 @@
           </div>
         </div>
 
-        <!-- Recently Viewed & Quick Actions -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div class="lg:col-span-2 bg-white p-6 md:p-8 rounded-2xl shadow-md-soft border border-gray-100 dark:bg-dark-card dark:border-dark-border transition-colors duration-300">
             <h2 class="text-2xl font-bold text-gray-800 mb-6 dark:text-dark-text">Recently Viewed Recipes</h2>
@@ -153,7 +151,6 @@
   </div>
 </div>
 
-<!-- Reusable Modal Structure -->
 <div id="detail-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[9999] hidden opacity-0 transition-opacity duration-300">
   <div class="bg-white dark:bg-dark-card rounded-2xl shadow-lg-soft w-full max-w-2xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
     <div class="flex items-center justify-between p-6 border-b border-gray-100 dark:border-dark-border">
@@ -163,45 +160,64 @@
       </button>
     </div>
     <div id="modal-content" class="p-6 space-y-4">
-      <!-- Content will be dynamically loaded here -->
     </div>
   </div>
 </div>
 
-<!-- Footer - NOT sticky, appears at the end normally -->
-<footer class="bg-[#0f1b2c] text-gray-100 py-12">
-  <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-    <div class="footer_column text-gray-300">
-      <h2 class="text-2xl font-extrabold text-primary mb-4">DishCovery</h2>
-      <p>Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform.</p>
-    </div>
+<footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
+        <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="footer_column">
+                <p class="text-slate-400 leading-relaxed">Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
+            </div>
 
-    <div class="footer_contact">
-      <h3 class="text-white text-lg font-semibold mb-3">Contact Info</h3>
-      <p class="text-gray-300">hello@dishcovery.com</p>
-      <p class="text-gray-300">+1 (555) 123-4567</p>
-      <p class="text-gray-300">123 Culinary Street, Food City</p>
-    </div>
+            <div class="footer_contact">
+                <h3 class="text-white text-lg mb-3">Contact Info</h3>
+                <address class="not-italic">
+                    <p class="text-slate-400 mb-1"><a href="mailto:hello@dishcovery.com" class="text-slate-300 hover:text-primary transition-colors duration-300">hello@dishcovery.com</a></p>
+                    <p class="text-slate-400 mb-1"><a href="tel:+15551234567" class="text-slate-300 hover:text-primary transition-colors duration-300">+1 (555) 123-4567</a></p>
+                    <p class="text-slate-400">123 Culinary Street, Food City</p>
+                </address>
+            </div>
 
-    <div>
-      <h3 class="text-white text-lg font-semibold mb-3">Quick Links</h3>
-      <ul class="space-y-2">
-        <li><a href="About_Us.html" class="text-gray-300 hover:text-primary transition-colors">About Us</a></li>
-        <li><a href="recipe_finder.html" class="text-gray-300 hover:text-primary transition-colors">Recipe Finder</a></li>
-        <li><a href="Faq.html" class="text-gray-300 hover:text-primary transition-colors">FAQ</a></li>
-        <li><a href="Contact.html" class="text-gray-300 hover:text-primary transition-colors">Contact</a></li>
-      </ul>
-    </div>
-  </div>
+            <nav class="footer_social" aria-label="Social media links">
+                <h3 class="text-white text-lg mb-3">Follow Us</h3>
+                <ul class="flex gap-4">
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Facebook">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on Instagram">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <defs>
+                                <mask id="instagram-mask">
+                                    <rect width="24" height="24" fill="white"/>
+                                    <circle cx="12" cy="12" r="5.5" fill="black"/>
+                                </mask>
+                            </defs>
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z" mask="url(#instagram-mask)"/>
+                            <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                            <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+                        </svg>
+                    </a></li>
+                    <li><a href="#" class="text-slate-400 hover:text-primary transition-colors duration-300" aria-label="Follow us on X (Twitter)">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
 
-  <div class="border-t border-white/10 mt-12 pt-6 text-center">
-    <p class="text-gray-400">&copy; 2024 DishCovery. All rights reserved.</p>
-    <div class="flex gap-6 justify-center mt-4">
-      <a href="#" class="text-gray-400 hover:text-primary text-sm">Privacy Policy</a>
-      <a href="#" class="text-gray-400 hover:text-primary text-sm">Terms of Service</a>
-    </div>
-  </div>
-</footer>
+        <div class="footer_bottom border-t border-white/10 mt-12 pt-6">
+            <div class="max-w-container-lg mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-slate-400 text-center md:text-left">
+                    &copy; 2024 DishCovery. All rights reserved.
+                </p>
+
+                <nav class="footer_bottom_links flex gap-6 text-center md:text-right">
+                    <a href="privacy.html" class="text-slate-400 hover:text-primary transition-colors duration-300">Privacy Policy</a>
+                    <a href="terms.html" class="text-slate-400 hover:text-primary transition-colors duration-300">Terms of Service</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -280,22 +296,22 @@
 
       // --- Simulated Data (replace with actual API calls in a real app) ---
       const savedRecipesData = [
-        { id: 1, name: 'Classic Lasagna', image: 'https://images.unsplash.com/photo-1612807663387-991559981878?w=100&h=100&fit=crop', date: 'Saved 2 days ago' },
-        { id: 2, name: 'Spicy Chicken Tacos', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100&h=100&fit=crop', date: 'Saved 1 week ago' },
-        { id: 3, name: 'Vegetable Curry', image: 'https://images.unsplash.com/photo-1588166524941-cf51a774d77a?w=100&h=100&fit=crop', date: 'Saved 2 weeks ago' },
-        { id: 4, name: 'Homemade Pizza', image: 'https://images.unsplash.com/photo-1593560704721-fa36ee235943?w=100&h=100&fit=crop', date: 'Saved 1 month ago' },
+        { id: 1, name: 'Classic Lasagna', image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=100&h=100&fit=crop', date: 'Saved 2 days ago' },
+        { id: 2, name: 'Spicy Chicken Tacos', image: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=100&h=100&fit=crop', date: 'Saved 1 week ago' },
+        { id: 3, name: 'Vegetable Curry', image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=100&h=100&fit=crop', date: 'Saved 2 weeks ago' },
+        { id: 4, name: 'Homemade Pizza', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100&h=100&fit=crop', date: 'Saved 1 month ago' },
       ]
 
       const submittedRecipesData = [
-        { id: 101, name: 'My Secret Chili Recipe', image: 'https://images.unsplash.com/photo-1626804475100-d1815147895a?w=100&h=100&fit=crop', status: 'Published', date: 'Submitted 3 months ago' },
-        { id: 102, name: 'Quick Breakfast Burrito', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100&h=100&fit=crop', status: 'Published', date: 'Submitted 5 months ago' },
-        { id: 103, name: 'Grandma\'s Apple Pie', image: 'https://images.unsplash.com/photo-1571772928015-7f1c19ff2e2e?w=100&h=100&fit=crop', status: 'Pending Review', date: 'Submitted 1 month ago' },
+        { id: 101, name: 'My Secret Chili Recipe', image: 'https://images.unsplash.com/photo-1586959343340-5b5185494be4?w=100&h=100&fit=crop', status: 'Published', date: 'Submitted 3 months ago' },
+        { id: 102, name: 'Quick Breakfast Burrito', image: 'https://images.unsplash.com/photo-1624373619248-4f1b45943f55?w=100&h=100&fit=crop', status: 'Published', date: 'Submitted 5 months ago' },
+        { id: 103, name: 'Grandma\'s Apple Pie', image: 'https://images.unsplash.com/photo-1562376556-a8d06202062a?w=100&h=100&fit=crop', status: 'Pending Review', date: 'Submitted 1 month ago' },
       ]
 
       const recentlyViewedData = [
         { id: 201, name: 'Vegetable Stir Fry', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop', time: 'Viewed 2 hours ago', description: 'A quick and healthy stir fry with seasonal vegetables and a savory sauce.' },
         { id: 202, name: 'Chocolate Chip Cookies', image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=100&h=100&fit=crop', time: 'Viewed yesterday', description: 'Classic chewy chocolate chip cookies, perfect for any occasion.' },
-        { id: 203, name: 'Creamy Tomato Pasta', image: 'https://images.unsplash.com/photo-1595908479120-6701d606d74c?w=100&h=100&fit=crop', time: 'Viewed 3 days ago', description: 'Easy and delicious pasta dish with a rich, creamy tomato sauce.' },
+        { id: 203, name: 'Creamy Tomato Pasta', image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=100&h=100&fit=crop', time: 'Viewed 3 days ago', description: 'Easy and delicious pasta dish with a rich, creamy tomato sauce.' },
       ]
 
       const activityFeedData = [
