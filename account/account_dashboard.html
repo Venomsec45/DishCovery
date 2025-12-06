@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>DishCovery - My Dashboard</title>
+    <title>Account Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -167,6 +167,7 @@
 <footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
         <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             <div class="footer_column">
+                <h2 class="text-3xl font-extrabold tracking-tight text-[clamp(20px,2.2vw,26px)] text-primary">DishCovery</h2>
                 <p class="text-slate-400 leading-relaxed">Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
             </div>
 
@@ -296,22 +297,22 @@
 
       // --- Simulated Data (replace with actual API calls in a real app) ---
       const savedRecipesData = [
-        { id: 1, name: 'Classic Lasagna', image: 'https://images.unsplash.com/photo-1574894709920-11b28e7367e3?w=100&h=100&fit=crop', date: 'Saved 2 days ago' },
+        { id: 1, name: 'Classic Lasagna', image: 'https://images.unsplash.com/photo-1560750133-c5d4ef4de911?q=80&w=3072&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', date: 'Saved 2 days ago' },
         { id: 2, name: 'Spicy Chicken Tacos', image: 'https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?w=100&h=100&fit=crop', date: 'Saved 1 week ago' },
-        { id: 3, name: 'Vegetable Curry', image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=100&h=100&fit=crop', date: 'Saved 2 weeks ago' },
-        { id: 4, name: 'Homemade Pizza', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100&h=100&fit=crop', date: 'Saved 1 month ago' },
+        { id: 3, name: 'Vegetable Curry', image: 'https://images.unsplash.com/photo-1737210235283-7675f83efc59?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', date: 'Saved 2 weeks ago' },
+        { id: 4, name: 'Homemade Pizza', image: 'https://images.unsplash.com/photo-1734774421809-48eac182a5cd?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', date: 'Saved 1 month ago' },
       ]
 
       const submittedRecipesData = [
-        { id: 101, name: 'My Secret Chili Recipe', image: 'https://images.unsplash.com/photo-1586959343340-5b5185494be4?w=100&h=100&fit=crop', status: 'Published', date: 'Submitted 3 months ago' },
-        { id: 102, name: 'Quick Breakfast Burrito', image: 'https://images.unsplash.com/photo-1624373619248-4f1b45943f55?w=100&h=100&fit=crop', status: 'Published', date: 'Submitted 5 months ago' },
-        { id: 103, name: 'Grandma\'s Apple Pie', image: 'https://images.unsplash.com/photo-1562376556-a8d06202062a?w=100&h=100&fit=crop', status: 'Pending Review', date: 'Submitted 1 month ago' },
+        { id: 101, name: 'My Secret Chili Recipe', image: 'https://images.unsplash.com/photo-1680764955303-81618ecb67b5?q=80&w=1201&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', status: 'Published', date: 'Submitted 3 months ago' },
+        { id: 102, name: 'Quick Breakfast Burrito', image: 'https://plus.unsplash.com/premium_photo-1733259882547-31f52c9a3810?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', status: 'Published', date: 'Submitted 5 months ago' },
+        { id: 103, name: 'Grandma\'s Apple Pie', image: 'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', status: 'Pending Review', date: 'Submitted 1 month ago' },
       ]
 
       const recentlyViewedData = [
-        { id: 201, name: 'Vegetable Stir Fry', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop', time: 'Viewed 2 hours ago', description: 'A quick and healthy stir fry with seasonal vegetables and a savory sauce.' },
+        { id: 201, name: 'Vegetable Stir Fry', image: 'https://images.unsplash.com/photo-1758762582827-e26f67c5eb6e?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', time: 'Viewed 2 hours ago', description: 'A quick and healthy stir fry with seasonal vegetables and a savory sauce.' },
         { id: 202, name: 'Chocolate Chip Cookies', image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=100&h=100&fit=crop', time: 'Viewed yesterday', description: 'Classic chewy chocolate chip cookies, perfect for any occasion.' },
-        { id: 203, name: 'Creamy Tomato Pasta', image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=100&h=100&fit=crop', time: 'Viewed 3 days ago', description: 'Easy and delicious pasta dish with a rich, creamy tomato sauce.' },
+        { id: 203, name: 'Creamy Tomato Pasta', image: 'https://images.unsplash.com/photo-1715692727283-e4dbdc5edd0e?q=80&w=1371&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', time: 'Viewed 3 days ago', description: 'Easy and delicious pasta dish with a rich, creamy tomato sauce.' },
       ]
 
       const activityFeedData = [
@@ -322,9 +323,9 @@
       ]
 
       const recommendationsData = [
-        { id: 301, name: 'Mediterranean Quinoa Salad', image: 'https://images.unsplash.com/photo-1512621776951-a579b569e791?w=200&h=150&fit=crop', tags: ['Healthy', 'Vegetarian', 'Quick'] },
-        { id: 302, name: 'Beef Stroganoff', image: 'https://images.unsplash.com/photo-1600891963908-912239455325?w=200&h=150&fit=crop', tags: ['Comfort Food', 'Dinner'] },
-        { id: 303, name: 'Lemon Garlic Shrimp Pasta', image: 'https://images.unsplash.com/photo-1555939594-58d7ab87130f?w=200&h=150&fit=crop', tags: ['Seafood', 'Easy'] },
+        { id: 301, name: 'Mediterranean Quinoa Salad', image: 'https://images.unsplash.com/photo-1752028935881-0674807b046c?q=80&w=1034&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', tags: ['Healthy', 'Vegetarian', 'Quick'] },
+        { id: 302, name: 'Beef Stroganoff', image: 'https://images.unsplash.com/photo-1644592219048-5c070fd3c91c?q=80&w=1261&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', tags: ['Comfort Food', 'Dinner'] },
+        { id: 303, name: 'Lemon Garlic Shrimp Pasta', image: 'https://images.unsplash.com/photo-1605883701011-a02b2dc27f63?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', tags: ['Seafood', 'Easy'] },
       ]
 
       // Update stat counts

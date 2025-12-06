@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="description" content="Explore our stunning food photography gallery featuring professional food styling and culinary artistry">
-    <title>DishCovery - Food Gallery</title>
+    <title>Food Gallery</title>
 
     <!-- Tailwind Play CDN + small config to match original palette & shadows -->
     <script>
@@ -38,16 +38,11 @@
       }
     </script>
 
-    <!-- Google font -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-      /* small base to ensure font-family matches original */
       :root { --fallback-font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
       html,body { font-family: var(--fallback-font); }
-      /* visually-hidden helper (used as sr-only) */
       .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-
-      /* Premium static gradients for filter buttons */
       .gradient-all-photos {
         background: linear-gradient(135deg, #1e3a8a, #3b82f6, #60a5fa);
         color: white;
@@ -113,7 +108,7 @@
 </head>
 
 <body class="bg-bg-page text-text-primary antialiased leading-relaxed overflow-x-hidden">
-  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100/120 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
     <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
       <div class="logo">
         <a href="#"><h1 class="text-2xl md:text-3xl font-extrabold text-primary">DishCovery</h1></a>
@@ -133,7 +128,12 @@
           <li><a href="recipe_finder_for_account.html" class="font-semibold text-gray-800 hover:text-primary dark:text-dark-text dark:hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Recipe Finder</a></li>
           <li><a href="gallery_account.html" class="font-semibold text-gray-800 hover:text-primary dark:text-dark-text dark:hover:text-primary px-2 py-1 rounded-md transition-colors duration-300">Gallery</a></li>
           <li class="login mt-4 md:mt-0">
-            <a href="account_dashboard.html" class="inline-block bg-gradient-to-r from-primary to-primary-2 text-white font-extrabold px-4 py-2 rounded-full shadow-md-soft transition hover:shadow-lg-soft" aria-current="page">My Account</a>
+
+            <a href="account_dashboard.html"
+               class="inline-block bg-gradient-to-r from-[#ff7a2a] to-[#ff3b00] text-white font-extrabold px-4 py-2 rounded-full shadow-lg transform transition-transform duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[#ff7a2a]/20"
+               aria-current="page">
+              My Account
+            </a>
           </li>
         </ul>
       </nav>
@@ -236,7 +236,7 @@
                     <img loading="lazy" src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=600&fit=crop" alt="Elegant plated dessert with garnish" class="w-full h-full object-cover transform transition-transform duration-700 hover:scale-105" width="1000" height="1333">
                 </figure>
                 <figure class="gallery-item relative overflow-hidden rounded-2xl bg-white shadow-mdx aspect-[3/4] hover:-translate-y-2 hover:shadow-lgx transition-transform" role="listitem">
-                    <img loading="lazy" src="https://media.istockphoto.com/id/1409514526/photo/healthy-food-healthy-eating-background-fruit-vegetable-berry-vegetarian-eating-superfood.jpg?s=612x612&w=0&k=20&c=nwH6Clh2YCn4PbzNjtgGv8KBn1MxGdJpqsxvI1nRMrg=" alt="Healthy food background with fruits, vegetables, and berries" class="w-full h-full object-cover transform transition-transform duration-700 hover:scale-105" width="1000" height="1333">
+                    <img loading="lazy" src="https://images.pexels.com/photos/566566/pexels-photo-566566.jpeg" alt="Healthy food background with fruits, vegetables, and berries" class="w-full h-full object-cover transform transition-transform duration-700 hover:scale-105" width="1000" height="1333">
                 </figure>
             </div>
 
@@ -269,6 +269,7 @@
     <footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
         <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             <div class="footer_column">
+                <h2 class="text-3xl font-extrabold tracking-tight text-[clamp(20px,2.2vw,26px)] text-primary">DishCovery</h2>
                 <p class="text-slate-400 leading-relaxed">Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
             </div>
 

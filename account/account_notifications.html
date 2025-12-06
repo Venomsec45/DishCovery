@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dishcovery - Account notifications</title>
+    <title>Account notifications</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -43,6 +43,7 @@
       }
     </script>
 </head>
+
 <body class="bg-page-bg dark:bg-dark-bg transition-colors duration-400 flex flex-col min-h-screen font-sans">
 <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200/80 dark:bg-dark-card/80 dark:border-dark-border transition-colors duration-300">
     <div class="max-w-container-lg mx-auto px-6 py-4 flex items-center justify-between">
@@ -81,7 +82,7 @@
   </header>
 
 <div class="bg-page-bg dark:bg-dark-bg transition-colors duration-300 flex-grow">
-  <div class="max-w-container-xl mx-auto px-6 py-12 md:py-16">
+  <div class="max-w-container-xl mx-auto px-6 py-16 md:py-16">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
       
       <!-- Sidebar -->
@@ -138,6 +139,7 @@
 <footer class="bg-[#0f1b2c] text-gray-100 pt-12 pb-6">
         <div class="max-w-container-lg mx-auto px-6 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             <div class="footer_column">
+                <h2 class="text-3xl font-extrabold tracking-tight text-[clamp(20px,2.2vw,26px)] text-primary">DishCovery</h2>
                 <p class="text-slate-400 leading-relaxed">Discover amazing recipes, explore culinary adventures, and find your next favorite dish with our comprehensive recipe platform that reduces food waste and enhances cooking creativity.</p>
             </div>
 
@@ -226,6 +228,14 @@
         { id: 2, icon: 'message-square', title: 'John Smith commented on your recipe', message: '"This was delicious! I added a pinch of chili flakes for some extra heat."', time: '1 day ago', read: true },
         { id: 3, icon: 'badge-check', title: 'Welcome to DishCovery!', message: 'Your account has been successfully created. Start exploring thousands of recipes now.', time: '3 days ago', read: true },
         { id: 4, icon: 'award', title: 'You earned a new badge!', message: 'Congratulations! You\'ve earned the "Community Chef" badge for submitting 5 recipes.', time: '5 days ago', read: false },
+        { id: 5, icon: 'heart', title: 'Your recipe was liked!', message: 'Sarah Johnson and 12 others liked your "Classic Spaghetti Carbonara" recipe.', time: '1 week ago', read: false },
+        { id: 6, icon: 'share', title: 'Recipe shared successfully', message: 'Your "Homemade Pizza Dough" recipe has been shared with 25 friends.', time: '1 week ago', read: true },
+        { id: 7, icon: 'calendar', title: 'Weekly Meal Plan Ready', message: 'Your personalized meal plan for this week is ready. Check it out in your dashboard!', time: '2 weeks ago', read: false },
+        { id: 8, icon: 'gift', title: 'Special Offer: Premium Membership', message: 'Get 50% off your first month of premium membership. Unlock exclusive recipes and features!', time: '2 weeks ago', read: true },
+        { id: 9, icon: 'users', title: 'New Friend Request', message: 'ChefMike wants to connect with you. Accept their friend request to start cooking together!', time: '3 weeks ago', read: false },
+        { id: 10, icon: 'trending-up', title: 'Your recipes are trending!', message: 'Your "Vegan Buddha Bowl" is now in the top 10 trending recipes this week.', time: '3 weeks ago', read: true },
+        { id: 11, icon: 'bell', title: 'Maintenance Notice', message: 'We\'ll be performing scheduled maintenance on Sunday from 2-4 AM. Some features may be temporarily unavailable.', time: '1 month ago', read: true },
+        { id: 12, icon: 'zap', title: 'New Feature: Recipe Collections', message: 'You can now organize your favorite recipes into custom collections. Try it out!', time: '1 month ago', read: false }
       ];
 
       function getNotifications() {
@@ -242,11 +252,17 @@
       }
 
       function renderNotifications() {
-        const notifications = getNotifications();
+        let notifications = getNotifications();
+
+        if (!notifications || notifications.length === 0) {
+          notifications = mockNotifications;
+          localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(mockNotifications));
+        }
+
         const filtered = notifications.filter(n => currentFilter === 'all' || !n.read);
 
         container.innerHTML = '';
-        
+
         if (filtered.length === 0) {
           emptyState.classList.remove('hidden');
           container.classList.add('hidden');
